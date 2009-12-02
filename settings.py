@@ -3,7 +3,7 @@
 import os.path
 
 def SELF_DIR(filename=''):
-    return os.path.join(os.path.dirname(__file__), filename)
+    return os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)
 
 # Django settings for knowledge project.
 
@@ -77,6 +77,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    SELF_DIR('templates'),
 )
 
 INSTALLED_APPS = (
@@ -86,4 +87,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'knowledge.users',
+    'knowledge.cards',
 )
