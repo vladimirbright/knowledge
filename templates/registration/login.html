@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+
+{% block header%}
+    <H1>Пожалуйста ввдеите логин и пароль!</H1>
+{% endblock %}
+
+{% block main %}
+ {% if form.errors %}
+    <P class="error">Sorry, that's not a valid username or password</P>
+  {% endif %}
+
+  <FORM action="" method="post">
+    <LABEL for="username">Имя пользователя:</LABEL>
+    <INPUT type="text" name="username" value="" id="username">
+    <LABEL for="password">Пароль:</LABEL>
+    <INPUT type="password" name="password" value="" id="password">
+
+    <INPUT type="submit" value="login" />
+    <INPUT type="hidden" name="next" value="/" />
+  </form>
+{% endblock %}

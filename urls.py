@@ -1,19 +1,21 @@
+# -*- coding: utf8 -*-
+
 from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
 
+from knowledge.cards import views as card_view
+from knowledge.users import views as users_view
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Example:
-    # (r'^knowledge/', include('knowledge.foo.urls')),
+    (r'^$', card_view.index),
     (r'^cards/', include('knowledge.cards.urls')),
+    (r'^login/', login),
+    (r'^logout/', logout),
+    (r'^register/', users_view.register),
     #(r'^users/', include('knowledge.users.urls')),
 
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
 )
