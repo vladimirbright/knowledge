@@ -1,0 +1,108 @@
+/*Базовая cssка*/
+* { 
+  margin: 0; 
+  padding: 0;  
+}
+IMG {
+  border: 0;
+}
+BODY { 
+  background: white; 
+  font-size: 13px;
+  font-family: Tahoma,Verdana,sans-serif;
+}
+
+/*шапка*/
+DIV.header, DIV.header_inner, DIV.header_content, DIV.header_left, DIV.header_right {
+  height: 80px;
+}
+DIV.header, DIV.header_inner {
+  background-image: url(/s/i/head_round.png);
+  background-repeat: no-repeat;
+}
+DIV.header {
+  background-position: 0 100%;
+}
+DIV.header_inner {
+  background-position: 100% 100%;
+  padding: 0 24px;
+}
+DIV.header_content {
+  background-image: url(/s/i/head_center.png);
+  background-repeat: repeat-x;
+  background-position: 50% 100%;
+}
+DIV.header_left {
+  float: left;
+  width: 30%;
+}
+DIV.header_right {
+  text-align: right;
+}
+DIV.header_content H4, DIV.header_content H4 a {
+  padding-top: 10px;
+  font-family: Georgia,sans-serif;
+  font-size: 24px;
+  font-weight: normal;
+  color: #00443D;
+}
+DIV.header_right UL {
+  overflow: auto;
+  list-style: none; 
+}
+DIV.header_right UL LI {
+  float: right;
+  margin: 0 0 0 4px;
+}
+
+/*Основной блок*/
+DIV.main {
+  width: 1000px;
+  margin: 0 auto 4px auto;
+  padding: 0 10px 10px 10px;
+  border-top: 0;
+  border-left: 2px solid #666;
+  border-right: 2px solid #666;
+  border-bottom: 2px solid #666;
+  background: #bfffca;
+}
+
+DIV.main_inner {
+  background: green;
+}
+
+DIV.main_inner H2 {
+  padding: 5px;
+  font-family: Georgia,sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: yellow;
+  text-align: center;
+}
+
+/*Форма постинга*/
+DIV.new_card_form_wrapper {
+  text-align: center;
+  padding: 10px;
+}
+DIV.new_card_form_wrapper DIV {
+}
+DIV.new_card_form_wrapper INPUT, DIV.new_card_form_wrapper TEXTAREA {
+  background: white;
+  border: 1px solid white;
+  width: 100%;
+  margin: 10px 0;
+}
+
+/**/
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    font-family: Tahoma,Verdana,sans-serif;
+}
+SPAN.username {
+    font-size: 1.2em;
+    color: #000080;
+    font-family: Verdana,Tahoma,sans-serif;
+}

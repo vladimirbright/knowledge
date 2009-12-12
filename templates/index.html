@@ -2,64 +2,64 @@
 <HTML>
 <HEAD>
     <TITLE>{% if title %}{{title}}{% else %}База знаний и рещений{% endif %}</TITLE>
-    <STYLE type="text/css">
-        BODY {
-            background: white;
-            padding: 10px;
-        }
-        DIV.header {
-            background: #f4f4f4;
-            height: 100px;
-        }
-        .error {
-            color: red;
-            font-size: 0.9em;
-            font-family: Tahoma,Verdana,sans-serif;
-        }
-        INPUT[type="text"], INPUT[type="password"] {
-            border: 1px solid #7c7c7c;
-        }
-        SPAN.username {
-            font-size: 1.2em;
-            color: #000080;
-            font-family: Verdana,Tahoma,sans-serif;
-        }
-    </STYLE>
+    <LINK href="/s/css/main.css" rel="stylesheet" type="text/css">
+    <SCRIPT type="text/javascript" src="/s/js/jquery.min.js"></SCRIPT>
 </HEAD>
 <BODY>
-    <DIV class="header">{% block header %}
-        {% if user.is_authenticated %}
-          <P>Здарова, {{ user.username|escape }}. Давай сюда свои знания.</P>
-          <P><A href="/logout/">Выйти</A></P>
-        {% else %}
-          <P>Здарова Аноним! <A href="/login/">Войди</A> или <A href="/register/">Зарегистрируйся</A></P>
-        {% endif %}
+    <DIV class="header">
+        <DIV class="header_inner">
+            <DIV class="header_content">
+            {% block header %}
+                <DIV class="header_left">
+                    <H4><A href="/">База знаний и заметок.</A></H4>
+                </DIV>
+                <DIV class="header_right">
+                {% if user.is_authenticated %}
+                    <H4>Здарова, {{ user.username|escape }}!</H4>
+                    <UL>
+                        <LI><A href="/logout/" title="Выйти"><IMG alt="Выйти" src="/s/i/logout32.png"></A></LI>
+                        <LI><A href="/settings/" title="Настройки"><IMG alt="Настройки" src="/s/i/settings32.png"></A></LI>
+                        <LI><A href="/user/" title="Профиль"><IMG alt="Профиль" src="/s/i/users32.png"></A></LI>
+                        <LI><A href="/favorites/" title="Избранное"><IMG alt="Избранное" src="/s/i/idea32.png"></A></LI>
+                        <LI><A href="/new/" title="Написать"><IMG alt="Написать" src="/s/i/new32.png"></A></LI>
+                    </UL>
+                {% else %}
+                  <H4>Здарова Аноним! <A href="/login/">Войди</A> или <A href="/register/">Зарегистрируйся</A></H4>
+                {% endif %}
+                </DIV>
+            {% endblock %}
+            </DIV>
+        </DIV>
+    </DIV>
+    <DIV class="main"><DIV class="main_inner">
+        {% block main %}
+            {% if user.is_authenticated %}
+                <DIV class="new_card_form_wrapper">
+                    <H2>Отдай свой мозг юзернайм!</H2>
+                    <FORM action="" method="POST">
+                        <H3>Записать мысль</H3>
+                        {{ postForm.topic }}<BR>
+                        {{ postForm.cardtext }}
+                        <DIV><INPUT type="submit" value="Пусть знают все!"/></DIV>
+                    </FORM>
+                </DIV>
+            {% endif %}
+            <H2>Уже отдали мозги</H2>
+            {% if cards %}
+                <UL>
+                    {% for card in cards %}
+                        <LI>
+                            <H4>{{card.topic|escape}}</H4>
+                            <P>{{ card.cardtext|escape }}</P>
+                            <P>Добавил <SPAN class="username">{{card.owner.username|escape}}</SPAN> {{card.added|date:'d.m.Y в H:i'}}</P>
+                        </LI>
+                    {% endfor %}
+                </UL>
+            {% else %}
+                <H3>Ни одна собака!</H3>
+            {% endif %}
 
-
-{% endblock %}</DIV>
-    <DIV class="main">{% block main %}
-        {% if user.is_authenticated %}
-            <H2>Отдай свой мозг юзернайм!</H2>
-            <FORM action="" method="POST">
-                {{postForm.as_ul}}
-                <INPUT type="submit" value="Пусть знают все!"/>
-            </FORM>
-        {% endif %}
-        <H2>Уже отдали мозги</H2>
-        {% if cards %}
-            <UL>
-                {% for card in cards %}
-                    <LI>
-                        <H4>{{card.topic|escape}}</H4>
-                        <P>{{ card.cardtext|escape }}</P>
-                        <P>Добавил <SPAN class="username">{{card.owner.username|escape}}</SPAN> {{card.added|date:'d.m.Y в H:i'}}</P>
-                    </LI>
-                {% endfor %}
-            </UL>
-        {% else %}
-            <H3>Ни одна собака!</H3>
-        {% endif %}
-
-{% endblock %}</DIV>
+        {% endblock %}
+    </DIV></DIV>
 </BODY>
 </HTML>
