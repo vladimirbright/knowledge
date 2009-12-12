@@ -22,7 +22,7 @@ def index(request):
             return render_to_response('index.html', { "postForm": form, "user": request.user, "title": u"Здесь будет база знаний."})
     else:
         form = CardsPostForm()
-        cards = Cards.objects.all()
+        cards = Cards.objects.all().order_by('-pk')
         return render_to_response('index.html', { "postForm": form, "cards": cards, "user": request.user, "title": u"Здесь будет база знаний."})
 
 

@@ -66,35 +66,61 @@ DIV.main {
   border-bottom: 2px solid #666;
   background: #bfffca;
 }
-
 DIV.main_inner {
   background: green;
+  padding: 10px;
 }
-
 DIV.main_inner H2 {
-  padding: 5px;
+  margin: 0 0 15px;
   font-family: Georgia,sans-serif;
   font-size: 24px;
   font-weight: bold;
-  color: yellow;
-  text-align: center;
+  color: white;
+  text-align: left;
 }
 
 /*Форма постинга*/
-DIV.new_card_form_wrapper {
-  text-align: center;
-  padding: 10px;
-}
-DIV.new_card_form_wrapper DIV {
-}
-DIV.new_card_form_wrapper INPUT, DIV.new_card_form_wrapper TEXTAREA {
-  background: white;
-  border: 1px solid white;
+DIV.new_card_form_wrapper INPUT[type="text"], DIV.new_card_form_wrapper TEXTAREA {
   width: 100%;
   margin: 10px 0;
+  background: white;
+  border: 1px solid white;
+}
+DIV.new_card_form_wrapper INPUT[type="text"] {
+  height: 32px;
+  font-size: 28px;
+}
+DIV.new_card_form_wrapper TEXTAREA {
+  font-size: 16px;
+}
+DIV.new_card_form_wrapper H3 {
+  font-size: 22px;
+  color: white;
 }
 
-/**/
+/*Карточки*/
+DIV.cards_container {
+  overflow: auto;
+}
+DIV.cards {
+  float: left;
+  border: 1px solid yellow;
+  margin: 5px 5px 5px 0;
+  padding: 10px;
+  width: 299px;
+  height: 100px;
+}
+DIV.cards H4 {
+}
+DIV.cards P {
+  height: 68px;
+}
+DIV.cards .cards_added {
+  font-size: 11px;
+}
+DIV.cards HR {
+  color: yellow;
+}
 
 .error {
     color: red;

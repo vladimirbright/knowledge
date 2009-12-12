@@ -34,30 +34,34 @@
     <DIV class="main"><DIV class="main_inner">
         {% block main %}
             {% if user.is_authenticated %}
+                <H2>Записать мысль</H2>
                 <DIV class="new_card_form_wrapper">
-                    <H2>Отдай свой мозг юзернайм!</H2>
                     <FORM action="" method="POST">
-                        <H3>Записать мысль</H3>
                         {{ postForm.topic }}<BR>
                         {{ postForm.cardtext }}
-                        <DIV><INPUT type="submit" value="Пусть знают все!"/></DIV>
+                        <DIV><INPUT type="submit" value="Пусть знают все!"/> или пойти в зад</DIV>
                     </FORM>
                 </DIV>
+                <BR>
             {% endif %}
-            <H2>Уже отдали мозги</H2>
-            {% if cards %}
-                <UL>
+            <H2>Последние записи</H2>
+            <DIV class="cards_container">
+                {% if cards %}
+                    <DIV class="cards_wrapper">
                     {% for card in cards %}
-                        <LI>
+                        <DIV class="cards">
                             <H4>{{card.topic|escape}}</H4>
+                            <HR>
                             <P>{{ card.cardtext|escape }}</P>
-                            <P>Добавил <SPAN class="username">{{card.owner.username|escape}}</SPAN> {{card.added|date:'d.m.Y в H:i'}}</P>
-                        </LI>
+                            <HR>
+                            <DIV class="cards_added">Добавил <SPAN class="username">{{card.owner.username|escape}}</SPAN> {{card.added|date:'d.m.Y в H:i'}}</DIV>
+                        </DIV>
                     {% endfor %}
-                </UL>
-            {% else %}
-                <H3>Ни одна собака!</H3>
-            {% endif %}
+                    </DIV>
+                {% else %}
+                    <H2>Ни одна собака!</H2>
+                {% endif %}
+            </H2>
 
         {% endblock %}
     </DIV></DIV>
