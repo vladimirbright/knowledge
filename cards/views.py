@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 from knowledge.cards.models import Cards, CardsPostForm
 
 
-# 
+# Главная страница.
+# Тут пагинацию прикрутить.
 def index(request):
     if request.method == 'POST' and request.user.is_authenticated:
         form = CardsPostForm(request.POST)
@@ -26,6 +27,8 @@ def index(request):
         return render_to_response('index.html', { "postForm": form, "cards": cards, "user": request.user, "title": u"Здесь будет база знаний."})
 
 
-@login_required
-def new_card(request):
-    return render_to_response('index.html', { "user": request.user, "title": u"Здесь будет база знаний."})
+# Страница подробностей.
+def details(request, card_id):
+    return HttpResponse(u'Нет пока никто, но будет описание с комментами для ' + str(card_id) + u' заметки.')
+
+#

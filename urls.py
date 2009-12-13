@@ -11,14 +11,15 @@ from knowledge.users import views as users_view
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^$', card_view.index),
+    url(r'^$', card_view.index),
+    url(r'^(\d+)/?$', card_view.details),
     # TODO не забыть убрать обработку статики с джанги.
     (r'^s/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
     (r'^cards/', include('knowledge.cards.urls')),
-    (r'^login/', login),
-    (r'^logout/', logout),
-    (r'^register/', users_view.register),
+    url(r'^login/', login),
+    url(r'^logout/', logout),
+    url(r'^register/', users_view.register),
     #(r'^users/', include('knowledge.users.urls')),
 
     (r'^admin/', include(admin.site.urls)),

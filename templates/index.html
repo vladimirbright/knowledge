@@ -6,64 +6,65 @@
     <SCRIPT type="text/javascript" src="/s/js/jquery.min.js"></SCRIPT>
 </HEAD>
 <BODY>
-    <DIV class="header">
-        <DIV class="header_inner">
-            <DIV class="header_content">
-            {% block header %}
-                <DIV class="header_left">
-                    <H4><A href="/">База знаний и заметок.</A></H4>
-                </DIV>
-                <DIV class="header_right">
-                {% if user.is_authenticated %}
-                    <H4>Здарова, {{ user.username|escape }}!</H4>
-                    <UL>
-                        <LI><A href="/logout/" title="Выйти"><IMG alt="Выйти" src="/s/i/logout32.png"></A></LI>
-                        <LI><A href="/settings/" title="Настройки"><IMG alt="Настройки" src="/s/i/settings32.png"></A></LI>
-                        <LI><A href="/user/" title="Профиль"><IMG alt="Профиль" src="/s/i/users32.png"></A></LI>
-                        <LI><A href="/favorites/" title="Избранное"><IMG alt="Избранное" src="/s/i/idea32.png"></A></LI>
-                        <LI><A href="/new/" title="Написать"><IMG alt="Написать" src="/s/i/new32.png"></A></LI>
-                    </UL>
-                {% else %}
-                  <H4>Здарова Аноним! <A href="/login/">Войди</A> или <A href="/register/">Зарегистрируйся</A></H4>
-                {% endif %}
-                </DIV>
-            {% endblock %}
+<DIV class="header">
+    <DIV class="header_inner">
+        <DIV class="header_content">
+        {% block header %}
+            <DIV class="header_left">
+                <H4><A href="/">База знаний и заметок.</A></H4>
             </DIV>
+            <DIV class="header_right">
+            {% if user.is_authenticated %}
+                <H4>Здарова, {{ user.username }}!</H4>
+                <UL>
+                    <LI><A href="{% url django.contrib.auth.views.logout %}" title="Выйти"><IMG alt="Выйти" src="/s/i/logout32.png"></A></LI>
+                    <LI><A href="/settings/" title="Настройки"><IMG alt="Настройки" src="/s/i/settings32.png"></A></LI>
+                    <LI><A href="/user/" title="Профиль"><IMG alt="Профиль" src="/s/i/users32.png"></A></LI>
+                    <LI><A href="/favorites/" title="Избранное"><IMG alt="Избранное" src="/s/i/idea32.png"></A></LI>
+                    <LI><A href="/new/" title="Написать"><IMG alt="Написать" src="/s/i/new32.png"></A></LI>
+                </UL>
+            {% else %}
+              <H4>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}">Войди</A> или <A href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H4>
+            {% endif %}
+            </DIV>
+        {% endblock %}
         </DIV>
     </DIV>
-    <DIV class="main"><DIV class="main_inner">
-        {% block main %}
-            {% if user.is_authenticated %}
-                <H2>Записать мысль</H2>
-                <DIV class="new_card_form_wrapper">
-                    <FORM action="" method="POST">
-                        {{ postForm.topic }}<BR>
-                        {{ postForm.cardtext }}
-                        <DIV><INPUT type="submit" value="Пусть знают все!"/> или пойти в зад</DIV>
-                    </FORM>
-                </DIV>
-                <BR>
-            {% endif %}
-            <H2>Последние записи</H2>
-            <DIV class="cards_container">
-                {% if cards %}
-                    <DIV class="cards_wrapper">
-                    {% for card in cards %}
-                        <DIV class="cards">
-                            <H4>{{card.topic|escape}}</H4>
-                            <HR>
-                            <P>{{ card.cardtext|escape }}</P>
-                            <HR>
-                            <DIV class="cards_added">Добавил <SPAN class="username">{{card.owner.username|escape}}</SPAN> {{card.added|date:'d.m.Y в H:i'}}</DIV>
-                        </DIV>
-                    {% endfor %}
-                    </DIV>
-                {% else %}
-                    <H2>Ни одна собака!</H2>
-                {% endif %}
-            </H2>
+</DIV>
+<DIV class="main"><DIV class="main_inner">
+    {% block main %}
 
-        {% endblock %}
-    </DIV></DIV>
+        {% if user.is_authenticated %}
+            <H2>Записать мысль</H2>
+            <DIV class="new_card_form_wrapper">
+                <FORM action="{% url knowledge.cards.views.index %}" method="POST">
+                    {{ postForm.topic }}<BR>
+                    {{ postForm.cardtext }}
+                    <DIV><INPUT type="submit" value="Пусть знают все!"/> или пойти в зад</DIV>
+                </FORM>
+            </DIV>
+            <BR>
+        {% endif %}
+        <H2>Последние записи</H2>
+        <DIV class="cards_container">
+            {% if cards %}
+                <DIV class="cards_wrapper">
+                {% for card in cards %}
+                    <DIV class="cards">
+                        <H4><A href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
+                        <HR>
+                        <P>{{ card.cardtext }}</P>
+                        <HR>
+                        <DIV class="cards_added">Добавил <SPAN class="username">{{ card.owner.username }}</SPAN> {{ card.added|date:'d.m.Y в H:i' }}</DIV>
+                    </DIV>
+                {% endfor %}
+                </DIV>
+            {% else %}
+                <H2>Ни одна собака!</H2>
+            {% endif %}
+        </H2>
+
+    {% endblock %}
+</DIV></DIV>
 </BODY>
 </HTML>

@@ -47,7 +47,6 @@ DIV.header_content H4, DIV.header_content H4 a {
   color: #00443D;
 }
 DIV.header_right UL {
-  overflow: auto;
   list-style: none; 
 }
 DIV.header_right UL LI {
