@@ -14,7 +14,7 @@ BODY {
 
 /*шапка*/
 DIV.header, DIV.header_inner, DIV.header_content, DIV.header_left, DIV.header_right {
-  height: 80px;
+  height: 50px;
 }
 DIV.header, DIV.header_inner {
   background-image: url(/s/i/head_round.png);
@@ -34,13 +34,14 @@ DIV.header_content {
 }
 DIV.header_left {
   float: left;
+  padding-top: 7px;
   width: 30%;
 }
 DIV.header_right {
   text-align: right;
+  padding-top: 7px;
 }
 DIV.header_content H4, DIV.header_content H4 a {
-  padding-top: 10px;
   font-family: Georgia,sans-serif;
   font-size: 24px;
   font-weight: normal;
@@ -56,17 +57,17 @@ DIV.header_right UL LI {
 
 /*Основной блок*/
 DIV.main {
-  width: 1000px;
+  width: 920px;
   margin: 0 auto 4px auto;
   padding: 0 10px 10px 10px;
   border-top: 0;
-  border-left: 2px solid #666;
-  border-right: 2px solid #666;
-  border-bottom: 2px solid #666;
-  background: #bfffca;
+  border-left: 2px solid #407D06;
+  border-right: 2px solid #407D06;
+  border-bottom: 2px solid #407D06;
+  background: #4a8413;
 }
 DIV.main_inner {
-  background: green;
+  background: #407D06;
   padding: 10px;
 }
 DIV.main_inner H2 {
@@ -74,7 +75,7 @@ DIV.main_inner H2 {
   font-family: Georgia,sans-serif;
   font-size: 24px;
   font-weight: bold;
-  color: white;
+  color: #9adb1d;
   text-align: left;
 }
 
@@ -83,42 +84,82 @@ DIV.new_card_form_wrapper INPUT[type="text"], DIV.new_card_form_wrapper TEXTAREA
   width: 100%;
   margin: 10px 0;
   background: white;
-  border: 1px solid white;
+  border: 1px solid #706c01;
 }
 DIV.new_card_form_wrapper INPUT[type="text"] {
   height: 32px;
   font-size: 28px;
+  color: #7a7612;
 }
 DIV.new_card_form_wrapper TEXTAREA {
   font-size: 16px;
+  height: 140px;
+  color: #706C01;
 }
 DIV.new_card_form_wrapper H3 {
   font-size: 22px;
   color: white;
+}
+DIV.new_card_form_wrapper INPUT[type="submit"] {
+  border: 2px solid #7A7612;
+  background-color: #C0AB00;
+  color: #706C01;
+  font-size: 1.3em;
+  padding: 3px;
+  cursor: pointer;
+}
+
+DIV.new_card_form_wrapper SPAN.new_card_form_other_link {
+  margin-left: 10px;
+  border-bottom: 1px dashed #883406;
+  color: #883406;
+  cursor: pointer;
 }
 
 /*Карточки*/
 DIV.cards_container {
   overflow: auto;
 }
+DIV.cards:hover {
+  border-color: #bb5d17;
+}
+DIV.cards:hover HR {
+  background-color: #bb5d17;
+}
 DIV.cards {
   float: left;
-  border: 1px solid yellow;
-  margin: 5px 5px 5px 0;
+  border: 4px solid #C1AD05;
   padding: 10px;
-  width: 299px;
-  height: 100px;
+  width: 272px;
+  height: 150px;
+  background-color: #FFF601;
 }
 DIV.cards H4 {
+  padding-bottom: 4px;
+}
+DIV.cards H4, DIV.cards H4 a {
+  color: #706C01; 
 }
 DIV.cards P {
-  height: 68px;
+  height: 110px;
+  font-size: 0.9em;
+  padding: 0 5px;
 }
 DIV.cards .cards_added {
   font-size: 11px;
 }
 DIV.cards HR {
-  color: yellow;
+  border: 0;
+  height: 1px;
+  font-size: 1px;
+  background: #C1AD05;
+}
+
+ul.errorlist {
+  color: #f8a517;
+  list-style: none;
+  border-bottom: 1px dashed #f8a00b;
+  float: left;
 }
 
 .error {
@@ -127,7 +168,8 @@ DIV.cards HR {
     font-family: Tahoma,Verdana,sans-serif;
 }
 SPAN.username {
+    color: #883406;
     font-size: 1.2em;
-    color: #000080;
     font-family: Verdana,Tahoma,sans-serif;
+    font-weight: bold;
 }

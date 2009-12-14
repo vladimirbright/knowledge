@@ -15,13 +15,14 @@
             </DIV>
             <DIV class="header_right">
             {% if user.is_authenticated %}
-                <H4>Здарова, {{ user.username }}!</H4>
+                <!--<H4>Здарова, {{ user.username }}!</H4>-->
                 <UL>
                     <LI><A href="{% url django.contrib.auth.views.logout %}" title="Выйти"><IMG alt="Выйти" src="/s/i/logout32.png"></A></LI>
                     <LI><A href="/settings/" title="Настройки"><IMG alt="Настройки" src="/s/i/settings32.png"></A></LI>
                     <LI><A href="/user/" title="Профиль"><IMG alt="Профиль" src="/s/i/users32.png"></A></LI>
                     <LI><A href="/favorites/" title="Избранное"><IMG alt="Избранное" src="/s/i/idea32.png"></A></LI>
                     <LI><A href="/new/" title="Написать"><IMG alt="Написать" src="/s/i/new32.png"></A></LI>
+                    <LI style="color: #00443D;height: 35px;font-size: 1.5em">{{ user.username }}</LI>
                 </UL>
             {% else %}
               <H4>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}">Войди</A> или <A href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H4>
@@ -38,9 +39,11 @@
             <H2>Записать мысль</H2>
             <DIV class="new_card_form_wrapper">
                 <FORM action="{% url knowledge.cards.views.index %}" method="POST">
+                    {{ postForm.topic.errors }}
                     {{ postForm.topic }}<BR>
+                    {{ postForm.cardtext.errors }}
                     {{ postForm.cardtext }}
-                    <DIV><INPUT type="submit" value="Пусть знают все!"/> или пойти в зад</DIV>
+                    <DIV><INPUT type="submit" value="Пусть знают все!"/><SPAN class="new_card_form_other_link"> или пойти в зад</SPAN></DIV>
                 </FORM>
             </DIV>
             <BR>
