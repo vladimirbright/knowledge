@@ -1,4 +1,68 @@
 /*Базовая cssка*/
+
+/*17 базовых цветов*/
+.c1 { color: #464b97; }
+.backc1 { background-color: #464b97; }
+.bordc1 { border-color: #464b97; }
+.c2 { color: #3a4090; }
+.backc2 { background-color: #3a4090; }
+.bordc2 { border-color: #3a4090; }
+
+
+.c3 { color: #167bb7; }
+.backc3 { background-color: #167bb7; }
+.bordc3 { border-color: #167bb7; }
+.c4 { color: #0c75b4; }
+.backc4 { background-color: #0c75b4; }
+.bordc4 { border-color: #0c75b4; }
+
+.c5 { color: #78c2d8; }
+.backc5 { background-color: #78c2d8; }
+.bordc5 { border-color: #78c2d8; }
+.c6 { color: #72bfd6; }
+.backc6 { background-color: #72bfd6; }
+.bordc6 { border-color: #72bfd6; }
+
+.c7 { color: #ffffff; }
+.backc7 { background-color: #ffffff; }
+.bordc7 { border-color: #ffffff; }
+
+.c8 { color: #c4e4ee; }
+.backc8 { background-color: #c4e4ee; }
+.bordc8 { border-color: #c4e4ee; }
+.c9 { color: #c1e3ed; }
+.backc9 { background-color: #c1e3ed; }
+.bordc9 { border-color: #c1e3ed; }
+
+.c10 { color: #91bf88; }
+.backc10 { background-color: #91bf88; }
+.bordc10 { border-color: #91bf88; }
+.c11 { color: #8abb81; }
+.backc11 { background-color: #8abb81; }
+.bordc11 { border-color: #8abb81; }
+
+.c12 { color: #53b4b7; }
+.backc12 { background-color: #53b4b7; }
+.bordc12 { border-color: #53b4b7; }
+.c13 { color: #47afb2; }
+.backc13 { background-color: #47afb2; }
+.bordc13 { border-color: #47afb2; }
+
+.c14 { color: #3b4a7d; }
+.backc14 { background-color: #3b4a7d; }
+.bordc14 { border-color: #3b4a7d; }
+.c15 { color: #324277; }
+.backc15 { background-color: #324277; }
+.bordc15 { border-color: #324277; }
+
+.c16 { color: #86a4c4; }
+.backc16 { background-color: #86a4c4; }
+.bordc16 { border-color: #86a4c4; }
+.c17 { color: #7d9ec0; }
+.backc17 { background-color: #7d9ec0; }
+.bordc17 { border-color: #7d9ec0; }
+
+
 * { 
   margin: 0; 
   padding: 0;  
@@ -45,7 +109,7 @@ DIV.header_content H4, DIV.header_content H4 a {
   font-family: Georgia,sans-serif;
   font-size: 24px;
   font-weight: normal;
-  color: #00443D;
+  color: #0c75b4;
 }
 DIV.header_right UL {
   list-style: none; 
@@ -53,6 +117,7 @@ DIV.header_right UL {
 DIV.header_right UL LI {
   float: right;
   margin: 0 0 0 4px;
+  color: #0c75b4;
 }
 
 /*Основной блок*/
@@ -61,13 +126,11 @@ DIV.main {
   margin: 0 auto 4px auto;
   padding: 0 10px 10px 10px;
   border-top: 0;
-  border-left: 2px solid #407D06;
-  border-right: 2px solid #407D06;
-  border-bottom: 2px solid #407D06;
-  background: #4a8413;
+  border-left: 2px solid #7d9ec0;
+  border-right: 2px solid #7d9ec0;
+  border-bottom: 2px solid #7d9ec0;
 }
 DIV.main_inner {
-  background: #407D06;
   padding: 10px;
 }
 DIV.main_inner H2 {
@@ -75,8 +138,8 @@ DIV.main_inner H2 {
   font-family: Georgia,sans-serif;
   font-size: 24px;
   font-weight: bold;
-  color: #9adb1d;
   text-align: left;
+  color: #324277;
 }
 
 /*Форма постинга*/
@@ -84,35 +147,35 @@ DIV.new_card_form_wrapper INPUT[type="text"], DIV.new_card_form_wrapper TEXTAREA
   width: 100%;
   margin: 10px 0;
   background: white;
-  border: 1px solid #706c01;
+  border: 1px solid #7d9ec0;
 }
 DIV.new_card_form_wrapper INPUT[type="text"] {
   height: 32px;
   font-size: 28px;
-  color: #7a7612;
 }
 DIV.new_card_form_wrapper TEXTAREA {
   font-size: 16px;
   height: 140px;
-  color: #706C01;
 }
 DIV.new_card_form_wrapper H3 {
   font-size: 22px;
-  color: white;
 }
 DIV.new_card_form_wrapper INPUT[type="submit"] {
-  border: 2px solid #7A7612;
-  background-color: #C0AB00;
-  color: #706C01;
+  color: #3a4090;
+  background-color: white;
+  border: 2px solid #167bb7;;
   font-size: 1.3em;
   padding: 3px;
   cursor: pointer;
 }
+DIV.new_card_form_wrapper INPUT[type="submit"]:hover {
+  border-color: #8abb81;
+  color: #8abb81;
+}
 
 DIV.new_card_form_wrapper SPAN.new_card_form_other_link {
   margin-left: 10px;
-  border-bottom: 1px dashed #883406;
-  color: #883406;
+  border-bottom: 1px dashed;
   cursor: pointer;
 }
 
@@ -121,24 +184,26 @@ DIV.cards_container {
   overflow: auto;
 }
 DIV.cards:hover {
-  border-color: #bb5d17;
+  border-color: #8abb81;
 }
 DIV.cards:hover HR {
-  background-color: #bb5d17;
+  background-color: #8abb81;
 }
 DIV.cards {
   float: left;
-  border: 4px solid #C1AD05;
+  overflow: hidden;
+  border: 4px solid;
   padding: 10px;
   width: 272px;
   height: 150px;
-  background-color: #FFF601;
+  border-color: #3a4090;
+  background-color: white;
 }
 DIV.cards H4 {
   padding-bottom: 4px;
 }
 DIV.cards H4, DIV.cards H4 a {
-  color: #706C01; 
+  color: #167bb7;
 }
 DIV.cards P {
   height: 110px;
@@ -152,13 +217,12 @@ DIV.cards HR {
   border: 0;
   height: 1px;
   font-size: 1px;
-  background: #C1AD05;
+  background-color: #3a4090;
 }
 
 ul.errorlist {
-  color: #f8a517;
   list-style: none;
-  border-bottom: 1px dashed #f8a00b;
+  border-bottom: 1px dashed;
   float: left;
 }
 
@@ -168,7 +232,6 @@ ul.errorlist {
     font-family: Tahoma,Verdana,sans-serif;
 }
 SPAN.username {
-    color: #883406;
     font-size: 1.2em;
     font-family: Verdana,Tahoma,sans-serif;
     font-weight: bold;

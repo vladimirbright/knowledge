@@ -22,7 +22,7 @@
                     <LI><A href="/user/" title="Профиль"><IMG alt="Профиль" src="/s/i/users32.png"></A></LI>
                     <LI><A href="/favorites/" title="Избранное"><IMG alt="Избранное" src="/s/i/idea32.png"></A></LI>
                     <LI><A href="/new/" title="Написать"><IMG alt="Написать" src="/s/i/new32.png"></A></LI>
-                    <LI style="color: #00443D;height: 35px;font-size: 1.5em">{{ user.username }}</LI>
+                    <LI style="height: 35px;font-size: 1.5em">{{ user.username }}</LI>
                 </UL>
             {% else %}
               <H4>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}">Войди</A> или <A href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H4>
@@ -32,7 +32,7 @@
         </DIV>
     </DIV>
 </DIV>
-<DIV class="main"><DIV class="main_inner">
+<DIV class="main backc9 bordc4"><DIV class="main_inner">
     {% block main %}
 
         {% if user.is_authenticated %}
