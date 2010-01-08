@@ -25,7 +25,7 @@
                 <LI><A href="/user/" title="Профиль"><IMG alt="Профиль" src="/s/i/users32.png"></A></LI>
                 <LI><A href="/favorites/" title="Избранное"><IMG alt="Избранное" src="/s/i/idea32.png"></A></LI>
                 <LI><A href="/new/" title="Написать"><IMG alt="Написать" src="/s/i/new32.png"></A></LI>
-                <LI style="height: 35px;font-size: 1.5em">{{ user.username }}</LI>
+                <LI><H2><A>{{ user.username }}</A></H2></LI>
             </UL>
         {% else %}
           <H4>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}">Войди</A> или <A href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H4>
@@ -43,7 +43,7 @@
                     <H2>Записать мысль</H2>
                     <FORM action="{% url knowledge.cards.views.index %}" method="POST">
                     {% if postForm.topic.errors %}<DIV class="error">{{ postForm.topic.errors }}</DIV>{% endif %}
-                    <DIV>{{ postForm.topic }}</DIV>
+                    <DIV class="bordc2 c1">{{ postForm.topic }}</DIV>
                     {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
                     <DIV>{{ postForm.cardtext }}</DIV>
                     <DIV><INPUT type="submit" value="Пусть знают все!"/><SPAN class="new_card_form_other_link"> или пойти в зад</SPAN></DIV>
@@ -63,7 +63,6 @@
                             <HR>
                             <DIV class="cards_added">Добавил <SPAN class="username">{{ card.owner.username }}</SPAN> {{ card.added|date:'d.m.Y в H:i' }}</DIV>
                         </DIV>
-                        {% cycle '<DIV class="span-2">&nbsp;</DIV>' '' %}
                     {% endfor %}
                 {% else %}
                     <H2>Ни одна собака!</H2>
@@ -73,11 +72,17 @@
         {% endblock %}
     </DIV>
 <!--Копирайты-->
-    <DIV class="span-24 last backc16 c14">
+    <DIV class="span-24 last backc16 c14 bottom_panel">
         <DIV class="span-1">&nbsp;</DIV>
         <DIV class="span-22"> Владимир Владимирович &copy; </DIV>
         <DIV class="span-1 last">&nbsp;</DIV>
     </DIV>
+</DIV>
+<H2>Цветовая гамма</H2>
+<DIV style="background-color: #eeeeee; overflow: auto;">
+{% for i in x17 %}
+    <DIV class="backc{{i}}" style="color:yellow;font-weight:bold;margin:5px;float:left;width:30px;text-align:center;font-weight: bold;">{{ i }}</DIV>
+{% endfor  %}
 </DIV>
 </BODY>
 </HTML>

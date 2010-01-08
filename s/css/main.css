@@ -65,15 +65,23 @@
 /*Верхнее меню*/
 .top_panel {
   padding: 10px 0;
+  background-image: url(/s/i/hgr.jpg);
+  background-repeat: repeat-x;
+  background-position: 0 100%;
 }
 .top_panel H2 {
   margin: 0;
+}
+.top_panel H2 A {
+  text-decoration: none;
+  color: white;
+  font-size: 90%;
+  font-family: Tahoma,Verdana,sans-serif;
 }
 .top_panel UL {
   list-style: none;
   padding: 0;
 }
-
 .top_panel UL LI {
   float: right;
   margin-left: 5px;
@@ -83,6 +91,7 @@
 /*Форма*/
 .postform_wrapper INPUT[type="text"] {
   width: 868px;
+  font-size: 26px;
 }
 .postform_wrapper TEXTAREA {
   width: 858px;
@@ -91,10 +100,18 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  font-weight: bold;
 }
 /*Карточки*/
 .card {
   margin-bottom: 10px;
   height: 150px;
   overflow: hidden;
+  border: 5px solid green;
+}
+/*Низняя панель с копирайтами.*/
+.bottom_panel {
+  background-image: url(/s/i/hgrb.jpg);
+  background-repeat: repeat-x;
+  background-position: 0 0;
 }

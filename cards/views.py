@@ -10,6 +10,7 @@ from knowledge.cards.models import Cards, CardsPostForm
 # Главная страница.
 # Тут пагинацию прикрутить.
 def index(request):
+    x17 = range(1,18)
     if request.method == 'POST' and request.user.is_authenticated:
         form = CardsPostForm(request.POST)
         if form.is_valid():
@@ -22,6 +23,7 @@ def index(request):
         else:
             cards = Cards.objects.all().order_by('-pk')
             return render_to_response('index.html', {
+                                                        "x17": x17,
                                                         "cards": cards,
                                                         "postForm": form,
                                                         "user": request.user,
@@ -30,7 +32,7 @@ def index(request):
     else:
         form = CardsPostForm()
         cards = Cards.objects.all().order_by('-pk')
-        return render_to_response('index.html', { "postForm": form, "cards": cards, "user": request.user, "title": u"Здесь будет база знаний."})
+        return render_to_response('index.html', { "x17":x17, "postForm": form, "cards": cards, "user": request.user, "title": u"Здесь будет база знаний."})
 
 
 # Страница подробностей.
