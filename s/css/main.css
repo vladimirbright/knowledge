@@ -1,117 +1,81 @@
 /*Базовая cssка*/
+/*Цвета*/
 
-/*17 базовых цветов*/
-.c1 { color: #464b97; }
-.backc1 { background-color: #464b97; }
-.bordc1 { border-color: #464b97; }
-.c2 { color: #3a4090; }
-.backc2 { background-color: #3a4090; }
-.bordc2 { border-color: #3a4090; }
+.back-cod { background-color: #C0D1DB; }
+.bord-cod { border-color: #C0D1DB; }
+.col-cod { color: #C0D1DB; }
 
+.back-efb { background-color: #EFB654; }
+.bord-efb { border-color: #EFB654; }
+.col-efb { color: #EFB654; }
 
-.c3 { color: #167bb7; }
-.backc3 { background-color: #167bb7; }
-.bordc3 { border-color: #167bb7; }
-.c4 { color: #0c75b4; }
-.backc4 { background-color: #0c75b4; }
-.bordc4 { border-color: #0c75b4; }
+.back-573 { background-color: #573B09; }
+.bord-573 { border-color: #573B09; }
+.col-573 { color: #573B09; }
 
-.c5 { color: #78c2d8; }
-.backc5 { background-color: #78c2d8; }
-.bordc5 { border-color: #78c2d8; }
-.c6 { color: #72bfd6; }
-.backc6 { background-color: #72bfd6; }
-.bordc6 { border-color: #72bfd6; }
-
-.c7 { color: #ffffff; }
-.backc7 { background-color: #ffffff; }
-.bordc7 { border-color: #ffffff; }
-
-.c8 { color: #c4e4ee; }
-.backc8 { background-color: #c4e4ee; }
-.bordc8 { border-color: #c4e4ee; }
-.c9 { color: #c1e3ed; }
-.backc9 { background-color: #c1e3ed; }
-.bordc9 { border-color: #c1e3ed; }
-
-.c10 { color: #91bf88; }
-.backc10 { background-color: #91bf88; }
-.bordc10 { border-color: #91bf88; }
-.c11 { color: #8abb81; }
-.backc11 { background-color: #8abb81; }
-.bordc11 { border-color: #8abb81; }
-
-.c12 { color: #53b4b7; }
-.backc12 { background-color: #53b4b7; }
-.bordc12 { border-color: #53b4b7; }
-.c13 { color: #47afb2; }
-.backc13 { background-color: #47afb2; }
-.bordc13 { border-color: #47afb2; }
-
-.c14 { color: #3b4a7d; }
-.backc14 { background-color: #3b4a7d; }
-.bordc14 { border-color: #3b4a7d; }
-.c15 { color: #324277; }
-.backc15 { background-color: #324277; }
-.bordc15 { border-color: #324277; }
-
-.c16 { color: #86a4c4; }
-.backc16 { background-color: #86a4c4; }
-.bordc16 { border-color: #86a4c4; }
-.c17 { color: #7d9ec0; }
-.backc17 { background-color: #7d9ec0; }
-.bordc17 { border-color: #7d9ec0; }
-
-/*Верхнее меню*/
-.top_panel {
-  padding: 10px 0;
-  background-image: url(/s/i/hgr.jpg);
-  background-repeat: repeat-x;
-  background-position: 0 100%;
+/*Header*/
+.header {
+  font-family: 'Droid sans',Tahoma,sans-serif;
 }
-.top_panel H2 {
-  margin: 0;
-}
-.top_panel H2 A {
-  text-decoration: none;
-  color: white;
-  font-size: 90%;
-  font-family: Tahoma,Verdana,sans-serif;
-}
-.top_panel UL {
-  list-style: none;
-  padding: 0;
-}
-.top_panel UL LI {
-  float: right;
-  margin-left: 5px;
-}
-/*Основной блок*/
-.main_content { padding: 10px 0; }
-/*Форма*/
-.postform_wrapper INPUT[type="text"] {
-  width: 868px;
+.header H1 {
   font-size: 26px;
+  text-align: right;
+  margin: 66px 0 0 0;
+  color: #573B09;
 }
-.postform_wrapper TEXTAREA {
-  width: 858px;
+
+.logo {
+  height: 95px;
+  border: 1px solid #573B09;
+  border-top-width: 0;
+  background-color: #EFB654;
 }
-.errorlist {
+.logo, .logo A, .logo A:visited {
+  color: #573B09;
+  text-decoration: none;
+}
+.logo H2 {
+  margin: 65px auto 0 5px;
+  font-size: 20px;
+}
+
+.login-block {
+  text-align: right;
+  padding-top: 10px;
+}
+.login-block H3 {
+  font-size: 12px;
+}
+
+/*Форма*/
+.post-form INPUT[type="text"], INPUT[type="submit"], TEXTAREA {
+  border: 1px solid #285C82;
+}
+.post-form INPUT[type="text"], .post-form TEXTAREA {
+  width: 620px;
+  padding: 5px;
+}
+.post-form TEXTAREA {
+  height: 80px;
+}
+
+/*Навигационные ссылки*/
+.navigation UL {
   list-style: none;
-  padding: 0;
-  margin: 0;
-  font-weight: bold;
+  border-left: 2px solid black;
+  padding: 10px;
+  margin: 25px 0 0 20px;
+  font-size: 17px;
+  font-family: "Droid sans",Tahoma,sans-serif;
 }
-/*Карточки*/
-.card {
-  margin-bottom: 10px;
-  height: 150px;
-  overflow: hidden;
-  border: 5px solid green;
+
+/*Список топиков*/
+.topics {
+  border: 1px solid #285C82;
+  background-color: #FFFFFF;
+  margin: 20px;
+  padding: 20px;
 }
-/*Низняя панель с копирайтами.*/
-.bottom_panel {
-  background-image: url(/s/i/hgrb.jpg);
-  background-repeat: repeat-x;
-  background-position: 0 0;
+
+.topics .topics-inner {
 }
