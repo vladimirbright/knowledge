@@ -22,7 +22,7 @@
         </DIV>
         <DIV class="span-6 login-block">
         {% if user.is_authenticated %}
-            <H3>Hi, <A>{{ user.username }}!</A></H3>
+            <H3>Hi, <A class="work-link work-link-underline">{{ user.username }}!</A></H3>
         {% else %}
           <H3>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}">Войди</A> или <A href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H3>
         {% endif %}
@@ -34,63 +34,75 @@
     Конец хедера.
     Начало блок с формой и сортировками. 
 {% endcomment %}
-<DIV class="span-24 last">
+{% block form-navigation %}
+<DIV class="span-24 last form-navigation">
     <DIV class="span-1">&nbsp;</DIV>
-    <DIV class="span-16 post-form">&nbsp;
-    {% block form %}
-        {% if user.is_authenticated %}
+    <DIV class="span-16 post-form">{% if user.is_authenticated %}
             <FORM action="{% url knowledge.cards.views.index %}" method="POST">
             {% if postForm.topic.errors %}<DIV class="error">{{ postForm.topic.errors }}</DIV>{% endif %}
             <DIV>{{ postForm.topic }}</DIV>
             {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
             <DIV>{{ postForm.cardtext }}</DIV>
-            <DIV><INPUT type="submit" value="Пусть знают все!"/><SPAN class="new_card_form_other_link"> или пойти в зад</SPAN></DIV>
+            <DIV><INPUT type="submit" value="Пусть знают все!"/></DIV>
             </FORM>
         {% else %}
             <H2>Войдите на сайт чтобы оставить заметку!</H2>
         {% endif %}
-    {% endblock %}
     </DIV>
     <DIV class="span-6 navigation">
-    {% block navigation %}
         <UL>
-            <LI><A>По дате публикации</A></LI>
-            <LI><A>По рейтингу</A></LI>
-            <LI><A>Избранное</A></LI>
+            <LI><A class="work-link work-link-underline">По дате публикации</A></LI>
+            <LI><A class="work-link work-link-underline">По рейтингу</A></LI>
+            <LI><A class="work-link work-link-underline">Избранное</A></LI>
         </UL>
-    {% endblock %}
     </DIV>
     <DIV class="span-1 last">&nbsp;</DIV>
 </DIV>
+{% endblock %}
 {% comment %} 
     Конец блока с формой.
     Начало вывода топиков.
 {% endcomment %}
 <DIV class="span-22 last topics">
-    {% block currentplace%}
     <DIV class="span-16">
+    {% block currentplace%}
         <H2>Последние записи</H2>
+    {% endblock %}
     </DIV>
-    {% endblock %}
-    {% block search %}
-    <DIV class="span-6 last">Поиск</DIV>
-    {% endblock %}
+    <DIV class="span-6 last search">{% block search %}<INPUT type="text" value="Что ищем?">{% endblock %}</DIV>
     {% block main %}
-    <DIV class="span-22 last">
-        {% if cards %}
-            {% for card in cards %}
-                <DIV class="card">
-                    <H4><A href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
-                    <HR>
-                    <P>{{ card.cardtext }}</P>
-                    <HR>
-                    <DIV class="cards_added">Добавил <SPAN class="username">{{ card.owner.username }}</SPAN> {{ card.added|date:'d.m.Y в H:i' }}</DIV>
-                </DIV>
-            {% endfor %}
-        {% else %}
-            <H2>Ни одна собака!</H2>
-        {% endif %}
+    {% if cards %}
+    <DIV class="span-16">
+        {% for card in cards %}
+        <DIV class="card-container">
+            <DIV class='span-6 card-left'><A name="card{{card.pk}}"></A>
+                <H5>{{ card.added|date:'d.m.Y' }} posted by</H5>
+                <H5><SPAN class="username">{{ card.owner.username }}</SPAN></H5>
+                <UL class="card-actions">
+                    <LI><A href="" class="work-link">В избранное</A></LI>
+                    <LI><A href="" class="work-link">Редактировать</A></LI>
+                    <LI><A href="" class="work-link">Удалить</A></LI>
+                </UL>
+            </DIV>
+            <DIV class="span-10 last card">
+                <H4><A href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
+                <P>{{ card.cardtext }}</P>
+                <DIV><A href="" class="work-link">Комментарии: [157]</A></DIV>
+            </DIV>
+        </DIV>
+        {% endfor %}
     </DIV>
+    <DIV class="span-6 last card-list">
+        <H5>Чего есть?</H5>
+        <UL>
+        {% for card in cards %}
+            <LI><A href='#card{{ card.pk }}' class="work-link work-link-visited">{{ card.topic|escape }}</A></LI>
+        {% endfor %}
+        </UL>
+    </DIV>
+    {% else %}
+        <H2>Ни одна собака!</H2>
+    {% endif %}
     {% endblock %}
 </DIV>
 <!--Копирайты-->

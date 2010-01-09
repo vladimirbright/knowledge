@@ -1,6 +1,5 @@
 /*Базовая cssка*/
 /*Цвета*/
-
 .back-cod { background-color: #C0D1DB; }
 .bord-cod { border-color: #C0D1DB; }
 .col-cod { color: #C0D1DB; }
@@ -13,9 +12,28 @@
 .bord-573 { border-color: #573B09; }
 .col-573 { color: #573B09; }
 
+.work-link {
+  color: #6C5933;
+  text-decoration: none;
+}
+.work-link:hover {
+  text-decoration: underline;
+}
+.work-link.work-link-visited:visited {
+  color: #ACABAA;
+}
+.work-link.work-link-underline, .work-link.work-link-underline:visited {
+  text-decoration: underline;
+}
+
+BODY {
+  font-size: 62.5%;
+}
+
 /*Header*/
 .header {
   font-family: 'Droid sans',Tahoma,sans-serif;
+  margin-bottom: 30px;
 }
 .header H1 {
   font-size: 26px;
@@ -48,8 +66,12 @@
 }
 
 /*Форма*/
+.form-navigation {
+  margin-bottom: 20px;
+}
 .post-form INPUT[type="text"], INPUT[type="submit"], TEXTAREA {
   border: 1px solid #285C82;
+  margin: 0 0 10px 0;
 }
 .post-form INPUT[type="text"], .post-form TEXTAREA {
   width: 620px;
@@ -61,21 +83,79 @@
 
 /*Навигационные ссылки*/
 .navigation UL {
+  height: 127px;
+  margin: 0;
+  padding: 0 10px 5px 10px;;
   list-style: none;
   border-left: 2px solid black;
-  padding: 10px;
-  margin: 25px 0 0 20px;
   font-size: 17px;
   font-family: "Droid sans",Tahoma,sans-serif;
+}
+/*Поиск*/
+.search INPUT {
+  width: 100%;
 }
 
 /*Список топиков*/
 .topics {
   border: 1px solid #285C82;
   background-color: #FFFFFF;
-  margin: 20px;
+  margin: 0 20px 20px 20px;
   padding: 20px;
 }
-
-.topics .topics-inner {
+.card-container {
+  margin-bottom: 40px;
+  overflow: auto;
+}
+.card-left H5, .card-list H5 {
+  margin: 0;
+  color: #777777;
+  font-size: 20px;
+  font-family: "Droid sans",Tahoma,sans-serif;
+}
+.card-left H5 {
+  text-align: right;
+}
+.card-actions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: right;
+}
+.card {
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+.card H4 {
+  margin: 0;
+  font-size: 24px;
+  font-family: "Droid sans",Tahoma,sans-serif;
+  padding-left: 20px;
+}
+.card H4 A {
+  color: black;
+}
+.card H4 A:visited {
+  color: #777777;
+}
+.card H4 A:hover {
+  color: #EFB654;
+}
+.card P {
+  margin: 20px 0 30px 0;
+  padding-left: 20px;
+  font-size: 14px;
+}
+.card DIV {
+  padding-left: 20px;
+}
+.card .work-link {
+  font-size: 12px;
+}
+.card-list H5 {
+  text-align: left;
+}
+.card-list UL {
+  padding-left: 16px; 
+  font-size: 12px;
 }
