@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC  "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
 <HEAD>
-    <TITLE>{% if title %}{{title}}{% else %}База знаний и рещений{% endif %}</TITLE>
+    <TITLE>{% block title %}{% if title %}{{title}}{% else %}:: База знаний и решений{% endif %}{% endblock %}</TITLE>
     <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <LINK rel="stylesheet" href="/s/css/blueprint/screen.css" type="text/css" media="screen, projection">
     <!--[if lt IE 8]><link rel="stylesheet" href="/s/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
@@ -23,6 +23,7 @@
         <DIV class="span-6 login-block">
         {% if user.is_authenticated %}
             <H3>Hi, <A class="work-link work-link-underline">{{ user.username }}!</A></H3>
+            <H3><A class="work-link" href="{% url django.contrib.auth.views.logout %}">выйти</A></H3>
         {% else %}
           <H3>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}">Войди</A> или <A href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H3>
         {% endif %}
@@ -37,17 +38,18 @@
 {% block form-navigation %}
 <DIV class="span-24 last form-navigation">
     <DIV class="span-1">&nbsp;</DIV>
-    <DIV class="span-16 post-form">{% if user.is_authenticated %}
-            <FORM action="{% url knowledge.cards.views.index %}" method="POST">
-            {% if postForm.topic.errors %}<DIV class="error">{{ postForm.topic.errors }}</DIV>{% endif %}
-            <DIV>{{ postForm.topic }}</DIV>
-            {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
-            <DIV>{{ postForm.cardtext }}</DIV>
-            <DIV><INPUT type="submit" value="Пусть знают все!"/></DIV>
-            </FORM>
-        {% else %}
-            <H2>Войдите на сайт чтобы оставить заметку!</H2>
-        {% endif %}
+    <DIV class="span-16 post-form">
+    {% if user.is_authenticated %}
+        <FORM action="{% url knowledge.cards.views.index %}" method="POST">
+        {% if postForm.topic.errors %}<DIV class="error">{{ postForm.topic.errors }}</DIV>{% endif %}
+        <DIV>{{ postForm.topic }}</DIV>
+        {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
+        <DIV>{{ postForm.cardtext }}</DIV>
+        <DIV><INPUT type="submit" value="Пусть знают все!"/></DIV>
+        </FORM>
+    {% else %}
+        <H2>Войдите на сайт чтобы оставить заметку!</H2>
+    {% endif %}
     </DIV>
     <DIV class="span-6 navigation">
         <UL>
@@ -72,6 +74,7 @@
     <DIV class="span-6 last search">{% block search %}<INPUT type="text" value="Что ищем?">{% endblock %}</DIV>
     {% block main %}
     {% if cards %}
+    {% load comments %}
     <DIV class="span-16">
         {% for card in cards %}
         <DIV class="card-container">
@@ -85,9 +88,9 @@
                 </UL>
             </DIV>
             <DIV class="span-10 last card">
-                <H4><A href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
-                <P>{{ card.cardtext }}</P>
-                <DIV><A href="" class="work-link">Комментарии: [157]</A></DIV>
+                <H4><A title="Посмотреть внимательнее" href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
+                <P>{{ card.cardtext }}</P>{% get_comment_count for card as comment_count %}
+                <DIV><A title="Прочитать комментарии" href="{% url knowledge.cards.views.details card.pk  %}#comments" class="work-link">Комментарии: [{{comment_count}}]</A></DIV>
             </DIV>
         </DIV>
         {% endfor %}

@@ -11,12 +11,18 @@ from knowledge.users import views as users_view
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    # Главная страница
     url(r'^$', card_view.index),
+    # Подробная страница
     url(r'^(\d+)/?$', card_view.details),
+
     # TODO не забыть убрать обработку статики с джанги.
     (r'^s/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    # комментарии стандартные джанговские.
+    (r'^comments/', include('django.contrib.comments.urls')),
 
-    (r'^cards/', include('knowledge.cards.urls')),
+    #(r'^cards/', include('knowledge.cards.urls')),
+
     url(r'^login/', login),
     url(r'^logout/', logout),
     url(r'^register/', users_view.register),

@@ -1,7 +1,8 @@
 # -*- coding: utf8 -*-
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.shortcuts import render_to_response, get_object_or_404
+
 from django.contrib.auth.decorators import login_required
 
 from knowledge.cards.models import Cards, CardsPostForm
@@ -10,7 +11,6 @@ from knowledge.cards.models import Cards, CardsPostForm
 # Главная страница.
 # Тут пагинацию прикрутить.
 def index(request):
-    x17 = range(1,18)
     if request.method == 'POST' and request.user.is_authenticated:
         form = CardsPostForm(request.POST)
         if form.is_valid():
@@ -23,7 +23,6 @@ def index(request):
         else:
             cards = Cards.objects.all().order_by('-pk')
             return render_to_response('index.html', {
-                                                        "x17": x17,
                                                         "cards": cards,
                                                         "postForm": form,
                                                         "user": request.user,
@@ -32,11 +31,12 @@ def index(request):
     else:
         form = CardsPostForm()
         cards = Cards.objects.all().order_by('-pk')
-        return render_to_response('index.html', { "x17":x17, "postForm": form, "cards": cards, "user": request.user, "title": u"Здесь будет база знаний."})
+        return render_to_response('index.html', { "postForm": form, "cards": cards, "user": request.user })
 
 
 # Страница подробностей.
 def details(request, card_id):
-    return HttpResponse(u'Нет пока никто, но будет описание с комментами для ' + str(card_id) + u' заметки.')
+        card = get_object_or_404(Cards, pk=card_id)
+        return render_to_response('details.html', { "card": card, "user": request.user })
 
 #

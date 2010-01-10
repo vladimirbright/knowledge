@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% load comments %}
+{% block title %}:: {{ card.topic|escape }}{% endblock %}
+{% block form-navigation %} {% endblock %}
+{% block currentplace %}<H2>{{ card.topic|escape }}</H2>{% endblock %}
+{% block main %}
+<DIV class="span-16 card-detail">
+<P>{{ card.cardtext }}</P>
+</DIV>
+<DIV class="span-6 last">
+ooooo
+</DIV>
+<DIV class="span-22 last card-comments">{% get_comment_count for card as comment_count %}
+    <H4><A name="comments">Комментарии [{{ comment_count }}]:</A></H4>
+    {% get_comment_list for card as comment_list %}
+    {% for comment in comment_list %}
+        <H5>В комментах насрал: <A class="work-link">{{ comment.user.username|escape }}</A></H5>
+        <DIV>{{ comment.comment  }}</DIV>
+    {% endfor %}
+    {% if user.is_authenticated %}
+        {% render_comment_form for card %}
+    {% endif %}
+</DIV>
+{% endblock %}
