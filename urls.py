@@ -18,14 +18,14 @@ urlpatterns = patterns('',
 
     # TODO не забыть убрать обработку статики с джанги.
     (r'^s/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+
     # комментарии стандартные джанговские.
     (r'^comments/', include('django.contrib.comments.urls')),
-
-    #(r'^cards/', include('knowledge.cards.urls')),
 
     url(r'^login/', login),
     url(r'^logout/', logout),
     url(r'^register/', users_view.register),
+
     #(r'^users/', include('knowledge.users.urls')),
 
     (r'^admin/', include(admin.site.urls)),

@@ -80,6 +80,12 @@ BODY {
 .post-form TEXTAREA {
   height: 80px;
 }
+/*Ошибки формы.*/
+.errorlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
 /*Навигационные ссылки*/
 .navigation UL {
@@ -158,4 +164,27 @@ BODY {
 .card-list UL {
   padding-left: 16px; 
   font-size: 12px;
+}
+/*Страница details*/
+.card-detail {
+  margin-bottom: 30px;
+}
+/*Комментарии*/
+.comments H5 {
+  margin: 0;
+}
+.comments .comments-link {
+  font-size: 8px;
+}
+.comments DIV {
+  margin-bottom: 25px;
+}
+
+/*Форма комментариев*/
+INPUT[name="honeypot"] { display: none; }
+
+TEXTAREA[name="comment"] {
+  width: 860px;
+  height: 75px;
+  padding: 5px;
 }
