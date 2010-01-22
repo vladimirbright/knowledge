@@ -81,11 +81,13 @@
             <DIV class='span-6 card-left'><A name="card{{card.pk}}"></A>
                 <H5>{{ card.added|date:'d.m.Y' }} posted by</H5>
                 <H5><SPAN class="username">{{ card.owner.username }}</SPAN></H5>
+                {% if user.is_authenticated %}
                 <UL class="card-actions">
                     <LI><A href="" class="work-link">В избранное</A></LI>
-                    <LI><A href="" class="work-link">Редактировать</A></LI>
-                    <LI><A href="" class="work-link">Удалить</A></LI>
+                    {% if perms.cards.cahge_cards %}<LI><A href="" class="work-link">Редактировать</A></LI>{% endif %}
+                    {% if perms.cards.delete_cards %}<LI><A href="" class="work-link">Удалить</A></LI>{% endif %}
                 </UL>
+                {% endif %}
             </DIV>
             <DIV class="span-10 last card">
                 <H4><A title="Посмотреть внимательнее" href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
