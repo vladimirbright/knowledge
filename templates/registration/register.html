@@ -1,17 +1,24 @@
 {% extends 'index.html' %}
 
-{% block header %}
-    <H1>Здраствуй будущий юзернейм!</H1>
+{% block loginblock %}
+    <H3>Здраствуй будущий юзернейм!</H3>
+{% endblock %}
+
+{% block form-navigation %} {% endblock %}
+
+{% block currentplace %}
+<H2>Регистрация</H2>
 {% endblock %}
 
 
 {% block main %}
-
-
+<DIV class="span-22 last">
 <FORM action="" method="post">
-      {{ form.as_p }}
+  <UL>
+      {{ form.as_ul }}
+  </UL>
   <INPUT type="submit" value="Отдать свой моск!">
 </FORM>
-
+</DIV>
 {% endblock %}
 

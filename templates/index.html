@@ -3,6 +3,7 @@
 <HEAD>
     <TITLE>{% block title %}{% if title %}{{title}}{% else %}:: База знаний и решений{% endif %}{% endblock %}</TITLE>
     <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <LINK rel="shortcut icon" href="/s/i/favicon.png">
     <LINK rel="stylesheet" href="/s/css/blueprint/screen.css" type="text/css" media="screen, projection">
     <!--[if lt IE 8]><link rel="stylesheet" href="/s/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
     <LINK href="/s/css/main.css" rel="stylesheet" type="text/css">
@@ -15,18 +16,20 @@
     {% block header %}
         <DIV class="span-1">&nbsp;</DIV>
         <DIV class="span-6 logo">
-            <H2><A href="/">База знаний и заметок.</A></H2>
+            <H2><A href="/">База&nbsp;знаний&nbsp;и&nbsp;заметок.</A></H2>
         </DIV>
         <DIV class="span-10">
             <H1>Узнал что-нибудь? Поделись!</H1>
         </DIV>
         <DIV class="span-6 login-block">
+        {% block loginblock %}
         {% if user.is_authenticated %}
             <H3>Hi, <A class="work-link work-link-underline">{{ user.username }}!</A></H3>
             <H3><A class="work-link" href="{% url django.contrib.auth.views.logout %}">выйти</A></H3>
         {% else %}
           <H3>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}">Войди</A> или <A href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H3>
         {% endif %}
+        {% endblock %}
         </DIV>
         <DIV class="span-1 last">&nbsp;</DIV>
     {% endblock %}
