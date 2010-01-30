@@ -5,35 +5,37 @@
 {% block currentplace %}<H2>{{ card.topic }}</H2>{% endblock %}
 {% block main %}
 <DIV class="span-16 card-detail">
-<P>{{ card.cardtext }}</P>
+    <P>{{ card.cardtext }}</P>
 </DIV>
-<DIV class="span-6 last">
-ooooo
-</DIV>
-<DIV class="span-22 last card-comments">{% get_comment_count for card as comment_count %}
+<DIV class="span-6 last">ooooo</DIV>
+{% get_comment_count for card as comment_count %}
+<DIV class="span-22 last card-comments">
     <H4><A href="#comments" class="work-link">Комментарии [{{ comment_count }}]:</A></H4>
-    <HR>
-    <A name="comments"></A>
+    <HR />
+    <A name="comments" />
     {% get_comment_list for card as comment_list %}
     <DIV class="comments">
-    {% for comment in comment_list %}
+        {% for comment in comment_list %}
         <A name="{{ comment.pk }}"></A>
-        <H5>В комментах насрал: <A class="work-link" >{{ comment.user.username }}</A></H5>
+        <H5>
+            В комментах насрал:
+            <A class="work-link">{{ comment.user.username }}</A>
+        </H5>
         <A class="comments-link work-link" href="#{{ comment.pk }}">[ссылка]</A>
-        <DIV>{{ comment.comment  }}</DIV>
-    {% endfor %}
+        <DIV>{{ comment.comment }}</DIV>
+        {% endfor %}
     </DIV>
     {% if user.is_authenticated %}
         {% get_comment_form for card as form %}
         <FORM action="{% comment_form_target %}" method="post">
-          {{ form.comment }}
-          {{ form.honeypot }}
-          {{ form.content_type }}
-          {{ form.object_pk }}
-          {{ form.timestamp }}
-          {{ form.security_hash }}
-          <INPUT type="submit" name="submit-post" class="submit-post" value="Запостить">
-          <INPUT type="hidden" name="next" value="{% url knowledge.cards.views.details card.pk %}" />
+            {{ form.comment }}
+            {{ form.honeypot }}
+            {{ form.content_type }}
+            {{ form.object_pk }}
+            {{ form.timestamp }}
+            {{ form.security_hash }}
+            <INPUT type="submit" name="submit-post" class="submit-post" value="Запостить" />
+            <INPUT type="hidden" name="next" value="{% url knowledge.cards.views.details card.pk %}" />
         </FORM>
     {% endif %}
 </DIV>

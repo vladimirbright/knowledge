@@ -41,31 +41,37 @@
 {% block form-navigation %}
 <DIV class="span-24 last form-navigation">
     <DIV class="span-1">&nbsp;</DIV>
-    <DIV class="span-16 post-form">
+    <DIV class="span-22 post-form">
     {% if user.is_authenticated %}
         <FORM action="{% url knowledge.cards.views.index %}" method="POST">
         {% if postForm.topic.errors %}<DIV class="error">{{ postForm.topic.errors }}</DIV>{% endif %}
-        <DIV>{{ postForm.topic }}</DIV>
+        <DIV><LABEL>{{ postForm.topic }} {{ postForm.topic.label }}</LABEL></DIV>
         {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
-        <DIV>{{ postForm.cardtext }}</DIV>
+        <DIV><LABEL>{{ postForm.cardtext }} {{ postForm.cardtext.label }}</LABEL></DIV>
         <DIV><INPUT type="submit" value="Пусть знают все!"/></DIV>
         </FORM>
     {% else %}
         <H2>Войдите на сайт чтобы оставить заметку!</H2>
     {% endif %}
     </DIV>
-    <DIV class="span-6 navigation">
-        <UL>
-            <LI><A class="work-link work-link-underline">По дате публикации</A></LI>
-            <LI><A class="work-link work-link-underline">По рейтингу</A></LI>
-            <LI><A class="work-link work-link-underline">Избранное</A></LI>
-        </UL>
-    </DIV>
     <DIV class="span-1 last">&nbsp;</DIV>
 </DIV>
 {% endblock %}
+{% comment %}
+    Блок сортировок.
+{% endcomment %}
+{% block navigation %}
+<DIV class="span-1">&nbsp;</DIV>
+<DIV class="span-22 navigation">
+    <UL>
+        <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.index  %}">По дате публикации</A></LI>
+        <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.rating  %}">По рейтингу</A></LI>
+        <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.favorites  %}">Избранное</A></LI>
+    </UL>
+</DIV>
+<DIV class="span-1 last">&nbsp;</DIV>
+{% endblock %}
 {% comment %} 
-    Конец блока с формой.
     Начало вывода топиков.
 {% endcomment %}
 <DIV class="span-22 last topics">

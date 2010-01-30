@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
+
 from django.conf.urls.defaults import *
-from django.contrib import admin
+from django.contrib import admin#, admindocs
 from django.contrib.auth.views import login, logout
 
 from django.conf import settings
@@ -15,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^$', card_view.index),
     # Подробная страница
     url(r'^(\d+)/?$', card_view.details),
+    url(r'^favorites/$', card_view.favorites),
+    url(r'^usefull/$', card_view.rating),
 
     # TODO не забыть убрать обработку статики с джанги.
     (r'^s/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
@@ -29,4 +32,6 @@ urlpatterns = patterns('',
     #(r'^users/', include('knowledge.users.urls')),
 
     (r'^admin/', include(admin.site.urls)),
+    #(r'^admin/doc/', include(admindocs.site.urls)),
+
 )

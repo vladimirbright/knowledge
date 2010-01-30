@@ -80,6 +80,10 @@ BODY {
 .post-form TEXTAREA {
   height: 80px;
 }
+.post-form LABEL {
+  font-size: 17px;
+  font-family: "Droid sans",Tahoma,sans-serif;
+}
 /*Ошибки формы.*/
 .errorlist {
   list-style: none;
@@ -89,13 +93,16 @@ BODY {
 
 /*Навигационные ссылки*/
 .navigation UL {
-  height: 127px;
   margin: 0;
-  padding: 0 10px 5px 10px;;
+  padding: 0;
   list-style: none;
-  border-left: 2px solid black;
   font-size: 17px;
   font-family: "Droid sans",Tahoma,sans-serif;
+}
+
+.navigation LI {
+  margin-right: 20px;
+  float: left;
 }
 /*Поиск*/
 .search INPUT {
