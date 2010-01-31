@@ -19,11 +19,7 @@ def index(request):
     if request.method == 'POST' and request.user.is_authenticated:
         form = CardsPostForm(request.POST)
         if form.is_valid():
-            card = Cards()
-            card.topic    = form.cleaned_data["topic"]
-            card.cardtext = form.cleaned_data["cardtext"]
-            card.owner    = request.user
-            card.save()
+            form.save(request.user)
             return HttpResponseRedirect('/')
         else:
             cards = Cards.objects.all().order_by(sort)
