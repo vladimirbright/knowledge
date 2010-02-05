@@ -5,7 +5,7 @@
 {% block currentplace %}<H2>{{ card.topic }}</H2>{% endblock %}
 {% block main %}
 <DIV class="span-16 card-detail">
-    <P>{{ card.cardtext }}</P>
+    <P>{% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}</P>
 </DIV>
 <DIV class="span-6 last">ooooo</DIV>
 {% get_comment_count for card as comment_count %}

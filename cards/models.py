@@ -59,7 +59,6 @@ class CardsPostForm(forms.Form):
         return text
 
     def save(self, owner):
-        import pygments
         import re
 
 
@@ -68,35 +67,41 @@ class CardsPostForm(forms.Form):
         card.cardtext  = self.cleaned_data["cardtext"]
         card.owner     = owner
 
-        # Тут будет происходить обработка форматирования.
-        start_code_pattern = re.compile(r'\[code=(?P<pl>[^\]\[]+)\]', re.I)
-        end_code_pattern   = re.compile(r'\[/code\]', re.I)
-        start_code = False
-        end_code   = False
-        pl = False
+        # Пробуем найти запастенный код.
+        code_pattern = re.compile(r'\[code=([^\]]+)\]', re.M+re.I)
 
-        code = []
+        open_tag_pat = '[code=%s]'
+        close_tag    = '[/code]'
 
-        line_number = 0
-        for line in self.cleaned_data["cardtext"].split("\n"):
-            start = start_code_pattern.search(line)
-            if start:
-                start_code = True
-                end_code   = False
-                pl = start.group('pl')
-
-            end = end_code_pattern.search(line)
-            if start_code is True and end:
-                start_code = False
-                end_code   = True
-
-            if start_code is True and end_code is False:
-                code.append(line)
-
-            line_number += 1
+        code = code_pattern.findall(self.cleaned_data["cardtext"])
 
         if len(code) > 0:
-            card.formatted = "\n".join(code)
+            from pygments import highlight
+            from pygments.lexers import get_lexer_by_name
+            from pygments.formatters import HtmlFormatter
+            from pygments.styles import get_style_by_name
+
+            card.formatted = self.cleaned_data['cardtext']
+            for prog_lang in code:
+                # Ищем начало кода
+                open_tag = open_tag_pat %prog_lang
+                start    = card.formatted.index(open_tag)
+                start   += len(open_tag)
+                # Ищем окончание кода.
+                try:
+                    end      = card.formatted[start:].index(close_tag)
+                    code_text= card.formatted[start:start+end]
+                except:
+                    continue
+
+                lexer = get_lexer_by_name(prog_lang, stripall=True)
+                formatter = HtmlFormatter(linenos=True, noclasses=True, style='colorful')
+                code_formatted = highlight(code_text, lexer, formatter)
+
+                card.formatted = card.formatted.replace('[code=%s]%s[/code]' %(prog_lang, code_text), u"<h5>Код: %s</h5>%s" %(prog_lang, code_formatted))
+
+        else:
+            card.formatted = self.cleaned_data["cardtext"]
 
         card.save()
         return True
