@@ -103,7 +103,7 @@ def format_code(text):
                 formatter      = HtmlFormatter(linenos=True, noclasses=True, style='perldoc')
                 code_formatted = highlight(code_text, lexer, formatter)
 
-                text = text.replace( open_tag + code_text + close_tag, u"<h5>Код: %s</h5>%s" %(prog_lang, code_formatted))
+                text = text.replace( open_tag + code_text + close_tag, u"<h5>Код: %s</h5>%s" %(lexer.name, code_formatted))
             except:
                 pass
 
