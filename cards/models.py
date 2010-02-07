@@ -59,49 +59,53 @@ class CardsPostForm(forms.Form):
         return text
 
     def save(self, owner):
-        import re
-
-
+        ''' Save new Card '''
         card           = Cards()
         card.topic     = self.cleaned_data["topic"]
         card.cardtext  = self.cleaned_data["cardtext"]
         card.owner     = owner
-
-        # Пробуем найти запастенный код.
-        code_pattern = re.compile(r'\[code=([^\]]+)\]', re.M+re.I)
-
-        open_tag_pat = '[code=%s]'
-        close_tag    = '[/code]'
-
-        code = code_pattern.findall(self.cleaned_data["cardtext"])
-
-        if len(code) > 0:
-            from pygments import highlight
-            from pygments.lexers import get_lexer_by_name
-            from pygments.formatters import HtmlFormatter
-            from pygments.styles import get_style_by_name
-
-            card.formatted = self.cleaned_data['cardtext']
-            for prog_lang in code:
-                # Ищем начало кода
-                open_tag = open_tag_pat %prog_lang
-                start    = card.formatted.index(open_tag)
-                start   += len(open_tag)
-                # Ищем окончание кода.
-                try:
-                    end      = card.formatted[start:].index(close_tag)
-                    code_text= card.formatted[start:start+end]
-                except:
-                    continue
-
-                lexer = get_lexer_by_name(prog_lang, stripall=True)
-                formatter = HtmlFormatter(linenos=True, noclasses=True, style='colorful')
-                code_formatted = highlight(code_text, lexer, formatter)
-
-                card.formatted = card.formatted.replace('[code=%s]%s[/code]' %(prog_lang, code_text), u"<h5>Код: %s</h5>%s" %(prog_lang, code_formatted))
-
-        else:
-            card.formatted = self.cleaned_data["cardtext"]
-
+        card.formatted = format_code(self.cleaned_data["cardtext"])
         card.save()
         return True
+
+def format_code(text):
+    '''Function to find [code] tags and replace with highlited code'''
+    if len(text) < 10:
+        return text
+
+    import re
+    from pygments import highlight
+    from pygments.lexers import get_lexer_by_name
+    from pygments.formatters import HtmlFormatter
+    from pygments.styles import get_style_by_name
+
+    # Пробуем найти запастенный код.
+    code_pattern = re.compile(r'\[code=([^\]]+)\]', re.M+re.I)
+
+    open_tag_pat = '[code=%s]'
+    close_tag    = '[/code]'
+
+    code = code_pattern.findall(text)
+
+    if len(code) > 0:
+
+        for prog_lang in code:
+            try:
+                # Ищем начало кода
+                open_tag = open_tag_pat %prog_lang
+                start    = text.index(open_tag)
+                start   += len(open_tag)
+                # Ищем окончание кода.
+                end       = text[start:].index(close_tag)
+                code_text = text[start:start+end]
+
+                lexer          = get_lexer_by_name(prog_lang, stripall=True)
+                formatter      = HtmlFormatter(linenos=True, noclasses=True, style='perldoc')
+                code_formatted = highlight(code_text, lexer, formatter)
+
+                text = text.replace( open_tag + code_text + close_tag, u"<h5>Код: %s</h5>%s" %(prog_lang, code_formatted))
+            except:
+                pass
+
+    return text
+
