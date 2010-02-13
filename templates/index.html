@@ -100,7 +100,7 @@
             </DIV>
             <DIV class="span-10 last card">
                 <H4><A title="Посмотреть внимательнее" href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
-                <P>{% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}</P>{% get_comment_count for card as comment_count %}
+                <DIV>{% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}</DIV>{% get_comment_count for card as comment_count %}
                 <DIV><A title="Прочитать комментарии" href="{% url knowledge.cards.views.details card.pk  %}#comments" class="work-link">Комментарии: [{{comment_count}}]</A></DIV>
             </DIV>
         </DIV>
