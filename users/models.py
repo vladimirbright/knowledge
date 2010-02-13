@@ -1,6 +1,5 @@
 # -*- coding: utf8 -*-
 
-
 from django.contrib.auth.models import User
 from django.db import models
 from django import forms
@@ -30,19 +29,19 @@ class UserRegisterForm(forms.Form):
 
     password = forms.CharField(
                     max_length = 35,
-                    min_length = 3,
+                    min_length = 4,
                     label      = u'Пароль',
                     widget     = forms.PasswordInput,
                     error_messages = {
-                        'required':   u'Пароль необходим!',
-                        'max_length': u'Слишком длинный пароль, не больше 35 символов',
-                        'min_length': u'Слишком короткий пароль, не короче 3 символов'
+                        'required':   u'Пароль необходим',
+                        #'max_length': u'Слишком длинный пароль, не больше 35 символов',
+                        #'min_length': u'Слишком короткий пароль, не короче 3 символов'
                         }
                 )
 
     passwordconfirm = forms.CharField(
                     max_length  = 35,
-                    min_length  = 3,
+                    min_length  = 4,
                     label       = u'Повторите пароль',
                     widget      = forms.PasswordInput,
                     error_messages = {
@@ -78,10 +77,13 @@ class UserRegisterForm(forms.Form):
         return username
 
     def clean_passwordconfirm(self):
-        password = self.cleaned_data['password']
-        cpassword = self.cleaned_data['passwordconfirm']
-        if password != cpassword:
-            raise forms.ValidationError(u'Введенные пароли не совпадают!')
+        try:
+            password = self.cleaned_data['password']
+            cpassword = self.cleaned_data['passwordconfirm']
+            if password != cpassword:
+                raise forms.ValidationError(u'Введенные пароли не совпадают')
+        except KeyError:
+            raise forms.ValidationError(u'')
 
     def clean_confirmemail(self):
         '''Ловим спамеров'''

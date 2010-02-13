@@ -140,10 +140,9 @@ BODY {
   overflow: hidden;
 }
 .card H4 {
-  margin: 0;
+  margin: 0 0 10px 0;
   font-size: 24px;
   font-family: "Droid sans",Tahoma,sans-serif;
-  padding-left: 20px;
 }
 .card H4 A {
   color: black;
@@ -154,13 +153,17 @@ BODY {
 .card H4 A:hover {
   color: #EFB654;
 }
-.card P {
-  margin: 20px 0 30px 0;
-  padding-left: 20px;
-  font-size: 14px;
+.card H5 {
+  margin: 10px 0 5px 0;
 }
-.card DIV {
+.card .card-inner {
   padding-left: 20px;
+}
+.card PRE {
+  font-size: 12px;
+}
+.card .card-comments {
+  margin-top: 10px;
 }
 .card .work-link {
   font-size: 12px;

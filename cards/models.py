@@ -23,6 +23,14 @@ class Cards(models.Model):
         verbose_name = u'Заметку'
         verbose_name_plural = u'Заметка'
 
+class CardFavorites(models.Model):
+    card  = models.ForeignKey(Cards,verbose_name=u'Заметка')
+    owner = models.ForeignKey(User,verbose_name=u'Добавил')
+    added = models.DateTimeField(default=datetime.now(), verbose_name=u'Добавлена в избранное')
+
+    def __unicode__(self):
+        return u"<Избранная заметка: %s, пользователя: %s>" %(self.card.topic[:20], self.owner.username)
+
 class CardsAdmin(admin.ModelAdmin):
     #fields        = ('topic', 'owner', 'added')
     list_display  = ('topic', 'owner', 'added')

@@ -1,5 +1,7 @@
 {% extends 'index.html' %}
 
+{% block head-extra %}<LINK href="/s/css/register.css" rel="stylesheet" type="text/css">{% endblock %}
+
 {% block loginblock %}
     <H3>Здраствуй будущий юзернейм!</H3>
 {% endblock %}
@@ -13,10 +15,16 @@
 
 {% block main %}
 <DIV class="span-22 last">
-<FORM action="" method="post">
-  <UL>
-      {{ form.as_ul }}
-  </UL>
+<FORM action="{% url knowledge.users.views.register %}" method="POST">
+  <OL>
+    <LI>{{ form.username }}&nbsp;{{ form.username.label }}{% if form.username.errors %}<DIV class='error'>{{ form.username.errors }}</DIV>{% endif %}</LI>
+    <LI>{{ form.email }}&nbsp;{{ form.email.label }}{% if form.email.errors %}<DIV class='error'>{{ form.email.errors }}</DIV>{% endif %}</LI>
+    <LI>{{ form.password }}&nbsp;{{ form.password.label }}{% if form.password.errors %}<DIV class='error'>{{ form.password.errors }}</DIV>{% endif %}</LI>
+    <LI>{{ form.passwordconfirm }}&nbsp;{{ form.passwordconfirm.label }}{% if form.passwordconfirm.errors %}<DIV class='error'>{{ form.passwordconfirm.errors }}</DIV>{% endif %}</LI>
+  </OL>
+  <P>
+    {{ form.confirmemail }}&nbsp;{{ form.confirmemail.label }}{% if form.confirmemail.errors %}<DIV class='error'>{{ form.confirmemail.errors }}</DIV>{% endif %}
+    </P>
   <INPUT type="submit" value="Отдать свой моск!">
 </FORM>
 </DIV>

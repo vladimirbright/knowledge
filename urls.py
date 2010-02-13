@@ -17,6 +17,8 @@ urlpatterns = patterns('',
     # Подробная страница
     url(r'^(\d+)/?$', card_view.details),
     url(r'^favorites/$', card_view.favorites),
+    url(r'^favorites/add/(?P<card_id>\d+)$', card_view.fav_add),
+    url(r'^favorites/del/(?P<card_id>\d+)$', card_view.fav_del),
     url(r'^usefull/$', card_view.rating),
 
     # TODO не забыть убрать обработку статики с джанги.

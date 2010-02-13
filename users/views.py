@@ -15,10 +15,14 @@ def register(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/")
+        return render_to_response('registration/register.html', {
+            "title": u"Регистрация",
+            "form": form,
+        })
     else:
         form = UserRegisterForm()
     return render_to_response('registration/register.html', {
-        "title": u"Регистрация в базе!",
+        "title": u"Регистрация",
         "form": form,
     })
 

@@ -7,7 +7,7 @@
     <LINK rel="stylesheet" href="/s/css/blueprint/screen.css" type="text/css" media="screen, projection">
     <!--[if lt IE 8]><link rel="stylesheet" href="/s/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
     <LINK href="/s/css/main.css" rel="stylesheet" type="text/css">
-    <SCRIPT type="text/javascript" src="/s/js/jquery.min.js"></SCRIPT>
+    <SCRIPT type="text/javascript" src="/s/js/jquery.min.js"></SCRIPT>{% block head-extra %}{% endblock %}
 </HEAD>
 <BODY class="back-cod">
 <DIV class="container">
@@ -84,7 +84,7 @@
     {% block main %}
     {% if cards %}
     {% load comments %}
-    <DIV class="span-16">
+    <DIV class="span-22 last">
         {% for card in cards %}
         <DIV class="card-container">
             <DIV class='span-6 card-left'><A name="card{{card.pk}}"></A>
@@ -92,27 +92,23 @@
                 <H5><SPAN class="username">{{ card.owner.username }}</SPAN></H5>
                 {% if user.is_authenticated %}
                 <UL class="card-actions">
-                    <LI><A href="" class="work-link">В избранное</A></LI>
+                    {% if card.in_favorite %}
+                    <LI><A href="{% url knowledge.cards.views.fav_del card.pk %}" class="work-link">Убрать из избранного</A></LI>
+                    {% else %}
+                    <LI><A href="{% url knowledge.cards.views.fav_add card.pk %}" class="work-link">В избранное</A></LI>
+                    {% endif %}
                     {% if perms.cards.cahge_cards %}<LI><A href="" class="work-link">Редактировать</A></LI>{% endif %}
                     {% if perms.cards.delete_cards %}<LI><A href="" class="work-link">Удалить</A></LI>{% endif %}
                 </UL>
                 {% endif %}
             </DIV>
-            <DIV class="span-10 last card">
+            <DIV class="span-16 last card"><DIV class="card-inner">
                 <H4><A title="Посмотреть внимательнее" href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
-                <DIV>{% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}</DIV>{% get_comment_count for card as comment_count %}
-                <DIV><A title="Прочитать комментарии" href="{% url knowledge.cards.views.details card.pk  %}#comments" class="work-link">Комментарии: [{{comment_count}}]</A></DIV>
-            </DIV>
+                {% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}{% get_comment_count for card as comment_count %}
+                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url knowledge.cards.views.details card.pk  %}#comments" class="work-link">Комментарии: [{{comment_count}}]</A></DIV>
+            </DIV></DIV>
         </DIV>
         {% endfor %}
-    </DIV>
-    <DIV class="span-6 last card-list">
-        <H5>Чего есть?</H5>
-        <UL>
-        {% for card in cards %}
-            <LI><A href='#card{{ card.pk }}' class="work-link work-link-visited">{{ card.topic|escape }}</A></LI>
-        {% endfor %}
-        </UL>
     </DIV>
     {% else %}
         <H2>Ни одна собака!</H2>
@@ -125,5 +121,5 @@
         <DIV class="span-22"> Владимир Владимирович &copy; </DIV>
         <DIV class="span-1 last">&nbsp;</DIV>
     </DIV>
-</DIV>
+</DIV>{% if queries %}<PRE>{{ queries|pprint }}</PRE>{% endif %}
 </BODY></HTML>
