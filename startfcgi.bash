@@ -12,13 +12,13 @@ if [ -f $PIDFILE ]; then
 fi
 
 
-python manage.py runfcgi     \
-host=$HOST              \
-port=$PORT              \
-pidfile=$PIDFILE        \
+python manage.py runfcgi    \
+host=$HOST                  \
+port=$PORT                  \
+pidfile=$PIDFILE            \
 #socket=$SOCKETFILE      \
-maxrequests=1000        \
-maxspare=50             \
-minspare=5              \
+maxrequests=1000            \
+maxspare=50                 \
+minspare=5                  \
 errlog=$ERRLOG
 
