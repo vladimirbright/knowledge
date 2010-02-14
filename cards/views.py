@@ -14,7 +14,7 @@ from knowledge.cards.models import Cards, CardsPostForm, CardFavorites
 # Тут пагинацию прикрутить.
 def index(request):
     '''Главная страница'''
-    cards = Cards.objects.all().order_by('-pk')
+    cards = Cards.objects.select_related().all().order_by('-pk')
     user  = request.user
     favorites = False
 
@@ -23,7 +23,7 @@ def index(request):
         for card in cards:
             card.in_favorite = False
             for f in favorites:
-                if f.card == card:
+                if f.card_id == card.pk:
                     card.in_favorite = True
                     break
 

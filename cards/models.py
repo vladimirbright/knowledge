@@ -15,6 +15,7 @@ class Cards(models.Model):
     formatted = models.TextField(blank=True)
     owner     = models.ForeignKey(User,verbose_name=u'Добавил')
     added     = models.DateTimeField(default=datetime.now(), verbose_name=u'Добавлена')
+    comments  = models.IntegerField(default=0,verbose_name=u'Кол-во комментариев')
 
     def __unicode__(self):
         return u"<Заметка: %s>" %self.topic[:20]
