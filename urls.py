@@ -11,7 +11,7 @@ from knowledge.users import views as users_view
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = patterns('/mysite.fcgi/',
     # Главная страница
     url(r'^$', card_view.index),
     # Подробная страница
@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^usefull/$', card_view.rating),
 
     # TODO не забыть убрать обработку статики с джанги.
-    (r'^s/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    #(r'^s/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
     # комментарии стандартные джанговские.
     (r'^comments/', include('django.contrib.comments.urls')),

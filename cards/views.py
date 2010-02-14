@@ -18,7 +18,7 @@ def index(request):
     user  = request.user
     favorites = False
 
-    if user.is_authenticated:
+    if user.is_authenticated() is True:
         favorites = user.cardfavorites_set.all()
         for card in cards:
             card.in_favorite = False

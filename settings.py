@@ -6,6 +6,9 @@ def SELF_DIR(filename=''):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)
 
 # Django settings for knowledge project.
+# fuck lighttpd
+FORCE_SCRIPT_NAME = ''
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -54,6 +57,8 @@ MEDIA_URL = '/s/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
+
+LOGIN_URL='/login/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '^l=_o)jzhczkcw=9#vpwiq22496^as$rip8&h*323)wn-p0-zs'
