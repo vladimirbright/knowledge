@@ -84,8 +84,9 @@
     {% block main %}
     {% if cards %}
     {% load comments %}
+    <A name="main"></A>
     <DIV class="span-22 last">
-        {% for card in cards %}
+        {% for card in cards.object_list %}
         <DIV class="card-container">
             <DIV class='span-6 card-left'><A name="card{{card.pk}}"></A>
                 <H5>{{ card.added|date:'d.m.Y' }} posted by</H5>
@@ -109,6 +110,21 @@
             </DIV></DIV>
         </DIV>
         {% endfor %}
+        {% block pagination-bottom %}
+        <DIV class="pagination">
+            <SPAN class="step-links">
+                {% if cards.has_previous %}
+                    <A class="work-link work-link-underline" href="?page={{ cards.previous_page_number }}#main">Новее</A>
+                {% endif %}
+                <SPAN class="current">
+                    Страница {{ cards.number }} из {{ cards.paginator.num_pages }}.
+                </SPAN>
+                {% if cards.has_next %}
+                    <A class="work-link work-link-underline" href="?page={{ cards.next_page_number }}#main">Старее</A>
+                {% endif %}
+            </SPAN>
+        </DIV>
+        {% endblock %}
     </DIV>
     {% else %}
         <H2>Ни одна собака!</H2>

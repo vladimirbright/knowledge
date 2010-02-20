@@ -4,23 +4,37 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.db import connection
-
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.contrib.auth.decorators import login_required
 
 from knowledge.cards.models import Cards, CardsPostForm, CardFavorites
+from knowledge.settings import PER_PAGE, PAGE_GET
 
 
 # Главная страница.
 # Тут пагинацию прикрутить.
 def index(request):
     '''Главная страница'''
-    cards = Cards.objects.select_related().all().order_by('-pk')
+    cards_list = Cards.objects.select_related().all().order_by('-pk')
+    paginator = Paginator(cards_list, PER_PAGE)
+
+    try:
+        page = int(request.GET.get(PAGE_GET, '1'))
+    except ValueError:
+        page = 1
+
+    # If page request (9999) is out of range, deliver last page of results.
+    try:
+        cards = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        cards = paginator.page(paginator.num_pages)
+
     user  = request.user
     favorites = False
 
     if user.is_authenticated() is True:
         favorites = user.cardfavorites_set.all()
-        for card in cards:
+        for card in cards.object_list:
             card.in_favorite = False
             for f in favorites:
                 if f.card_id == card.pk:
@@ -56,12 +70,25 @@ def favorites(request):
 
     user  = request.user
     favorites = user.cardfavorites_set.select_related().all().order_by('-pk')
-    cards = []
+    cards_list = []
 
     for f in favorites:
         card = f.card
         card.in_favorite = True
-        cards.append(card)
+        cards_list.append(card)
+
+    paginator = Paginator(cards_list, PER_PAGE)
+
+    try:
+        page = int(request.GET.get(PAGE_GET, '1'))
+    except ValueError:
+        page = 1
+
+    # If page request (9999) is out of range, deliver last page of results.
+    try:
+        cards = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        cards = paginator.page(paginator.num_pages)
 
     form = CardsPostForm()
 

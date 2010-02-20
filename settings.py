@@ -19,10 +19,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-#DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-#DATABASE_NAME = SELF_DIR('knowledge.db')             # Or path to database file if using sqlite3.
-#DATABASE_USER = ''             # Not used with sqlite3.
-#DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_ENGINE   = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME     = 'knowledgedb'             # Or path to database file if using sqlite3.
 DATABASE_USER     = 'knowledge'             # Not used with sqlite3.
@@ -62,6 +58,8 @@ MEDIA_URL = '/s/'
 ADMIN_MEDIA_PREFIX = '/media/'
 
 LOGIN_URL='/login/'
+PER_PAGE=15
+PAGE_GET='page'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '^l=_o)jzhczkcw=9#vpwiq22496^as$rip8&h*323)wn-p0-zs'

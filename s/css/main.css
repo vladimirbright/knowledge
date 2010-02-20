@@ -41,7 +41,6 @@ BODY {
   margin: 66px 0 0 0;
   color: #573B09;
 }
-
 .logo {
   height: 95px;
   border: 1px solid #573B09;
@@ -84,6 +83,7 @@ BODY {
   font-size: 17px;
   font-family: "Droid sans",Tahoma,sans-serif;
 }
+
 /*Ошибки формы.*/
 .errorlist {
   list-style: none;
@@ -99,11 +99,11 @@ BODY {
   font-size: 17px;
   font-family: "Droid sans",Tahoma,sans-serif;
 }
-
 .navigation LI {
   margin-right: 20px;
   float: left;
 }
+
 /*Поиск*/
 .search INPUT {
   width: 100%;
@@ -192,9 +192,16 @@ BODY {
 
 /*Форма комментариев*/
 INPUT[name="honeypot"] { display: none; }
-
 TEXTAREA[name="comment"] {
   width: 860px;
   height: 75px;
   padding: 5px;
+}
+
+/*Вставки кода*/
+.linenos {
+  width: 10px;
+}
+.linenodiv PRE {
+  line-height: 1.25;
 }
