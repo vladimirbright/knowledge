@@ -106,7 +106,7 @@
             <DIV class="span-16 last card"><DIV class="card-inner">
                 <H4><A title="Посмотреть внимательнее" href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
                 {% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}
-                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url knowledge.cards.views.details card.pk  %}#comments" class="work-link">Комментарии: [{{card.comments}}]</A></DIV>
+                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url knowledge.cards.views.details card.pk  %}#comments" class="work-link">Комментарии: [{{card.comment_count}}]</A></DIV>
             </DIV></DIV>
         </DIV>
         {% endfor %}
@@ -117,7 +117,7 @@
                     <A class="work-link work-link-underline" href="?page={{ cards.previous_page_number }}#main">Новее</A>
                 {% endif %}
                 <SPAN class="current">
-                    Страница {{ cards.number }} из {{ cards.paginator.num_pages }}.
+                    Страница {{ cards.number }} из {{ cards.paginator.num_pages }}
                 </SPAN>
                 {% if cards.has_next %}
                     <A class="work-link work-link-underline" href="?page={{ cards.next_page_number }}#main">Старее</A>

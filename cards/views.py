@@ -10,12 +10,40 @@ from django.contrib.auth.decorators import login_required
 from knowledge.cards.models import Cards, CardsPostForm, CardFavorites
 from knowledge.settings import PER_PAGE, PAGE_GET
 
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.comments.models import Comment
+
+# Начало костыля для камментов.
+qn = connection.ops.quote_name
+
+def qf(table, field): # quote table and field
+    return '%s.%s' % ( qn(table), qn(field) )
+
+def comments_extra_count(queryset):
+    commented_model = queryset.model
+    contenttype = ContentType.objects.get_for_model(commented_model)
+    commented_table = commented_model._meta.db_table
+    comment_table = Comment._meta.db_table
+
+    sql = '''SELECT COUNT(*) FROM %s
+        WHERE %s=%%s AND CAST(%s as INT)=%s AND %s = FALSE''' % (
+        qn(comment_table),
+        qf(comment_table, 'content_type_id'),
+        qf(comment_table, 'object_pk'),
+        qf(commented_table, 'id'),
+        qf(comment_table, 'is_removed'),
+    )
+
+    return queryset.extra(
+        select={'comment_count': sql },
+        select_params=(contenttype.pk,)
+    )
+# Конец костыля для камментов.
 
 # Главная страница.
-# Тут пагинацию прикрутить.
 def index(request):
     '''Главная страница'''
-    cards_list = Cards.objects.select_related().all().order_by('-pk')
+    cards_list = comments_extra_count(Cards.objects.select_related().all().order_by('-pk'))
     paginator = Paginator(cards_list, PER_PAGE)
 
     try:
@@ -23,7 +51,6 @@ def index(request):
     except ValueError:
         page = 1
 
-    # If page request (9999) is out of range, deliver last page of results.
     try:
         cards = paginator.page(page)
     except (EmptyPage, InvalidPage):
@@ -41,7 +68,7 @@ def index(request):
                     card.in_favorite = True
                     break
 
-    if request.method == 'POST' and user.is_authenticated:
+    if request.method == 'POST' and user.is_authenticated():
         form = CardsPostForm(request.POST)
         if form.is_valid():
             form.save(user)
@@ -54,7 +81,7 @@ def index(request):
                                         "cards": cards,
                                         "user": user,
                                         "favorites": favorites,
-                                        #"queries" : connection.queries
+                                        "queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
 
@@ -69,7 +96,7 @@ def favorites(request):
     '''Страница с избранным'''
 
     user  = request.user
-    favorites = user.cardfavorites_set.select_related().all().order_by('-pk')
+    favorites = comments_extra_count(user.cardfavorites_set.select_related().all().order_by('-pk'))
     cards_list = []
 
     for f in favorites:

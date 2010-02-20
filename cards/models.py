@@ -5,8 +5,41 @@ from datetime  import datetime
 from django.contrib.auth.models import User
 from django.contrib import admin
 from django import forms
+from django.contrib.comments.signals import comment_was_posted, comment_was_flagged
 
-# Create your models here.
+
+def add_comments_count(sender, **kwargs):
+    '''Update comment count in Cards model'''
+    if not kwargs.has_key('comment'):
+        return False
+    obj_pk = int(kwargs['comment'].object_pk)
+    try:
+        card = Cards.objects.get(pk=obj_pk)
+    except:
+        return False
+    card.comments += 1
+    card.save()
+    return True
+
+
+def descrease_comments_count(sender, **kwargs):
+    if not kwargs.has_key('comment'):
+        return False
+    obj_pk = int(kwargs['comment'].object_pk)
+    try:
+        card = Cards.objects.get(pk=obj_pk)
+    except:
+        return False
+    flag = kwargs['flag']
+    #card.comments += 1
+    #card.save()
+    return True
+
+
+# Связываем сигнал с функцией.
+#comment_was_posted.connect(add_comments_count)
+#comment_was_flagged.connect(descrease_comments_count)
+
 
 # Модель записи
 class Cards(models.Model):
@@ -24,6 +57,7 @@ class Cards(models.Model):
         verbose_name = u'Заметку'
         verbose_name_plural = u'Заметка'
 
+
 class CardFavorites(models.Model):
     card  = models.ForeignKey(Cards,verbose_name=u'Заметка')
     owner = models.ForeignKey(User,verbose_name=u'Добавил')
@@ -31,6 +65,7 @@ class CardFavorites(models.Model):
 
     def __unicode__(self):
         return u"<Избранная заметка: %s, пользователя: %s>" %(self.card.topic[:20], self.owner.username)
+
 
 class CardsAdmin(admin.ModelAdmin):
     #fields        = ('topic', 'owner', 'added')
@@ -77,11 +112,11 @@ class CardsPostForm(forms.Form):
         card.save()
         return True
 
+
 def format_code(text):
     '''Function to find [code] tags and replace with highlited code'''
     if len(text) < 10:
         return text
-
     import re
     from pygments import highlight
     from pygments.lexers import get_lexer_by_name
@@ -90,14 +125,11 @@ def format_code(text):
 
     # Пробуем найти запастенный код.
     code_pattern = re.compile(r'\[code=([^\]]+)\]', re.M+re.I)
-
     open_tag_pat = '[code=%s]'
     close_tag    = '[/code]'
-
     code = code_pattern.findall(text)
 
     if len(code) > 0:
-
         for prog_lang in code:
             try:
                 # Ищем начало кода
@@ -115,6 +147,5 @@ def format_code(text):
                 text = text.replace( open_tag + code_text + close_tag, u"<h5>Код: %s</h5>%s" %(lexer.name, code_formatted))
             except:
                 pass
-
     return text
 
