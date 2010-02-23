@@ -43,7 +43,7 @@ def comments_extra_count(queryset):
 # Главная страница.
 def index(request):
     '''Главная страница'''
-    cards_list = comments_extra_count(Cards.objects.select_related().all().order_by('-pk'))
+    cards_list = Cards.objects.select_related().all().order_by('-pk')
     paginator = Paginator(cards_list, PER_PAGE)
 
     try:
@@ -81,7 +81,7 @@ def index(request):
                                         "cards": cards,
                                         "user": user,
                                         "favorites": favorites,
-                                        "queries" : connection.queries
+                                        #"queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
 
@@ -96,7 +96,7 @@ def favorites(request):
     '''Страница с избранным'''
 
     user  = request.user
-    favorites = comments_extra_count(user.cardfavorites_set.select_related().all().order_by('-pk'))
+    favorites = user.cardfavorites_set.select_related().all().order_by('-pk')
     cards_list = []
 
     for f in favorites:

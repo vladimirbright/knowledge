@@ -24,7 +24,7 @@
         <DIV class="span-6 login-block">
         {% block loginblock %}
         {% if user.is_authenticated %}
-            <H3>Hi, <A class="work-link work-link-underline">{{ user.username }}!</A></H3>
+            <H3>Hi, <A href="{% url knowledge.users.views.details user.username %}" class="work-link work-link-underline">{{ user.username }}!</A></H3>
             <H3><A class="work-link" href="{% url django.contrib.auth.views.logout %}">выйти</A></H3>
         {% else %}
           <H3>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}">Войди</A> или <A href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H3>
@@ -65,8 +65,9 @@
 <DIV class="span-22 navigation">
     <UL>
         <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.index  %}">По дате публикации</A></LI>
-        <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.rating  %}">По рейтингу</A></LI>
         <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.favorites  %}">Избранное</A></LI>
+        <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.rating  %}">По рейтингу</A></LI>
+        {% if user.is_authenticated %}<LI><A title="Редакитровать личные настройки" class="work-link work-link-underline" href="{% url knowledge.users.views.edit %}">Настройки</A></LI>{% endif %}
     </UL>
 </DIV>
 <DIV class="span-1 last">&nbsp;</DIV>
@@ -90,7 +91,7 @@
         <DIV class="card-container">
             <DIV class='span-6 card-left'><A name="card{{card.pk}}"></A>
                 <H5>{{ card.added|date:'d.m.Y' }} posted by</H5>
-                <H5><SPAN class="username">{{ card.owner.username }}</SPAN></H5>
+                <H5><A class="card-userlink" title="Посмотреть профиль &laquo;{{card.owner.username}}&raquo;" href="{% url knowledge.users.views.details card.owner.username %}">{{ card.owner.username }}</A></H5>
                 {% if user.is_authenticated %}
                 <UL class="card-actions">
                     {% if card.in_favorite %}
@@ -106,7 +107,7 @@
             <DIV class="span-16 last card"><DIV class="card-inner">
                 <H4><A title="Посмотреть внимательнее" href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
                 {% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}
-                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url knowledge.cards.views.details card.pk  %}#comments" class="work-link">Комментарии: [{{card.comment_count}}]</A></DIV>
+                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url knowledge.cards.views.details card.pk  %}#comments" class="work-link">Прочитать обсуждение</A></DIV>
             </DIV></DIV>
         </DIV>
         {% endfor %}

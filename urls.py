@@ -26,11 +26,13 @@ urlpatterns = patterns('/mysite.fcgi/',
 
     # комментарии стандартные джанговские.
     (r'^comments/', include('django.contrib.comments.urls')),
-
+    # логин и регистариция.
     url(r'^login/', login),
     url(r'^logout/', logout),
     url(r'^register/', users_view.register),
-
+    # url связанные с пользователями.
+    url(r'^user/(?P<username>[\d\w_]+)/?$', users_view.details),
+    url(r'^edit/user/settings/$', users_view.edit),
     #(r'^users/', include('knowledge.users.urls')),
 
     (r'^admin/', include(admin.site.urls)),
