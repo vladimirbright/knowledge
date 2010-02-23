@@ -7,11 +7,10 @@ from django.db import connection
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.contrib.auth.decorators import login_required
 
+
 from knowledge.cards.models import Cards, CardsPostForm, CardFavorites
 from knowledge.settings import PER_PAGE, PAGE_GET
 
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.comments.models import Comment
 
 # Начало костыля для камментов.
 qn = connection.ops.quote_name
@@ -94,7 +93,6 @@ def details(request, card_id):
 @login_required
 def favorites(request):
     '''Страница с избранным'''
-
     user  = request.user
     favorites = user.cardfavorites_set.select_related().all().order_by('-pk')
     cards_list = []

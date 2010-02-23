@@ -1,1 +1,52 @@
-{{ user|pprint }}
+{% extends 'index.html' %}
+
+{% block title %}:: Пользователь: {{ viewed_user.username }}{% endblock %}
+
+{% block head-extra %}<LINK href="/s/css/user.css" rel="stylesheet" type="text/css">{% endblock %}
+
+{% block form-navigation %} {% endblock %}
+
+{% block currentplace %}<H2>Профиль пользователя: {{ viewed_user.username }}</H2>{% endblock %}
+
+{% block main %}
+<DIV class="span-16 last">
+{% if viewed_user.self_request %}<H4>Кеп, этож ваш профиль!</H4>{% endif %}
+  <OL class="user-props">
+    <LI>{{ viewed_user.username }}</LI>
+    {% if perms.users.change_user or viewed_user.self_request %}<LI>{{ viewed_user.email }}</LI>{% endif %}
+  </OL>
+  {% if cards %}
+    {% if not viewed_user.self_request %}
+      <H4>Пользователь написал топики</H4>
+    {% else %}
+      <H4>Ваши топики</H4>
+    {% endif %}
+    <OL>
+      {% for card in cards.object_list %}
+        <LI>{{ card.topic }}</LI>
+      {% endfor %}
+    </OL>
+    {% block pagination-bottom %}
+    <DIV class="pagination">
+        <SPAN class="step-links">
+            {% if cards.has_previous %}
+                <A class="work-link work-link-underline" href="?page={{ cards.previous_page_number }}#main">Новые топики</A>
+            {% endif %}
+            <SPAN class="current">
+                Страница {{ cards.number }} из {{ cards.paginator.num_pages }}
+            </SPAN>
+            {% if cards.has_next %}
+                <A class="work-link work-link-underline" href="?page={{ cards.next_page_number }}#main">Старые топики</A>
+            {% endif %}
+        </SPAN>
+    </DIV>
+    {% endblock %}
+  {% else %}
+    {% if not viewed_user.self_request %}
+      <H4>Пользователь ничего не написал ;(</H4>
+    {% else %}
+      <H4>Вы ничего не написали ;(</H4>
+    {% endif %}
+  {% endif %}
+</DIV>
+{% endblock %}

@@ -6,7 +6,7 @@ from django import forms
 from datetime import datetime
 import re
 
-# Create your models here.
+
 class UserRegisterForm(forms.Form):
     username = forms.CharField(
                     max_length=35,
