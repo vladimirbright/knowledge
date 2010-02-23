@@ -32,7 +32,7 @@ urlpatterns = patterns('/mysite.fcgi/',
     url(r'^register/', users_view.register),
     # url связанные с пользователями.
     url(r'^user/(?P<username>[\d\w_]+)/?$', users_view.details),
-    url(r'^edit/user/settings/$', users_view.edit),
+    url(r'^settings/$', users_view.edit),
     #(r'^users/', include('knowledge.users.urls')),
 
     (r'^admin/', include(admin.site.urls)),
