@@ -3,3 +3,9 @@
   font-size: 18px;
   font-family: Tahoma,'Droid sans',sans-serif;
 }
+.user-title {
+  color: #6C5933;
+  font-size: 18px;
+  border-bottom: 1px dashed;
+  padding: 5px;
+}

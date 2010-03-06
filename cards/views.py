@@ -12,33 +12,6 @@ from knowledge.cards.models import Cards, CardsPostForm, CardFavorites
 from knowledge.settings import PER_PAGE, PAGE_GET
 
 
-# Начало костыля для камментов.
-qn = connection.ops.quote_name
-
-def qf(table, field): # quote table and field
-    return '%s.%s' % ( qn(table), qn(field) )
-
-def comments_extra_count(queryset):
-    commented_model = queryset.model
-    contenttype = ContentType.objects.get_for_model(commented_model)
-    commented_table = commented_model._meta.db_table
-    comment_table = Comment._meta.db_table
-
-    sql = '''SELECT COUNT(*) FROM %s
-        WHERE %s=%%s AND CAST(%s as INT)=%s AND %s = FALSE''' % (
-        qn(comment_table),
-        qf(comment_table, 'content_type_id'),
-        qf(comment_table, 'object_pk'),
-        qf(commented_table, 'id'),
-        qf(comment_table, 'is_removed'),
-    )
-
-    return queryset.extra(
-        select={'comment_count': sql },
-        select_params=(contenttype.pk,)
-    )
-# Конец костыля для камментов.
-
 # Главная страница.
 def index(request):
     '''Главная страница'''
@@ -89,6 +62,7 @@ def details(request, card_id):
     card = get_object_or_404(Cards, pk=card_id)
     return render_to_response('details.html', { "card": card, "user": request.user }, context_instance=RequestContext(request))
 
+
 # Страница избранного.
 @login_required
 def favorites(request):
@@ -125,6 +99,7 @@ def favorites(request):
                                         #"queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
+
 @login_required
 def fav_add(request, card_id):
     try:
@@ -135,8 +110,8 @@ def fav_add(request, card_id):
         favorite.save()
     except:
         pass
-
     return HttpResponseRedirect('/')
+
 
 @login_required
 def fav_del(request, card_id):
@@ -145,8 +120,8 @@ def fav_del(request, card_id):
         favorite.delete()
     except:
         pass
-
     return HttpResponseRedirect('/')
+
 
 # Страница по рейтингу.
 def rating(request):

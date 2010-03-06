@@ -10,22 +10,29 @@
 
 {% block main %}
 <DIV class="span-16 last">
-{% if viewed_user.self_request %}<H4>Кеп, этож ваш профиль!</H4>{% endif %}
-  <OL class="user-props">
+{% if viewed_user.self_request %}
+    <H4 class="user-title">Кеп, этож ваш профиль!</H4>
+{% else %}
+    <H4 class="user-title">Данные профиля.</H4>
+{% endif %}
+  <UL class="user-props">
     <LI>{{ viewed_user.username }}</LI>
-    {% if perms.users.change_user or viewed_user.self_request %}<LI>{{ viewed_user.email }}</LI>{% endif %}
-  </OL>
+    {% if perms.users.change_user or viewed_user.self_request %}
+        <LI><A href="mailto:{{viewed_user.email}}">{{ viewed_user.email }}</A></LI>
+    {% endif %}
+    <LI>Зарегистрирован: {{ viewed_user.date_joined|date:'d.m.Y' }}</LI>
+  </UL>
   {% if cards %}
     {% if not viewed_user.self_request %}
-      <H4>Пользователь написал топики</H4>
+      <H4 class="user-title">Пользователь написал топики</H4>
     {% else %}
-      <H4>Ваши топики</H4>
+      <H4 class="user-title">Ваши топики</H4>
     {% endif %}
-    <OL>
+    <UL class="user-topics">
       {% for card in cards.object_list %}
-        <LI>{{ card.topic }}</LI>
+        <LI><A href="{% url knowledge.cards.views.details card.pk %}">{{ card.topic }}</A></LI>
       {% endfor %}
-    </OL>
+    </UL>
     {% block pagination-bottom %}
     <DIV class="pagination">
         <SPAN class="step-links">

@@ -19,7 +19,7 @@
         <A name="{{ comment.pk }}"></A>
         <H5>
             В комментах насрал:
-            <A class="work-link">{{ comment.user.username }}</A>
+            <A class="work-link" href="{% url knowledge.users.views.details comment.user.username %}">{{ comment.user.username }}</A>
         </H5>
         <A class="comments-link work-link" href="#{{ comment.pk }}">[ссылка]</A>
         <DIV>{{ comment.comment }}</DIV>
@@ -28,12 +28,7 @@
     {% if user.is_authenticated %}
         {% get_comment_form for card as form %}
         <FORM action="{% comment_form_target %}" method="post">
-            {{ form.comment }}
-            {{ form.honeypot }}
-            {{ form.content_type }}
-            {{ form.object_pk }}
-            {{ form.timestamp }}
-            {{ form.security_hash }}
+            {{ form.comment }} {{ form.honeypot }} {{ form.content_type }} {{ form.object_pk }} {{ form.timestamp }} {{ form.security_hash }}
             <INPUT type="submit" name="submit-post" class="submit-post" value="Запостить" />
             <INPUT type="hidden" name="next" value="{% url knowledge.cards.views.details card.pk %}" />
         </FORM>
