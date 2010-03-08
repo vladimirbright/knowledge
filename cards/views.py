@@ -77,7 +77,7 @@ def details(request, card_id):
 def favorites(request):
     '''Страница с избранным'''
     user  = request.user
-    favorites = user.cardfavorites_set.select_related().all().order_by('-pk')
+    favorites = user.cardfavorites_set.select_related().all().order_by('-added')
     cards_list = []
 
     for f in favorites:
@@ -92,7 +92,6 @@ def favorites(request):
     except ValueError:
         page = 1
 
-    # If page request (9999) is out of range, deliver last page of results.
     try:
         cards = paginator.page(page)
     except (EmptyPage, InvalidPage):
@@ -104,7 +103,8 @@ def favorites(request):
                                         "cards": cards,
                                         "user": user,
                                         "favorites": favorites,
-                                        "currentplace": "Избранные заметки",
+                                        "currentplace": u"Избранные заметки",
+                                        "title": u":: Избранные заметки",
                                         #"queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
