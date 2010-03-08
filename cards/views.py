@@ -5,8 +5,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.db import connection
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-
 
 from knowledge.cards.models import Cards, CardsPostForm, CardFavorites
 from knowledge.settings import PER_PAGE, PAGE_GET
@@ -55,7 +55,6 @@ def index(request, best=False):
             return HttpResponseRedirect('/')
     else:
         form = CardsPostForm()
-
     return render_to_response('index.html', {
                                         "postForm": form,
                                         "cards": cards,
@@ -63,7 +62,7 @@ def index(request, best=False):
                                         "favorites": favorites,
                                         "title" : title,
                                         "currentplace": currentplace,
-                                        "queries" : connection.queries
+                                        #"queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
 
@@ -100,7 +99,6 @@ def favorites(request):
         cards = paginator.page(paginator.num_pages)
 
     form = CardsPostForm()
-
     return render_to_response('index.html', {
                                         "postForm": form,
                                         "cards": cards,
@@ -138,7 +136,7 @@ def fav_del(request, card_id):
             card.save()
     except:
         pass
-    return HttpResponseRedirect('/favorites/')
+    return HttpResponseRedirect(reverse('knowledge.cards.views.favorites'))
 
 
 # Страница по рейтингу.
