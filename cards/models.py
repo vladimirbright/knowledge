@@ -10,6 +10,7 @@ from django.contrib.comments.signals import comment_was_posted, comment_was_flag
 
 # Модель записи
 class Cards(models.Model):
+    ''' Main Card model'''
     topic     = models.CharField(max_length=140,verbose_name=u"Название")
     # Исходный текст заметки
     cardtext  = models.TextField(verbose_name=u"Заметка")
@@ -46,6 +47,7 @@ admin.site.register(Cards, CardsAdmin)
 
 
 class CardFavorites(models.Model):
+    '''user - favorite  topic relationship'''
     card  = models.ForeignKey(Cards,verbose_name=u'Заметка')
     owner = models.ForeignKey(User,verbose_name=u'Добавил')
     added = models.DateTimeField(default=datetime.now(), verbose_name=u'Добавлена в избранное')
@@ -55,8 +57,10 @@ class CardFavorites(models.Model):
 
 
 class CardsPostForm(forms.Form):
+    '''Form to post new topic'''
     topic    = forms.CharField(max_length=140,label=u"Название")
     cardtext = forms.CharField(label=u"Заметка",widget=forms.Textarea)
+
 
     def clean_topic(self):
         text = self.cleaned_data['topic'].strip()
@@ -64,14 +68,15 @@ class CardsPostForm(forms.Form):
             raise forms.ValidationError(u'Ваши мысли пусты!')
         return text
 
+
     def clean_cardtext(self):
         text = self.cleaned_data['cardtext'].strip()
         if text == '':
             raise forms.ValidationError(u'Ваши мысли пусты!')
         if len(text.split()) < 2:
             raise forms.ValidationError(u'Ваши мысли очень скудны! Оставьте хотя бы пару слов.')
-
         return text
+
 
     def save(self, owner):
         ''' Save new Card '''
@@ -105,14 +110,14 @@ def format_code(text):
             try:
                 # Ищем начало кода
                 open_tag = open_tag_pat %prog_lang
-                start    = text.index(open_tag)
-                start   += len(open_tag)
+                start = text.index(open_tag)
+                start += len(open_tag)
                 # Ищем окончание кода.
-                end       = text[start:].index(close_tag)
+                end = text[start:].index(close_tag)
                 code_text = text[start:start+end]
 
-                lexer          = get_lexer_by_name(prog_lang, stripall=True)
-                formatter      = HtmlFormatter(linenos=True, noclasses=True, style='perldoc')
+                lexer = get_lexer_by_name(prog_lang, stripall=True)
+                formatter = HtmlFormatter(linenos=True, noclasses=True, style='perldoc')
                 code_formatted = highlight(code_text, lexer, formatter)
 
                 text = text.replace( open_tag + code_text + close_tag, u"<h5>Код: %s</h5>%s" %(lexer.name, code_formatted))
