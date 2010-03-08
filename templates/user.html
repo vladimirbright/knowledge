@@ -18,7 +18,7 @@
   <UL class="user-props">
     <LI>{{ viewed_user.username }}</LI>
     {% if perms.users.change_user or viewed_user.self_request %}
-        <LI><A href="mailto:{{viewed_user.email}}">{{ viewed_user.email }}</A></LI>
+        <LI><A href="mailto:{{viewed_user.username}} <{{viewed_user.email}}>">{{ viewed_user.email }}</A></LI>
     {% endif %}
     <LI>Зарегистрирован: {{ viewed_user.date_joined|date:'d.m.Y' }}</LI>
   </UL>

@@ -1,7 +1,18 @@
 /*CSS для профиля пользователя*/
-.user-props {
-  font-size: 18px;
+.user-props, .user-topics {
+  list-style: none;
   font-family: Tahoma,'Droid sans',sans-serif;
+  padding-left: 20px;
+  font-size: 18px;
+}
+.user-props A, .user-topics A {
+  color: black;
+}
+.user-props A:visited, .user-topics A:visited {
+  color: #777777;
+}
+.user-props A:hover, .user-topics A:hover {
+  color: #EFB654;
 }
 .user-title {
   color: #6C5933;

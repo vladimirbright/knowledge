@@ -66,9 +66,11 @@
 <DIV class="span-22 navigation">
     <UL>
         <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.index  %}">По дате публикации</A></LI>
-        <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.favorites  %}">Избранное</A></LI>
         <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.rating  %}">По рейтингу</A></LI>
-        {% if user.is_authenticated %}<LI><A title="Редакитровать личные настройки" class="work-link work-link-underline" href="{% url knowledge.users.views.edit %}">Настройки</A></LI>{% endif %}
+        {% if user.is_authenticated %}
+            <LI><A class="work-link work-link-underline" href="{% url knowledge.cards.views.favorites  %}">Избранное</A></LI>
+            <LI><A title="Редакитровать личные настройки" class="work-link work-link-underline" href="{% url knowledge.users.views.edit %}">Настройки</A></LI>
+        {% endif %}
     </UL>
 </DIV>
 <DIV class="span-1 last">&nbsp;</DIV>
@@ -79,12 +81,12 @@
 <DIV class="span-22 last topics">
     <DIV class="span-16">
     {% block currentplace%}
-        <H2>Последние записи</H2>
+        {% if currentplace %}<H2>{{currentplace}}</H2>{% else %}<H2>Последние записи</H2>{% endif %}
     {% endblock %}
     </DIV>
     <DIV class="span-6 last search">{% block search %}<INPUT type="text" value="Что ищем?">{% endblock %}</DIV>
     {% block main %}
-    {% if cards %}
+    {% if cards.object_list %}
     {% load comments %}
     <A name="main"></A>
     <DIV class="span-22 last">
@@ -129,7 +131,7 @@
         {% endblock %}
     </DIV>
     {% else %}
-        <H2>Ни одна собака!</H2>
+        <H2>Нет заметок</H2>
     {% endif %}
     {% endblock %}
 </DIV>

@@ -8,47 +8,17 @@ from django import forms
 from django.contrib.comments.signals import comment_was_posted, comment_was_flagged
 
 
-def add_comments_count(sender, **kwargs):
-    '''Update comment count in Cards model'''
-    if not kwargs.has_key('comment'):
-        return False
-    obj_pk = int(kwargs['comment'].object_pk)
-    try:
-        card = Cards.objects.get(pk=obj_pk)
-    except:
-        return False
-    card.comments += 1
-    card.save()
-    return True
-
-
-def descrease_comments_count(sender, **kwargs):
-    if not kwargs.has_key('comment'):
-        return False
-    obj_pk = int(kwargs['comment'].object_pk)
-    try:
-        card = Cards.objects.get(pk=obj_pk)
-    except:
-        return False
-    flag = kwargs['flag']
-    #card.comments += 1
-    #card.save()
-    return True
-
-
-# Связываем сигнал с функцией.
-#comment_was_posted.connect(add_comments_count)
-#comment_was_flagged.connect(descrease_comments_count)
-
-
 # Модель записи
 class Cards(models.Model):
     topic     = models.CharField(max_length=140,verbose_name=u"Название")
+    # Исходный текст заметки
     cardtext  = models.TextField(verbose_name=u"Заметка")
+    # Посвеченный текст заметки
     formatted = models.TextField(blank=True)
     owner     = models.ForeignKey(User,verbose_name=u'Добавил')
     added     = models.DateTimeField(default=datetime.now(), verbose_name=u'Добавлена')
     comments  = models.IntegerField(default=0,verbose_name=u'Кол-во комментариев')
+    rating    = models.IntegerField(default=0,verbose_name=u'Рейтинг заметки')
 
     def __unicode__(self):
         return u"<Заметка: %s>" %self.topic[:20]
@@ -58,21 +28,13 @@ class Cards(models.Model):
         verbose_name_plural = u'Заметка'
 
 
-class CardFavorites(models.Model):
-    card  = models.ForeignKey(Cards,verbose_name=u'Заметка')
-    owner = models.ForeignKey(User,verbose_name=u'Добавил')
-    added = models.DateTimeField(default=datetime.now(), verbose_name=u'Добавлена в избранное')
-
-    def __unicode__(self):
-        return u"<Избранная заметка: %s, пользователя: %s>" %(self.card.topic[:20], self.owner.username)
-
-
 class CardsAdmin(admin.ModelAdmin):
     #fields        = ('topic', 'owner', 'added')
     list_display  = ('topic', 'owner', 'added')
     ordering      = ('-added', )
     search_fields = ['topic',]
     date_hierarchy = 'added'
+    list_filter = ('owner',)
     fieldsets = (
             (None, {
                 'fields': ('topic', 'cardtext', 'owner', 'added')
@@ -81,6 +43,15 @@ class CardsAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Cards, CardsAdmin)
+
+
+class CardFavorites(models.Model):
+    card  = models.ForeignKey(Cards,verbose_name=u'Заметка')
+    owner = models.ForeignKey(User,verbose_name=u'Добавил')
+    added = models.DateTimeField(default=datetime.now(), verbose_name=u'Добавлена в избранное')
+
+    def __unicode__(self):
+        return u"<Избранная заметка: %s, пользователя: %s>" %(self.card.topic[:20], self.owner.username)
 
 
 class CardsPostForm(forms.Form):

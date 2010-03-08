@@ -19,11 +19,7 @@ urlpatterns = patterns('/mysite.fcgi/',
     url(r'^favorites/$', card_view.favorites),
     url(r'^favorites/add/(?P<card_id>\d+)$', card_view.fav_add),
     url(r'^favorites/del/(?P<card_id>\d+)$', card_view.fav_del),
-    url(r'^usefull/$', card_view.rating),
-
-    # TODO не забыть убрать обработку статики с джанги.
-    #(r'^s/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-
+    url(r'^usefull/$', card_view.rating ),
     # комментарии стандартные джанговские.
     (r'^comments/', include('django.contrib.comments.urls')),
     # логин и регистариция.
@@ -33,9 +29,7 @@ urlpatterns = patterns('/mysite.fcgi/',
     # url связанные с пользователями.
     url(r'^user/(?P<username>[\d\w_]+)/?$', users_view.details),
     url(r'^settings/$', users_view.edit),
-    #(r'^users/', include('knowledge.users.urls')),
-
+    # админка
     (r'^admin/', include(admin.site.urls)),
     #(r'^admin/doc/', include(admindocs.site.urls)),
-
 )

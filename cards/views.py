@@ -13,9 +13,17 @@ from knowledge.settings import PER_PAGE, PAGE_GET
 
 
 # Главная страница.
-def index(request):
+def index(request, best=False):
     '''Главная страница'''
-    cards_list = Cards.objects.select_related().all().order_by('-pk')
+    order = '-pk'
+    title = None
+    currentplace = 'Последние записи'
+    if best is True:
+        order = '-rating'
+        title = ':: Самые популярные'
+        currentplace = 'Популярные записи'
+
+    cards_list = Cards.objects.select_related().all().order_by(order)
     paginator = Paginator(cards_list, PER_PAGE)
 
     try:
@@ -53,7 +61,9 @@ def index(request):
                                         "cards": cards,
                                         "user": user,
                                         "favorites": favorites,
-                                        #"queries" : connection.queries
+                                        "title" : title,
+                                        "currentplace": currentplace,
+                                        "queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
 
@@ -96,6 +106,7 @@ def favorites(request):
                                         "cards": cards,
                                         "user": user,
                                         "favorites": favorites,
+                                        "currentplace": "Избранные заметки",
                                         #"queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
@@ -108,6 +119,9 @@ def fav_add(request, card_id):
         favorite.owner = request.user
         favorite.card  = card
         favorite.save()
+
+        card.rating += 1
+        card.save()
     except:
         pass
     return HttpResponseRedirect('/')
@@ -118,14 +132,17 @@ def fav_del(request, card_id):
     try:
         favorite = CardFavorites.objects.filter(card=card_id,owner=request.user)
         favorite.delete()
+        card = Cards.objects.get(pk=card_id)
+        if card.rating > 0:
+            card.rating -= 1
+            card.save()
     except:
         pass
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/favorites/')
 
 
 # Страница по рейтингу.
 def rating(request):
-    card = get_object_or_404(Cards, pk=card_id)
-    return render_to_response('details.html', { "card": card, "user": request.user }, context_instance=RequestContext(request))
+    return index(request, best=True)
 
 #

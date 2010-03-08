@@ -40,7 +40,7 @@ def details(request, username):
                                             'viewed_user': user,
                                             'user': request.user ,
                                             'cards': cards,
-                                            'queries' : connection.queries
+                                            #'queries' : connection.queries
                                             }, context_instance=RequestContext(request))
 
 
