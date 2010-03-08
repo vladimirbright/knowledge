@@ -1,21 +1,36 @@
 {% extends 'index.html' %}
 
-{% block header%}
-    <H1>Пожалуйста ввдеите логин и пароль!</H1>
+{% block title %}:: Авторизация на сайте {% endblock %}
+
+{% block head-extra %}
+<STYLE type="text/css">
+.login_form_ul {
+    list-style: none;
+    padding: 0;
+}
+</STYLE>
 {% endblock %}
 
+{% block loginblock %}
+    <H3>Пожалуйста введите логин и пароль!</H3>
+{% endblock %}
+
+{% block form-navigation %} {% endblock %}
+
+{% block currentplace %}<H2>Авторизация на сайте</H2>{% endblock %}
+
 {% block main %}
+<DIV class="span-22 last">
  {% if form.errors %}
-    <P class="error">Sorry, that's not a valid username or password</P>
+    <P class="error">Не верный логин или пароль</P>
   {% endif %}
 
-  <FORM action="" method="post">
-    <LABEL for="username">Имя пользователя:</LABEL>
-    <INPUT type="text" name="username" value="" id="username">
-    <LABEL for="password">Пароль:</LABEL>
-    <INPUT type="password" name="password" value="" id="password">
-
-    <INPUT type="submit" value="login" />
-    <INPUT type="hidden" name="next" value="/" />
-  </form>
+  <FORM action="{% url django.contrib.auth.views.login %}" method="POST">
+  <UL class="login_form_ul">
+    <LI><INPUT type="text" name="username" value="" id="username">&nbsp;&nbsp;&nbsp;<LABEL for="username">имя пользователя</LABEL></LI>
+    <LI><INPUT type="password" name="password" value="" id="password">&nbsp;&nbsp;&nbsp;<LABEL for="password">пароль</LABEL></LI>
+    <LI><INPUT type="submit" value="login" /><INPUT type="hidden" name="next" value="/" /></LI>
+  </UL>
+  </FORM>
+</DIV>
 {% endblock %}

@@ -28,7 +28,7 @@ urlpatterns = patterns('/mysite.fcgi/',
     (r'^comments/', include('django.contrib.comments.urls')),
     # логин и регистариция.
     url(r'^login/', login),
-    url(r'^logout/', logout),
+    url(r'^logout/', logout, {'next_page': '/' }),
     url(r'^register/', users_view.register),
     # url связанные с пользователями.
     url(r'^user/(?P<username>[\d\w_]+)/?$', users_view.details),

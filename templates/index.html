@@ -27,7 +27,8 @@
             <H3>Hi, <A href="{% url knowledge.users.views.details user.username %}" class="work-link work-link-underline">{{ user.username }}!</A></H3>
             <H3><A class="work-link" href="{% url django.contrib.auth.views.logout %}">выйти</A></H3>
         {% else %}
-          <H3>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}">Войди</A> или <A href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H3>
+          <H3>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}" class="work-link work-link-underline">Войди</A> 
+            или <A class="work-link work-link-underline" href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H3>
         {% endif %}
         {% endblock %}
         </DIV>
