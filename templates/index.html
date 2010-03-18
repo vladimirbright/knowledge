@@ -7,7 +7,25 @@
     <LINK rel="stylesheet" href="/s/css/blueprint/screen.css" type="text/css" media="screen, projection">
     <!--[if lt IE 8]><link rel="stylesheet" href="/s/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
     <LINK href="/s/css/main.css" rel="stylesheet" type="text/css">
-    <SCRIPT type="text/javascript" src="/s/js/jquery.min.js"></SCRIPT>{% block head-extra %}{% endblock %}
+    <SCRIPT type="text/javascript" src="/s/js/jquery.min.js"></SCRIPT>
+    {% block head-markitup %}
+    <SCRIPT type="text/javascript" src="/s/js/jquery.markitup.pack.js"></SCRIPT>
+    <SCRIPT type="text/javascript" src="/s/js/set.js"></SCRIPT>
+    <LINK rel="stylesheet" href="/s/css/skins/simple/style.css" type="text/css" media="screen, projection">
+    <LINK rel="stylesheet" href="/s/css/bbcodeset.css" type="text/css" media="screen, projection">
+    <SCRIPT type="text/javascript">
+    $(document).ready(function () {
+    markitupactive = false;
+    $('#cardtextcontainer TEXTAREA').click(function () {
+        if (markitupactive === false) {
+            $(this).markItUp(mySettings);
+            markitupactive = true;
+        }
+    });
+    });
+    </SCRIPT>
+    
+    {% endblock %}{% block head-extra %}{% endblock %}
 </HEAD>
 <BODY class="back-cod">
 <DIV class="container">
@@ -16,7 +34,7 @@
     {% block header %}
         <DIV class="span-1">&nbsp;</DIV>
         <DIV class="span-6 logo">
-            <H2><A href="/">База&nbsp;знаний&nbsp;и&nbsp;заметок.</A></H2>
+            <H2><A href="/">База&nbsp;знаний&nbsp;и&nbsp;заметок</A></H2>
         </DIV>
         <DIV class="span-10">
             <H1>Узнал что-нибудь? Поделись!</H1>
@@ -46,9 +64,9 @@
     {% if user.is_authenticated %}
         <FORM action="{% url knowledge.cards.views.index %}" method="POST">
         {% if postForm.topic.errors %}<DIV class="error">{{ postForm.topic.errors }}</DIV>{% endif %}
-        <DIV><LABEL>{{ postForm.topic }} {{ postForm.topic.label }}</LABEL></DIV>
+        <DIV><LABEL>{{ postForm.topic.label }}<BR/>{{ postForm.topic }}</LABEL></DIV>
         {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
-        <DIV><LABEL>{{ postForm.cardtext }} {{ postForm.cardtext.label }}</LABEL></DIV>
+        <DIV id="cardtextcontainer"><LABEL>{{ postForm.cardtext.label }}<BR/>{{ postForm.cardtext }}</LABEL></DIV>
         <DIV><INPUT type="submit" value="Пусть знают все!"/></DIV>
         </FORM>
     {% else %}

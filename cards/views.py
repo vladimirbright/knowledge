@@ -60,6 +60,8 @@ def index(request, best=False):
                                         "cards": cards,
                                         "user": user,
                                         "favorites": favorites,
+                                        "ddd": {"a":1,"b":2},
+                                        "dd":"a",
                                         "title" : title,
                                         "currentplace": currentplace,
                                         #"queries" : connection.queries
