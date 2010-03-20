@@ -7,6 +7,7 @@ from django.contrib import admin
 from django import forms
 from django.contrib.comments.signals import comment_was_posted, comment_was_flagged
 
+from djangosphinx.models import SphinxSearch
 
 # Модель записи
 class Cards(models.Model):
@@ -20,6 +21,9 @@ class Cards(models.Model):
     added     = models.DateTimeField(default=datetime.now(), verbose_name=u'Добавлена')
     comments  = models.IntegerField(default=0,verbose_name=u'Кол-во комментариев')
     rating    = models.IntegerField(default=0,verbose_name=u'Рейтинг заметки')
+
+    objects = models.Manager()
+    search  = SphinxSearch(index="cards")
 
     def __unicode__(self):
         return u"<Заметка: %s>" %self.topic[:20]

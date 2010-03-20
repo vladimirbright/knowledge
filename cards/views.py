@@ -60,12 +60,34 @@ def index(request, best=False):
                                         "cards": cards,
                                         "user": user,
                                         "favorites": favorites,
-                                        "ddd": {"a":1,"b":2},
-                                        "dd":"a",
                                         "title" : title,
                                         "currentplace": currentplace,
                                         #"queries" : connection.queries
                                         }, context_instance=RequestContext(request))
+
+
+def search(request):
+    '''Страница поиска'''
+    cards = []
+    user  = request.user
+
+    try:
+        search_term  = request.GET.get('q', '')
+    except ValueError:
+        search_term = ''
+
+    search_term = search_term.strip()
+
+    if search_term != '':
+        cards = Cards.search.query(search_term)[0:PER_PAGE]
+
+    return render_to_response('search.html', {
+                                'search_term' : search_term,
+                                'cards': cards,
+                                'user': user,
+                                #"queries" : connection.queries
+                                        }, context_instance=RequestContext(request))
+
 
 
 # Страница подробностей.

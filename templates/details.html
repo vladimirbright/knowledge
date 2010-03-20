@@ -7,7 +7,7 @@
 <DIV class="span-16 card-detail">
     <P>{% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}</P>
 </DIV>
-<DIV class="span-6 last">ooooo</DIV>
+<DIV class="span-6 last"></DIV>
 {% get_comment_count for card as comment_count %}
 <DIV class="span-22 last card-comments">
     <H4><A href="#comments" class="work-link">Комментарии [{{ comment_count }}]:</A></H4>

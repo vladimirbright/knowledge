@@ -24,7 +24,6 @@
     });
     });
     </SCRIPT>
-    
     {% endblock %}{% block head-extra %}{% endblock %}
 </HEAD>
 <BODY class="back-cod">
@@ -102,7 +101,8 @@
         {% if currentplace %}<H2>{{currentplace}}</H2>{% else %}<H2>Последние записи</H2>{% endif %}
     {% endblock %}
     </DIV>
-    <DIV class="span-6 last search">{% block search %}<INPUT type="text" value="Что ищем?">{% endblock %}</DIV>
+    <DIV class="span-6 last search">
+        {% block search %}<FORM action="{% url knowledge.cards.views.search %}" method="GET"><INPUT name="q" type="text" value="{{ search_term|default:'Что ищем?' }}"></FORM>{% endblock %}</DIV>
     {% block main %}
     {% if cards.object_list %}
     {% load comments %}

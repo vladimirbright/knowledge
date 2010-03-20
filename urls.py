@@ -20,6 +20,8 @@ urlpatterns = patterns('/mysite.fcgi/',
     url(r'^favorites/add/(?P<card_id>\d+)$', card_view.fav_add),
     url(r'^favorites/del/(?P<card_id>\d+)$', card_view.fav_del),
     url(r'^usefull/$', card_view.rating ),
+    # поиск
+    url(r'^search/$', card_view.search),
     # комментарии стандартные джанговские.
     (r'^comments/', include('django.contrib.comments.urls')),
     # логин и регистариция.

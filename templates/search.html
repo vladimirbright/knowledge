@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+
+{% block title %}:: Поиск : {{ search_term }}{% endblock %}
+
+{% block form-navigation %} {% endblock %}
+
+{% block currentplace %}<H2>Результаты поиска: {{ search_term }}</H2>{% endblock %}
+
+{% block main %}
+<DIV class="span-16 last">
+    {% if not search_term %}<H3>Пустой поиск.</H3>{% endif %}
+    {% if cards %}
+    <OL>
+    {% for card in cards %}
+    <LI><A href="{% url knowledge.cards.views.details card.pk %}">{{ card.topic }}</A></LI>
+    {% endfor %}
+    </OL>
+    {% else %}
+    <H3>Ничего не найдено.</H3>
+    {% endif %}
+</DIV>
+{% endblock %}
