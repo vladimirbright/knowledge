@@ -1,2 +1,3 @@
 /*CSSка регистрации.*/
 FORM P { display: none; }
+.user-register-ol INPUT { width: 300px;  }

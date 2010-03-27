@@ -34,8 +34,6 @@ class UserRegisterForm(forms.Form):
                     widget     = forms.PasswordInput,
                     error_messages = {
                         'required':   u'Пароль необходим',
-                        #'max_length': u'Слишком длинный пароль, не больше 35 символов',
-                        #'min_length': u'Слишком короткий пароль, не короче 3 символов'
                         }
                 )
 
@@ -100,3 +98,59 @@ class UserRegisterForm(forms.Form):
                     self.cleaned_data['password']
                     )
 
+
+class UserSettingsForm(forms.Form):
+    email   = forms.EmailField(
+                    label=u'E-mail',
+                    error_messages = {
+                        'required': u'Введите e-mail',
+                        'invalid' : u'Вы ввели некорректный e-mail'
+                        }
+                )
+
+    password = forms.CharField(
+                    max_length = 35,
+                    min_length = 4,
+                    label      = u'Пароль',
+                    widget     = forms.PasswordInput,
+                    required   = False,
+                    error_messages = {
+                        'required':   u'Пароль необходим',
+                        }
+                )
+
+    passwordconfirm = forms.CharField(
+                    max_length  = 35,
+                    min_length  = 4,
+                    required   = False,
+                    label       = u'Повторите пароль',
+                    widget      = forms.PasswordInput,
+                    error_messages = {
+                        'required':   u'Вы не повторили пароль'
+                        }
+                )
+
+    def clean_passwordconfirm(self):
+        try:
+            password = self.cleaned_data['password']
+        except KeyError:
+            raise forms.ValidationError(u'Введите пароль')
+        try:
+            cpassword = self.cleaned_data['passwordconfirm']
+            if password != cpassword:
+                raise forms.ValidationError(u'Введенные пароли не совпадают')
+        except KeyError:
+            raise forms.ValidationError(u'Повторите пароль')
+
+    def save(self, User):
+        ''' UserSettingsForm.save(User) '''
+        if self.is_valid():
+            try:
+                User.email = self.cleaned_data['email']
+            except KeyError:
+                pass
+            try:
+                User.set_password(self.cleaned_data['password'])
+            except KeyError:
+                pass
+            User.save()

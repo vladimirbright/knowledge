@@ -18,9 +18,6 @@ mySettings = {
 		{name:'perl', openWith:'[code=perl]', closeWith:'[/code]'},
 		{name:'html', openWith:'[code=html]', closeWith:'[/code]'},
 		{name:'css', openWith:'[code=css]', closeWith:'[/code]'},
-		{name:'javascript', openWith:'[code=js]', closeWith:'[/code]'},
-			{separator:'---------------' },
-		{name:'Clean', className:"clean", replaceWith:function(markitup) { return markitup.selection.replace(/\[(.*?)\]/g, "") } },
-		{name:'Preview', className:"preview", call:'preview' }
+		{name:'javascript', openWith:'[code=js]', closeWith:'[/code]'}
 	]
 }

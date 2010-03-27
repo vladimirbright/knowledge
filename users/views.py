@@ -10,7 +10,7 @@ from django.template import RequestContext
 from django.db import connection
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
-from knowledge.users.models import UserRegisterForm
+from knowledge.users.models import UserRegisterForm, UserSettingsForm
 from knowledge.cards.models import Cards
 from knowledge.settings import PER_PAGE, PAGE_GET
 
@@ -47,7 +47,19 @@ def details(request, username):
 @login_required
 def edit(request):
     '''Редактирование своей инфы'''
-    return HttpResponse('lelele')
+    defaults = {'username': request.user.username, 'email': request.user.email }
+    if request.method == 'POST':
+        form = UserSettingsForm(request.POST)
+        if form.is_valid():
+            form.save(request.user)
+            return HttpResponseRedirect("/settings/")
+    else:
+        form = UserSettingsForm(initial=defaults)
+    return render_to_response('usersettings.html', {
+                                            'user': request.user ,
+                                            'form': form,
+                                            #'queries' : connection.queries
+                                            }, context_instance=RequestContext(request))
 
 
 def register(request):
@@ -55,7 +67,6 @@ def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
             return HttpResponseRedirect("/")
     else:
         form = UserRegisterForm()
