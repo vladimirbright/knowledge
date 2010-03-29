@@ -35,6 +35,7 @@
         }
         return false;
     });
+    $('input[name="q"]').click( function () { $(this).val('').unbind(); })
     });
     </SCRIPT>
     {% endblock %}{% block head-extra %}{% endblock %}
