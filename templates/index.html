@@ -15,12 +15,25 @@
     <LINK rel="stylesheet" href="/s/css/bbcodeset.css" type="text/css" media="screen, projection">
     <SCRIPT type="text/javascript">
     $(document).ready(function () {
-    markitupactive = false;
     $('#cardtextcontainer TEXTAREA').click(function () {
-        if (markitupactive === false) {
-            $(this).markItUp(mySettings);
-            markitupactive = true;
+        $(this).markItUp(mySettings);
+        $('.post-form .hidden INPUT, .post-form .hidden').show(500);
+        $('.post-form TEXTAREA').animate({ height: '100px'}, 500);
+        $('#cardtextcontainer TEXTAREA').unbind();
+    });
+    $('.highlighttable').hide(0);
+    $('.highlighttable').prev('h5').css({cursor: 'pointer'})
+            .hover(function() { $(this).css('background','wheat'); }, function () { $(this).css('background',''); })
+            .click(function() { $(this).next('.highlighttable').toggle(0);})
+    $('.confirm-link').click(function () {
+        var title, href, answer;
+        title = $(this).attr('title');
+        href  = $(this).attr('href');
+        answer = confirm(title + '?');
+        if (answer === true) {
+            location.href = href;
         }
+        return false;
     });
     });
     </SCRIPT>
@@ -63,10 +76,10 @@
     {% if user.is_authenticated %}
         <FORM action="{% url knowledge.cards.views.index %}" method="POST">
         {% if postForm.topic.errors %}<DIV class="error">{{ postForm.topic.errors }}</DIV>{% endif %}
-        <DIV><LABEL>{{ postForm.topic.label }}<BR/>{{ postForm.topic }}</LABEL></DIV>
+        <DIV class="hidden">{{ postForm.topic }}</DIV>
         {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
-        <DIV id="cardtextcontainer"><LABEL>{{ postForm.cardtext.label }}<BR/>{{ postForm.cardtext }}</LABEL></DIV>
-        <DIV><INPUT type="submit" value="Пусть знают все!"/></DIV>
+        <DIV id="cardtextcontainer">{{ postForm.cardtext }}</DIV>
+        <DIV><INPUT class="hidden" type="submit" value="Пусть знают все!"/></DIV>
         </FORM>
     {% else %}
         <H2>Войдите на сайт чтобы оставить заметку!</H2>
@@ -120,8 +133,11 @@
                     {% else %}
                     <LI><A href="{% url knowledge.cards.views.fav_add card.pk %}" class="work-link">В избранное</A></LI>
                     {% endif %}
-                    {% if perms.cards.change_cards %}<LI><A href="" class="work-link">Редактировать</A></LI>{% endif %}
-                    {% if perms.cards.delete_cards %}<LI><A href="" class="work-link">Удалить</A></LI>{% endif %}
+                    {% if perms.cards.change_cards %}
+                        <LI><A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.edit card.pk %}" class="confirm-link work-link">Редактировать</A></LI>
+                    {% endif %}
+                    {% if perms.cards.delete_cards %}
+                        <LI><A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.delete card.pk %}" class="confirm-link work-link">Удалить</A></LI>{% endif %}
                 </UL>
                 {% endif %}
             </DIV>

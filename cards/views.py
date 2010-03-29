@@ -96,6 +96,15 @@ def details(request, card_id):
     return render_to_response('details.html', { "card": card, "user": request.user }, context_instance=RequestContext(request))
 
 
+@login_required
+def edit(request, card_id):
+    return HttpResponseRedirect('/')
+
+@login_required
+def delete(request, card_id):
+    return HttpResponseRedirect('/')
+
+
 # Страница избранного.
 @login_required
 def favorites(request):

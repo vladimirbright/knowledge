@@ -11,7 +11,7 @@
 .back-573 { background-color: #573B09; }
 .bord-573 { border-color: #573B09; }
 .col-573 { color: #573B09; }
-
+.hidden { display: none; }
 .work-link {
   color: #6C5933;
   text-decoration: none;
@@ -63,7 +63,6 @@ BODY {
 .login-block H3 {
   font-size: 12px;
 }
-
 /*Форма*/
 .form-navigation {
   margin-bottom: 20px;
@@ -77,7 +76,7 @@ BODY {
   padding: 5px;
 }
 .post-form TEXTAREA {
-  height: 80px;
+  height: 40px;
 }
 .post-form LABEL {
   font-size: 17px;
@@ -189,7 +188,6 @@ BODY {
 .comments DIV {
   margin-bottom: 25px;
 }
-
 /*Форма комментариев*/
 INPUT[name="honeypot"] { display: none; }
 TEXTAREA[name="comment"] {
@@ -197,7 +195,6 @@ TEXTAREA[name="comment"] {
   height: 75px;
   padding: 5px;
 }
-
 /*Вставки кода*/
 .linenos {
   width: 10px;
