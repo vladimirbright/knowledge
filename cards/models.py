@@ -93,6 +93,18 @@ class CardsPostForm(forms.Form):
         return True
 
 
+class CardsEditForm(CardsPostForm):
+    def save(self, card, preview=False):
+        card.topic     = self.cleaned_data["topic"]
+        card.cardtext  = self.cleaned_data["cardtext"]
+        card.owner     = owner
+        card.formatted = format_code(self.cleaned_data["cardtext"])
+        if preview is False:
+            card.save()
+        else:
+            return card
+
+
 def format_code(text):
     '''Function to find [code] tags and replace with highlited code'''
     import bbcode
