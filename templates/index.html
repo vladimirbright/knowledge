@@ -21,7 +21,7 @@
         $('.post-form TEXTAREA').animate({ height: '100px'}, 500);
         $('#cardtextcontainer TEXTAREA').unbind();
     });
-    $('.highlighttable').hide(0);
+    {% block head-hide-code %}$('.highlighttable').hide(0);{% endblock %}
     $('.highlighttable').prev('h5').css({cursor: 'pointer'})
             .hover(function() { $(this).css('background','wheat'); }, function () { $(this).css('background',''); })
             .click(function() { $(this).next('.highlighttable').toggle(0);})
@@ -58,8 +58,8 @@
             <H3>Hi, <A href="{% url knowledge.users.views.details user.username %}" class="work-link work-link-underline">{{ user.username }}!</A></H3>
             <H3><A class="work-link" href="{% url django.contrib.auth.views.logout %}">выйти</A></H3>
         {% else %}
-          <H3>Здарова Аноним! <A href="{% url django.contrib.auth.views.login %}" class="work-link work-link-underline">Войди</A> 
-            или <A class="work-link work-link-underline" href="{% url knowledge.users.views.register %}">Зарегистрируйся</A></H3>
+          <H3><A href="{% url django.contrib.auth.views.login %}" class="work-link work-link-underline">Войдите</A> 
+            или <A class="work-link work-link-underline" href="{% url knowledge.users.views.register %}">Зарегистрируйтесь</A></H3>
         {% endif %}
         {% endblock %}
         </DIV>
@@ -83,7 +83,7 @@
         <DIV><INPUT class="hidden" type="submit" value="Пусть знают все!"/></DIV>
         </FORM>
     {% else %}
-        <H2>Войдите на сайт чтобы оставить заметку!</H2>
+        <H2>Войдите на сайт, чтобы оставить заметку!</H2>
     {% endif %}
     </DIV>
     <DIV class="span-1 last">&nbsp;</DIV>
