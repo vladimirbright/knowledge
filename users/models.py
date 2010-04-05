@@ -97,6 +97,7 @@ class UserRegisterForm(forms.Form):
                     self.cleaned_data['email'],
                     self.cleaned_data['password']
                     )
+        user.save()
 
 
 class UserSettingsForm(forms.Form):
