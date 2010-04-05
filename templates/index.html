@@ -19,7 +19,7 @@
     $('#cardtextcontainer TEXTAREA').click(function () {
         $(this).markItUp(mySettings);
         $('.post-form .hidden INPUT, .post-form .hidden').show(500);
-        $('.post-form TEXTAREA').animate({ height: '100px'}, 500);
+       {% block head-animate-textarea %} $('.post-form TEXTAREA').animate({ height: '100px'}, 500);{% endblock %}
         $('#cardtextcontainer TEXTAREA').unbind();
     });
     {% block head-hide-code %}$('.highlighttable').hide(0);{% endblock %}
@@ -136,8 +136,10 @@
                     <LI><A href="{% url knowledge.cards.views.fav_add card.pk %}" class="work-link">В избранное</A></LI>
                     {% endif %}
                     {% if perms.cards.change_cards %}
-                        <LI><A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.edit card.pk %}" class="confirm-link work-link">Редактировать</A></LI>
-                    {% endif %}
+                        <LI><A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.edit card.pk %}" class="work-link">Редактировать</A></LI>
+                    {% else %}{% ifequal user.pk card.owner_id %}
+                        <LI><A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.edit card.pk %}" class="work-link">Редактировать</A></LI>
+                    {% endifequal %}{% endif %}
                     {% if perms.cards.delete_cards %}
                         <LI><A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.delete card.pk %}" class="confirm-link work-link">Удалить</A></LI>{% endif %}
                 </UL>

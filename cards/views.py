@@ -8,7 +8,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
-from knowledge.cards.models import Cards, CardsPostForm, CardFavorites
+from knowledge.cards.models import Cards, CardsPostForm, CardFavorites, CardsEditForm
 from knowledge.settings import PER_PAGE, PAGE_GET
 
 
@@ -70,17 +70,13 @@ def search(request):
     '''Страница поиска'''
     cards = []
     user  = request.user
-
     try:
         search_term  = request.GET.get('q', '')
     except ValueError:
         search_term = ''
-
     search_term = search_term.strip()
-
     if search_term != '':
         cards = Cards.search.query(search_term)[0:PER_PAGE]
-
     return render_to_response('search.html', {
                                 'search_term' : search_term,
                                 'cards': cards,
@@ -98,7 +94,23 @@ def details(request, card_id):
 
 @login_required
 def edit(request, card_id):
-    return HttpResponseRedirect('/')
+    card = get_object_or_404(Cards, pk=card_id)
+    user = request.user
+    #queries= connection.queries
+    if not user.has_perm('cards.change_cards') and card.owner.pk != user.pk:
+        return HttpResponseRedirect('/')
+    defaults = { "topic": card.topic, "cardtext": card.cardtext}
+    if request.method == 'POST':
+        form = CardsEditForm(request.POST)
+        # preview
+        if 'preview' in request.POST and form.is_valid():
+            card = form.save(card, True)
+        elif form.is_valid():
+            form.save(card, False)
+            return HttpResponseRedirect('/%s' %(card.pk))
+    else:
+        form = CardsEditForm(defaults)
+    return render_to_response('edit.html', locals(), context_instance=RequestContext(request))
 
 @login_required
 def delete(request, card_id):
@@ -150,7 +162,6 @@ def fav_add(request, card_id):
         favorite.owner = request.user
         favorite.card  = card
         favorite.save()
-
         card.rating += 1
         card.save()
     except:

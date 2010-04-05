@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% block title %}:: Редактирование: &laquo;{{ card.topic }}&raquo;{% endblock %}
+{% block form-navigation %} {% endblock %}
+{% block head-hide-code %} {% endblock %}
+{% block head-animate-textarea %} {% endblock %}
+{% block head-extra %}<STYLE type="text/css">  #cardtextcontainer TEXTAREA { height: 500px; }  </STYLE>{% endblock %}
+{% block currentplace %}<H2>Редактирование: &laquo;{{ card.topic }}&raquo;</H2>{% endblock %}
+{% block main %}
+<DIV class="span-16 card-detail">
+    <H3>Предпросмотр</H3>
+    <P>
+        {{ card.formatted|safe }}
+    </P>
+    <DIV class="post-form">
+    {% if form.errors %}<OL class="error">{{form.errors}}</OL>{% endif %}
+    <FORM action="{% url knowledge.cards.views.edit card.pk %}" method="POST">
+    <DIV>{{form.topic}}</DIV>
+    <DIV id="cardtextcontainer">{{form.cardtext}}</DIV>
+    <INPUT type="submit" value="Сохранить"/>&nbsp;<INPUT type="submit" name="preview" value="Предпросмотр" />
+    </FORM>
+    </DIV>
+</DIV>
+<DIV class="span-6 last"></DIV>
+{% endblock %}

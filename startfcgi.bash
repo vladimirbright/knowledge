@@ -1,10 +1,10 @@
 #!/bin/bash
 
-PIDFILE='/var/run/knowledge.pid'
+PIDFILE='/tmp/knowledge.pid'
 SOCKETFILE='/tmp/knowledge.sock'
 HOST='127.0.0.1'
 PORT=5757
-ERRLOG='/var/log/knowledge.fastcgi.error.log'
+ERRLOG='/tmp/knowledge.fastcgi.error.log'
 
 if [ -f $PIDFILE ]; then
     kill `cat  "$PIDFILE"`
