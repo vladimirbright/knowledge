@@ -11,6 +11,7 @@
     <P>
         {{ card.formatted|safe }}
     </P>
+    <HR>
     <DIV class="post-form">
     {% if form.errors %}<OL class="error">{{form.errors}}</OL>{% endif %}
     <FORM action="{% url knowledge.cards.views.edit card.pk %}" method="POST">
