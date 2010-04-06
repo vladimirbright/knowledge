@@ -154,6 +154,8 @@ BODY {
 }
 .card H5 {
   margin: 10px 0 5px 0;
+  border-bottom: 1px dashed black;
+  font-size: 12px;
 }
 .card .card-inner {
   padding-left: 20px;
