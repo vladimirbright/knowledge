@@ -5,7 +5,6 @@ import os.path
 def SELF_DIR(filename=''):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)
 
-# Django settings for knowledge project.
 # fuck lighttpd
 FORCE_SCRIPT_NAME = ''
 
@@ -32,38 +31,22 @@ SPHINX_PORT = 9312
 # Настройки кеша.
 CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
-# Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# although not all choices may be available on all operating systems.
-# If running in a Windows environment this must be set to the same as your
-# system time zone.
 TIME_ZONE = 'Europe/Moscow'
 
-# Language code for this installation. All choices can be found here:
-# http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'ru-RU'
 
 SITE_ID = 1
 
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
 USE_I18N = True
 
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = SELF_DIR('s')
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/s/'
 
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
 
 LOGIN_URL='/login/'
+
 # Настройки для по страничного вывода
 PER_PAGE=15
 PAGE_GET='page'
