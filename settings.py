@@ -26,8 +26,11 @@ DATABASE_PASSWORD = 'supersuperkn'         # Not used with sqlite3.
 DATABASE_HOST     = '127.0.0.1'             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT     = ''             # Set to empty string for default. Not used with sqlite3.
 
+# Настройки сфинкс 
 SPHINX_SERVER = '127.0.0.1'
 SPHINX_PORT = 9312
+# Настройки кеша.
+CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -61,6 +64,7 @@ MEDIA_URL = '/s/'
 ADMIN_MEDIA_PREFIX = '/media/'
 
 LOGIN_URL='/login/'
+# Настройки для по страничного вывода
 PER_PAGE=15
 PAGE_GET='page'
 
@@ -83,9 +87,6 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'knowledge.urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     SELF_DIR('templates'),
 )
 

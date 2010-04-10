@@ -110,6 +110,8 @@
 {% comment %} 
     Начало вывода топиков.
 {% endcomment %}
+{% load comments %}
+{% load pluralize %}
 <DIV class="span-22 last topics">
     <DIV class="span-16">
     {% block currentplace%}
@@ -144,11 +146,11 @@
                         <LI><A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.delete card.pk %}" class="confirm-link work-link">Удалить</A></LI>{% endif %}
                 </UL>
                 {% endif %}
-            </DIV>
+            </DIV>{% get_comment_count for card as comment_count %} 
             <DIV class="span-16 last card"><DIV class="card-inner">
                 <H4><A title="Посмотреть внимательнее" href="{% url knowledge.cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
                 {% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}
-                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url knowledge.cards.views.details card.pk  %}#comments" class="work-link">Прочитать обсуждение</A></DIV>
+                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url knowledge.cards.views.details card.pk  %}#comments" class="work-link">Прочитать обсуждение{% if comment_count %} [{{comment_count}} комментар{{comment_count|rupluralize:"ий,ия,иев"}}]{% endif %}</A></DIV>
             </DIV></DIV>
         </DIV>
         {% endfor %}

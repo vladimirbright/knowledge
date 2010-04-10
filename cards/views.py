@@ -62,7 +62,7 @@ def index(request, best=False):
                                         "favorites": favorites,
                                         "title" : title,
                                         "currentplace": currentplace,
-                                        #"queries" : connection.queries
+                                        "queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
 
@@ -89,7 +89,8 @@ def search(request):
 # Страница подробностей.
 def details(request, card_id):
     card = get_object_or_404(Cards, pk=card_id)
-    return render_to_response('details.html', { "card": card, "user": request.user }, context_instance=RequestContext(request))
+    user = request.user
+    return render_to_response('details.html', locals(), context_instance=RequestContext(request))
 
 
 @login_required
