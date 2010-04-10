@@ -62,7 +62,7 @@ def index(request, best=False):
                                         "favorites": favorites,
                                         "title" : title,
                                         "currentplace": currentplace,
-                                        "queries" : connection.queries
+                                        #"queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
 
