@@ -77,12 +77,8 @@ def search(request):
     search_term = search_term.strip()
     if search_term != '':
         cards = Cards.search.query(search_term)[0:PER_PAGE]
-    return render_to_response('search.html', {
-                                'search_term' : search_term,
-                                'cards': cards,
-                                'user': user,
-                                #"queries" : connection.queries
-                                        }, context_instance=RequestContext(request))
+    #queries = connection.queries
+    return render_to_response('search.html', locals(), context_instance=RequestContext(request))
 
 
 

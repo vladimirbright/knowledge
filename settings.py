@@ -100,4 +100,5 @@ INSTALLED_APPS = (
     'django.contrib.comments',
     'knowledge.users',
     'knowledge.cards',
+    'knowledge.feeds',
 )
