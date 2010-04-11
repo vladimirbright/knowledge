@@ -1,0 +1,25 @@
+Новый комментарий от: {{ comment.userinfo.name }}
+
+{% if comment.is_public %}
+** Комментарий прошел СПАМ проверку и виден всем **
+{% else %}
+** Комментарий похож на СПАМ и был скрыт **
+{% endif %}
+
+Информация о пользователе:
+Email: {{ comment.userinfo.email }}
+URL: {{ comment.userinfo.url }}
+IP: {{ comment.ip_address }}
+
+Текс комментария:
+
+{{ comment }}
+
+
+Откомментировано на:
+
+http://knbase.org{{ comment.get_absolute_url }}
+
+
+Отмодерируйте последние комментарии здесь:
+    http://knbase.org/admin/comments/comment/

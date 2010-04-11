@@ -6,8 +6,10 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from django import forms
 from django.contrib.comments.signals import comment_was_posted, comment_was_flagged
+from django.contrib.comments.moderation import CommentModerator, moderator
 
 from djangosphinx.models import SphinxSearch
+
 
 # Модель записи
 class Cards(models.Model):
@@ -48,6 +50,12 @@ class CardsAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Cards, CardsAdmin)
+
+class CardsModerator(CommentModerator):
+    email_notification = True
+
+
+moderator.register(Cards, CardsModerator)
 
 
 class CardFavorites(models.Model):
