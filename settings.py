@@ -30,6 +30,9 @@ SPHINX_SERVER = '127.0.0.1'
 SPHINX_PORT = 9312
 # Настройки кеша.
 CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+# Настройки email
+DEFAULT_FROM_EMAIL = 'site@knbase.org'
+EMAIL_SUBJECT_PREFIX = '[knbase.org]'
 
 TIME_ZONE = 'Europe/Moscow'
 
