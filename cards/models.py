@@ -95,7 +95,7 @@ class CardsPostForm(forms.Form):
         card.owner     = owner
         card.formatted = format_code(self.cleaned_data["cardtext"])
         card.save()
-        return True
+        return card
 
 
 class CardsEditForm(CardsPostForm):

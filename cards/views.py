@@ -51,8 +51,8 @@ def index(request, best=False):
     if request.method == 'POST' and user.is_authenticated():
         form = CardsPostForm(request.POST)
         if form.is_valid():
-            form.save(user)
-            return HttpResponseRedirect('/')
+            newcard = form.save(user)
+            return HttpResponseRedirect(reverse('knowledge.cards.views.details', args=[newcard.pk]))
     else:
         form = CardsPostForm()
     return render_to_response('index.html', {
@@ -104,7 +104,7 @@ def edit(request, card_id):
             card = form.save(card, True)
         elif form.is_valid():
             form.save(card, False)
-            return HttpResponseRedirect('/%s' %(card.pk))
+            return HttpResponseRedirect(reverse('knowledge.cards.views.details', args=[card.pk]))
     else:
         form = CardsEditForm(defaults)
     return render_to_response('edit.html', locals(), context_instance=RequestContext(request))
@@ -163,7 +163,7 @@ def fav_add(request, card_id):
         card.save()
     except:
         pass
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(reverse('knowledge.cards.views.favorites'))
 
 
 @login_required
