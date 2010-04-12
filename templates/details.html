@@ -11,7 +11,18 @@
 <DIV class="span-6 last"></DIV>
 {% get_comment_count for card as comment_count %}
 <DIV class="span-22 last card-comments">
-    <H4><A href="#comments" class="work-link">Комментарии [{{ comment_count }}]:</A></H4>
+    <H4 style="float: left"><A href="#comments" class="work-link">Комментарии [{{ comment_count }}]:</A></H4>
+    <!-- AddThis Button BEGIN -->
+    <DIV class="addthis_toolbox addthis_default_style" style="float: right">
+    <A href="http://www.addthis.com/bookmark.php?v=250&amp;username=xa-4bc2e4802b6ab544" class="addthis_button_compact work-link">Share</a>
+    <SPAN class="addthis_separator">|</SPAN>
+    <A class="addthis_button_twitter"></A>
+    <A class="addthis_button_friendfeed"></A>
+    <A class="addthis_button_google"></A>
+    <A class="addthis_button_facebook"></A>
+    </DIV>
+    <SCRIPT type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4bc2e4802b6ab544"></SCRIPT>
+    <!-- AddThis Button END -->
     <HR />
     <A name="comments"></A>
     {% get_comment_list for card as comment_list %}
