@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.db import connection
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
@@ -66,6 +67,11 @@ def index(request, best=False):
                                         }, context_instance=RequestContext(request))
 
 
+# Страница по рейтингу.
+def rating(request):
+    return index(request, best=True)
+
+
 def search(request):
     '''Страница поиска'''
     cards = []
@@ -86,6 +92,14 @@ def search(request):
 def details(request, card_id):
     card = get_object_or_404(Cards, pk=card_id)
     user = request.user
+    card.in_favorite = False
+    if user.is_authenticated() is True:
+        try:
+            fav = CardFavorites.objects.get(card=card.pk,owner=user.pk)
+            card.in_favorite = True
+        except ObjectDoesNotExist:
+            pass
+    #queries = connection.queries
     return render_to_response('details.html', locals(), context_instance=RequestContext(request))
 
 
@@ -108,10 +122,6 @@ def edit(request, card_id):
     else:
         form = CardsEditForm(defaults)
     return render_to_response('edit.html', locals(), context_instance=RequestContext(request))
-
-@login_required
-def delete(request, card_id):
-    return HttpResponseRedirect('/')
 
 
 # Страница избранного.
@@ -151,37 +161,41 @@ def favorites(request):
                                         }, context_instance=RequestContext(request))
 
 
-@login_required
-def fav_add(request, card_id):
+def action_with_favorites(request, card_id, delete=False):
     try:
         card = Cards.objects.get(pk=card_id)
-        favorite = CardFavorites()
-        favorite.owner = request.user
-        favorite.card  = card
-        favorite.save()
-        card.rating += 1
-        card.save()
-    except:
+        if delete is False:
+            favorite = CardFavorites()
+            favorite.owner = request.user
+            favorite.card  = card
+            favorite.save()
+            card.rating += 1
+            card.save()
+        else:
+            favorite = CardFavorites.objects.filter(card=card_id,owner=request.user)
+            favorite.delete()
+            if card.rating > 0:
+                card.rating -= 1
+                card.save()
+    except ObjectDoesNotExist:
         pass
-    return HttpResponseRedirect(reverse('knowledge.cards.views.favorites'))
+    try:
+        from_details = request.GET['from_details']
+    except:
+        return HttpResponseRedirect(reverse('knowledge.cards.views.favorites'))
+    else:
+        return HttpResponseRedirect(reverse('knowledge.cards.views.details', args=[card.pk]))
+
+
+@login_required
+def fav_add(request, card_id):
+    return action_with_favorites(request, card_id, False)
 
 
 @login_required
 def fav_del(request, card_id):
-    try:
-        favorite = CardFavorites.objects.filter(card=card_id,owner=request.user)
-        favorite.delete()
-        card = Cards.objects.get(pk=card_id)
-        if card.rating > 0:
-            card.rating -= 1
-            card.save()
-    except:
-        pass
-    return HttpResponseRedirect(reverse('knowledge.cards.views.favorites'))
+    return action_with_favorites(request, card_id, True)
 
 
-# Страница по рейтингу.
-def rating(request):
-    return index(request, best=True)
 
 #

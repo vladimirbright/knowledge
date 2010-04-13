@@ -23,7 +23,6 @@ urlpatterns = patterns('/mysite.fcgi/',
     # Подробная страница
     url(r'^(\d+)/?$', card_view.details, name='details'),
     url(r'^edit/(\d+)/?$', card_view.edit),
-    url(r'^delete/(\d+)/?$', card_view.delete),
     url(r'^favorites/$', card_view.favorites),
     url(r'^favorites/add/(?P<card_id>\d+)$', card_view.fav_add),
     url(r'^favorites/del/(?P<card_id>\d+)$', card_view.fav_del),

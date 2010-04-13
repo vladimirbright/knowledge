@@ -8,7 +8,24 @@
 <DIV class="span-16 card-detail">
     <P>{% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}</P>
 </DIV>
-<DIV class="span-6 last"></DIV>
+<DIV class="span-6 last">
+    {% if user.is_authenticated %}
+    <UL class="card-actions" style="text-align: left">
+        {% if card.in_favorite %}
+        <LI><A href="{% url knowledge.cards.views.fav_del card.pk %}?from_details" class="work-link">Убрать из избранного</A></LI>
+        {% else %}
+        <LI><A href="{% url knowledge.cards.views.fav_add card.pk %}?from_details" class="work-link">В избранное</A></LI>
+        {% endif %}
+        {% if perms.cards.change_cards %}
+            <LI><A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.edit card.pk %}" class="work-link">Редактировать</A></LI>
+        {% else %}{% ifequal user.pk card.owner_id %}
+            <LI><A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.edit card.pk %}" class="work-link">Редактировать</A></LI>
+        {% endifequal %}{% endif %}
+        {% if perms.cards.delete_cards %}
+            <LI><A title="Удалить &laquo;{{card.topic}}&raquo;" href="/admin/cards/cards/{{card.pk}}/delete/" class="work-link">Удалить</A></LI>{% endif %}
+    </UL>
+    {% endif %}
+</DIV>
 {% get_comment_count for card as comment_count %}
 <DIV class="span-22 last card-comments">
     <H4 style="float: left"><A href="#comments" class="work-link">Комментарии [{{ comment_count }}]:</A></H4>
