@@ -200,7 +200,14 @@ TEXTAREA[name="comment"] {
 /*Вставки кода*/
 .linenos {
   width: 10px;
+  vertical-align: top;
 }
 .linenodiv PRE {
   line-height: 1.25;
+  margin: 0;
+}
+.highlight PRE {
+  width: 590px;
+  overflow: auto;
+  margin: 0;
 }
