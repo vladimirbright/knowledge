@@ -143,7 +143,7 @@
                         <LI><A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.edit card.pk %}" class="work-link">Редактировать</A></LI>
                     {% endifequal %}{% endif %}
                     {% if perms.cards.delete_cards %}
-                        <LI><A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url knowledge.cards.views.delete card.pk %}" class="confirm-link work-link">Удалить</A></LI>{% endif %}
+                        <LI><A title="Удалить &laquo;{{card.topic}}&raquo;" href="/admin/cards/cards/{{card.pk}}/delete/" class="work-link">Удалить</A></LI>{% endif %}
                 </UL>
                 {% endif %}
             </DIV>{% get_comment_count for card as comment_count %} 
