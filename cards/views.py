@@ -90,15 +90,13 @@ def search(request):
 
 # Страница подробностей.
 def details(request, card_id):
-    card = get_object_or_404(Cards, pk=card_id)
     user = request.user
+    card = get_object_or_404(Cards, pk=card_id)
     card.in_favorite = False
     if user.is_authenticated() is True:
-        try:
-            fav = CardFavorites.objects.get(card=card.pk,owner=user.pk)
+        fav = CardFavorites.objects.filter(card=card.pk,owner=user.pk)
+        if len(fav) > 0:
             card.in_favorite = True
-        except ObjectDoesNotExist:
-            pass
     #queries = connection.queries
     return render_to_response('details.html', locals(), context_instance=RequestContext(request))
 

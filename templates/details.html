@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load comments %}
+{% load cache %}
 {% block title %}:: {{ card.topic }}{% endblock %}
 {% block form-navigation %} {% endblock %}
 {% block head-hide-code %} {% endblock %}
@@ -42,6 +43,7 @@
     <!-- AddThis Button END -->
     <HR />
     <A name="comments"></A>
+    {% cache 10 comments_cache card.pk %}
     {% get_comment_list for card as comment_list %}
     <DIV class="comments">
         {% for comment in comment_list %}
@@ -53,6 +55,7 @@
         <DIV>{{ comment.comment }}</DIV>
         {% endfor %}
     </DIV>
+    {% endcache %}
     {% if user.is_authenticated %}
         {% get_comment_form for card as form %}
         <FORM action="{% comment_form_target %}" method="post">
