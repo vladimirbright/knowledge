@@ -5,13 +5,19 @@ from django.contrib import admin#, admindocs
 from django.contrib.auth.views import login, logout
 from django.contrib.syndication.views import feed as sfeed
 from django.conf import settings
+from django.contrib.sitemaps.views import sitemap as djsitemap
 
 from knowledge.cards import views as card_view
+from knowledge.sitemap.models import CardsSitemap
 from knowledge.users import views as users_view
 from knowledge.feeds.models import LastCards
 
 feeds = {
     'latest': LastCards,
+}
+
+sitemaps = {
+    'topic' : CardsSitemap
 }
 
 
@@ -40,6 +46,9 @@ urlpatterns = patterns('/mysite.fcgi/',
     url(r'^settings/$', users_view.edit),
     # RSS
     (r'^feeds/(?P<url>.*)/$', sfeed, {'feed_dict': feeds}),
+    # the sitemap
+    (r'^sitemap.xml$', djsitemap, {'sitemaps': sitemaps}),
+
     # админка
     (r'^admin/', include(admin.site.urls)),
     #(r'^admin/doc/', include(admindocs.site.urls)),

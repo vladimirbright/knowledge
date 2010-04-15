@@ -7,6 +7,7 @@ from django.contrib import admin
 from django import forms
 from django.contrib.comments.signals import comment_was_posted, comment_was_flagged
 from django.contrib.comments.moderation import CommentModerator, moderator
+from django.core.urlresolvers import reverse
 
 from djangosphinx.models import SphinxSearch
 
@@ -29,6 +30,9 @@ class Cards(models.Model):
 
     def __unicode__(self):
         return u"<Заметка: %s>" %self.topic[:20]
+
+    def get_absolute_url(self):
+        return reverse('knowledge.cards.views.details', args=[self.pk])
 
     class Meta:
         verbose_name = u'Заметку'

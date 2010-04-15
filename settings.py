@@ -84,7 +84,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.comments',
+    'django.contrib.sitemaps',
     'knowledge.users',
+    'knowledge.sitemap',
     'knowledge.cards',
     'knowledge.feeds',
 )
