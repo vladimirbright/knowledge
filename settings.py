@@ -51,7 +51,7 @@ ADMIN_MEDIA_PREFIX = '/media/'
 LOGIN_URL='/login/'
 
 # Настройки для по страничного вывода
-PER_PAGE=15
+PER_PAGE=5
 PAGE_GET='page'
 
 # Make this unique, and don't share it with anybody.

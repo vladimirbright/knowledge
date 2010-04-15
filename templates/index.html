@@ -24,7 +24,9 @@
        {% block head-animate-textarea %} $('.post-form TEXTAREA').animate({ height: '100px'}, 500);{% endblock %}
         $('#cardtextcontainer TEXTAREA').unbind();
     });
-    {% block head-hide-code %}$('.highlighttable').hide(0);{% endblock %}
+    {% block head-hide-code %}
+    //$('.highlighttable').hide(0);
+    {% endblock %}
     $('.highlighttable').prev('h5').css({cursor: 'pointer'})
             .hover(function() { $(this).css('background','wheat'); }, function () { $(this).css('background',''); })
             .click(function() { $(this).next('.highlighttable').toggle(0);})
