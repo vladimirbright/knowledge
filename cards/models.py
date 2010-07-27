@@ -7,12 +7,10 @@ from django.contrib import admin
 from django import forms
 from django.contrib.comments.signals import comment_was_posted, comment_was_flagged
 from django.contrib.comments.moderation import CommentModerator, moderator
-from django.core.urlresolvers import reverse
 
 from djangosphinx.models import SphinxSearch
 
 
-# Модель записи
 class Cards(models.Model):
     ''' Main Card model'''
     topic     = models.CharField(max_length=140,verbose_name=u"Название")
@@ -29,10 +27,11 @@ class Cards(models.Model):
     search  = SphinxSearch(index="cards")
 
     def __unicode__(self):
-        return u"<Заметка: %s>" %self.topic[:20]
+        return u"<Заметка: %s>" %self.topic[:60]
 
+    @models.permalink
     def get_absolute_url(self):
-        return reverse('knowledge.cards.views.details', args=[self.pk])
+        return ('cards.views.details', [ self.pk, ])
 
     class Meta:
         verbose_name = u'Заметку'
@@ -55,6 +54,7 @@ class CardsAdmin(admin.ModelAdmin):
 
 admin.site.register(Cards, CardsAdmin)
 
+
 class CardsModerator(CommentModerator):
     email_notification = True
 
@@ -69,13 +69,23 @@ class CardFavorites(models.Model):
     added = models.DateTimeField(default=datetime.now(), verbose_name=u'Добавлена в избранное')
 
     def __unicode__(self):
-        return u"<Избранная заметка: %s, пользователя: %s>" %(self.card.topic[:20], self.owner.username)
+        return u"Избранная заметка: %s, пользователя: %s" %(self.card.topic[:20], self.owner.username)
 
+
+class CardsImage(models.Model):
+    '''Screenshots img & etc'''
+    card = models.ForeignKey(Cards,verbose_name=u'Заметка')
+    owner = models.ForeignKey(User,verbose_name=u'Заливший')
+    image = models.ImageField(upload_to='media/i/')
+
+    def __unicode__(self):
+        return u"Изображение для: %s" %(self.card.topic[:20])
 
 class CardsPostForm(forms.Form):
     '''Form to post new topic'''
     topic    = forms.CharField(max_length=140,label=u"Название")
     cardtext = forms.CharField(label=u"Заметка",widget=forms.Textarea)
+    images   = forms.ImageField(label=u"Скрин")
 
     def clean_topic(self):
         text = self.cleaned_data['topic'].strip()
@@ -99,6 +109,12 @@ class CardsPostForm(forms.Form):
         card.owner     = owner
         card.formatted = format_code(self.cleaned_data["cardtext"])
         card.save()
+        if not self.cleaned_data["images"] is None:
+            image = CardsImage()
+            image.card = card
+            image.owner= owner
+            image.image= self.cleaned_data["images"]
+            image.save()
         return card
 
 
@@ -107,6 +123,11 @@ class CardsEditForm(CardsPostForm):
         card.topic     = self.cleaned_data["topic"]
         card.cardtext  = self.cleaned_data["cardtext"]
         card.formatted = format_code(self.cleaned_data["cardtext"])
+        if not images is None:
+            image = CardsImage()
+            image.card = card
+            image.owner= owner
+            image.save()
         if preview is False:
             card.save()
         else:

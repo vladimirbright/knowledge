@@ -10,6 +10,7 @@ FORCE_SCRIPT_NAME = ''
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+INTERNAL_IPS = ( '127.0.0.1', '127.0.1.1')
 
 ADMINS = (
      ('vladimir', 'vladimirbright@gmail.com'),
@@ -18,18 +19,24 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE   = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME     = 'knowledgedb'             # Or path to database file if using sqlite3.
-DATABASE_USER     = 'knowledge'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'supersuperkn'         # Not used with sqlite3.
-DATABASE_HOST     = '127.0.0.1'             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT     = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'knowledgedb',
+        'USER': 'knowledge',
+        'PASSWORD': 'supersuperkn',
+        'HOST': '127.0.0.1',
+        'PORT': '',
+    }
+}
 
 # Настройки сфинкс 
 SPHINX_SERVER = '127.0.0.1'
 SPHINX_PORT = 9312
 # Настройки кеша.
-CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+CACHE_BACKEND = 'johnny.backends.memcached://127.0.0.1:11211/'
+JOHNNY_MIDDLEWARE_KEY_PREFIX='johnny'
+
 # Настройки email
 DEFAULT_FROM_EMAIL = 'site@knbase.org'
 EMAIL_SUBJECT_PREFIX = '[knbase.org]'
@@ -65,16 +72,30 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'johnny.middleware.LocalStoreClearMiddleware',
+    'johnny.middleware.QueryCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'knowledge.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     SELF_DIR('templates'),
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = [
+        "django.core.context_processors.auth",
+        "django.core.context_processors.i18n",
+        "django.core.context_processors.request",
+        "django.core.context_processors.media",
+]
+
+if DEBUG:
+    TEMPLATE_CONTEXT_PROCESSORS.append("django.core.context_processors.debug")
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -85,8 +106,16 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.comments',
     'django.contrib.sitemaps',
-    'knowledge.users',
-    'knowledge.sitemap',
-    'knowledge.cards',
-    'knowledge.feeds',
+    'users',
+    'sitemap',
+    'cards',
+    'feeds',
+    'johnny',
+    'south',
 )
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
+

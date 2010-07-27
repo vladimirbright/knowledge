@@ -20,5 +20,6 @@ pidfile=$PIDFILE            \
 maxrequests=1000            \
 maxspare=50                 \
 minspare=5                  \
-errlog=$ERRLOG
+errlog=$ERRLOG              \
+daemonize=false
 

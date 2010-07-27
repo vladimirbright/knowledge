@@ -1,16 +1,16 @@
 # -*- coding: utf8 -*-
 
-from django.conf.urls.defaults import *
-from django.contrib import admin#, admindocs
-from django.contrib.auth.views import login, logout
-from django.contrib.syndication.views import feed as sfeed
 from django.conf import settings
+from django.conf.urls.defaults import *
+from django.contrib.auth.views import login, logout
+from django.contrib import admin#, admindocs
 from django.contrib.sitemaps.views import sitemap as djsitemap
+from django.contrib.syndication.views import feed as sfeed
 
-from knowledge.cards import views as card_view
-from knowledge.sitemap.models import CardsSitemap
-from knowledge.users import views as users_view
-from knowledge.feeds.models import LastCards
+from cards import views as card_view
+from feeds.models import LastCards
+from sitemap.models import CardsSitemap
+from users import views as users_view
 
 feeds = {
     'latest': LastCards,
@@ -23,7 +23,7 @@ sitemaps = {
 
 admin.autodiscover()
 
-urlpatterns = patterns('/mysite.fcgi/',
+urlpatterns = patterns('',
     # Главная страница
     url(r'^$', card_view.index),
     # Подробная страница
@@ -50,7 +50,16 @@ urlpatterns = patterns('/mysite.fcgi/',
     (r'^sitemap.xml$', djsitemap, {'sitemaps': sitemaps}),
 
     # админка
-    (r'^admin/', include(admin.site.urls)),
+    (r'^admin/(.*)', admin.site.root),
     #(r'^admin/doc/', include(admindocs.site.urls)),
 )
+
+if getattr(settings, 'DJANGO_SERVE_STATIC', False):
+    urlpatterns += patterns('',
+        (r'^'+settings.MEDIA_URL.strip('/')+'/(?P<path>.*)$',
+                                                   'django.views.static.serve',
+                                       {'document_root': settings.MEDIA_ROOT}),
+
+    )
+
 

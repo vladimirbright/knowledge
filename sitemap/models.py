@@ -1,7 +1,9 @@
 # -*- coding: utf8 -*-
 
 from django.contrib.sitemaps import Sitemap
-from knowledge.cards.models import Cards
+
+from cards.models import Cards
+
 
 class CardsSitemap(Sitemap):
     changefreq = "never"

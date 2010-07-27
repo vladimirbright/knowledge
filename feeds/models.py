@@ -1,10 +1,10 @@
 # -*- coding: utf8 -*-
 
-from django.db import models
 from django.contrib.syndication.feeds import Feed
-from knowledge.cards.models import Cards
 from django.core.urlresolvers import reverse
-# Create your models here.
+from django.db import models
+
+from cards.models import Cards
 
 class LastCards(Feed):
     ''' Main page RSS'''

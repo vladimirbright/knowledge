@@ -1,22 +1,24 @@
 # -*- coding: utf8 -*-
 
-from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import RequestContext
-from django.db import connection
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.db import connection
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
+from django.conf  import settings
 
-from knowledge.users.models import UserRegisterForm, UserSettingsForm
-from knowledge.cards.models import Cards
-from knowledge.settings import PER_PAGE, PAGE_GET
+from users.models import UserRegisterForm, UserSettingsForm
+from cards.models import Cards
+
+
+PER_PAGE  = getattr(settings, 'PER_PAGE', 5)
+PAGE_GET = getattr(settings, 'PAGE_GET', 'page')
 
 
 def details(request, username):
-    '''Инфа о пользователе'''
+    u'''Инфа о пользователе'''
     user = get_object_or_404(User, username=username)
     # Зашли ли мы с свой профиль?
     user.self_request = False

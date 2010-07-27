@@ -1,16 +1,19 @@
 # -*- coding: utf8 -*-
 
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.db import connection
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
-from knowledge.cards.models import Cards, CardsPostForm, CardFavorites, CardsEditForm
-from knowledge.settings import PER_PAGE, PAGE_GET
+from cards.models import Cards, CardsPostForm, CardFavorites, CardsEditForm
+
+
+PER_PAGE  = getattr(settings, 'PER_PAGE', 5)
+PAGE_GET = getattr(settings, 'PAGE_GET', 'page')
 
 
 # Главная страница.
@@ -50,20 +53,20 @@ def index(request, best=False):
                     break
 
     if request.method == 'POST' and user.is_authenticated():
-        form = CardsPostForm(request.POST)
+        form = CardsPostForm(request.POST, request.FILES)
         if form.is_valid():
             newcard = form.save(user)
-            return HttpResponseRedirect(reverse('knowledge.cards.views.details', args=[newcard.pk]))
+            return HttpResponseRedirect(reverse('cards.views.details', args=[newcard.pk]))
     else:
         form = CardsPostForm()
     return render_to_response('index.html', {
                                         "postForm": form,
                                         "cards": cards,
+                                        #"cards_list": cards_list,
                                         "user": user,
                                         "favorites": favorites,
                                         "title" : title,
                                         "currentplace": currentplace,
-                                        #"queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
 
@@ -83,7 +86,6 @@ def search(request):
     search_term = search_term.strip()
     if search_term != '':
         cards = Cards.search.query(search_term)[0:PER_PAGE]
-    #queries = connection.queries
     return render_to_response('search.html', locals(), context_instance=RequestContext(request))
 
 
@@ -97,7 +99,6 @@ def details(request, card_id):
         fav = CardFavorites.objects.filter(card=card.pk,owner=user.pk)
         if len(fav) > 0:
             card.in_favorite = True
-    #queries = connection.queries
     return render_to_response('details.html', locals(), context_instance=RequestContext(request))
 
 
@@ -105,7 +106,6 @@ def details(request, card_id):
 def edit(request, card_id):
     card = get_object_or_404(Cards, pk=card_id)
     user = request.user
-    #queries= connection.queries
     if not user.has_perm('cards.change_cards') and card.owner.pk != user.pk:
         return HttpResponseRedirect('/')
     defaults = { "topic": card.topic, "cardtext": card.cardtext}
@@ -116,7 +116,7 @@ def edit(request, card_id):
             card = form.save(card, True)
         elif form.is_valid():
             form.save(card, False)
-            return HttpResponseRedirect(reverse('knowledge.cards.views.details', args=[card.pk]))
+            return HttpResponseRedirect(reverse('cards.views.details', args=[card.pk]))
     else:
         form = CardsEditForm(defaults)
     return render_to_response('edit.html', locals(), context_instance=RequestContext(request))
@@ -155,7 +155,6 @@ def favorites(request):
                                         "favorites": favorites,
                                         "currentplace": u"Избранные заметки",
                                         "title": u":: Избранные заметки",
-                                        #"queries" : connection.queries
                                         }, context_instance=RequestContext(request))
 
 
@@ -180,9 +179,9 @@ def action_with_favorites(request, card_id, delete=False):
     try:
         from_details = request.GET['from_details']
     except:
-        return HttpResponseRedirect(reverse('knowledge.cards.views.favorites'))
+        return HttpResponseRedirect(reverse('cards.views.favorites'))
     else:
-        return HttpResponseRedirect(reverse('knowledge.cards.views.details', args=[card.pk]))
+        return HttpResponseRedirect(reverse('cards.views.details', args=[card.pk]))
 
 
 @login_required
