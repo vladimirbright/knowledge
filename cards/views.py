@@ -9,8 +9,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.conf import settings
 
-from cards.models import Cards, CardsPostForm, CardFavorites, CardsEditForm
-from cards.models import CardsModelPostForm, CardsImage
+from cards.models import Cards, CardFavorites, CardsModelPostForm, CardsImage
+from cards.models import format_code
 
 
 PER_PAGE  = getattr(settings, 'PER_PAGE', 5)
@@ -114,17 +114,16 @@ def edit(request, card_id):
     user = request.user
     if not user.has_perm('cards.change_cards') and card.owner.pk != user.pk:
         return HttpResponseRedirect('/')
-    defaults = { "topic": card.topic, "cardtext": card.cardtext}
-    if request.method == 'POST':
-        form = CardsEditForm(request.POST)
-        # preview
-        if 'preview' in request.POST and form.is_valid():
-            card = form.save(card, True)
-        elif form.is_valid():
-            form.save(card, False)
+    form = CardsModelPostForm(request.POST or None, request.FILES or None,
+                                                                 instance=card)
+    # preview
+    if form.is_valid():
+        card = form.save(commit=False)
+        if 'preview' in request.POST:
+            card.formatted = format_code(card.cardtext)
+        else:
+            card.save()
             return HttpResponseRedirect(reverse('cards.views.details', args=[card.pk]))
-    else:
-        form = CardsEditForm(defaults)
     return render_to_response('edit.html', locals(), context_instance=RequestContext(request))
 
 

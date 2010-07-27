@@ -82,57 +82,6 @@ class CardsModelPostForm(forms.ModelForm):
         model = Cards
         fields = ( 'topic', 'cardtext' )
 
-class CardsPostForm(forms.Form):
-    '''Form to post new topic'''
-    topic    = forms.CharField(max_length=140,label=u"Название")
-    cardtext = forms.CharField(label=u"Заметка",widget=forms.Textarea)
-    images   = forms.ImageField(label=u"Скрин")
-
-    def clean_topic(self):
-        text = self.cleaned_data['topic'].strip()
-        if text == '':
-            raise forms.ValidationError(u'Ваши мысли пусты!')
-        return text
-
-    def clean_cardtext(self):
-        text = self.cleaned_data['cardtext'].strip()
-        if text == '':
-            raise forms.ValidationError(u'Ваши мысли пусты!')
-        if len(text.split()) < 2:
-            raise forms.ValidationError(u'Ваши мысли очень скудны! Оставьте хотя бы пару слов.')
-        return text
-
-    def save(self, owner):
-        ''' Save new Card '''
-        card           = Cards()
-        card.topic     = self.cleaned_data["topic"]
-        card.cardtext  = self.cleaned_data["cardtext"]
-        card.owner     = owner
-        card.save()
-        if not self.cleaned_data["images"] is None:
-            image = CardsImage()
-            image.card = card
-            image.owner= owner
-            image.image= self.cleaned_data["images"]
-            image.save()
-        return card
-
-
-class CardsEditForm(CardsPostForm):
-    def save(self, card, preview=False):
-        card.topic     = self.cleaned_data["topic"]
-        card.cardtext  = self.cleaned_data["cardtext"]
-        card.formatted = format_code(self.cleaned_data["cardtext"])
-        if not images is None:
-            image = CardsImage()
-            image.card = card
-            image.owner= owner
-            image.save()
-        if preview is False:
-            card.save()
-        else:
-            return card
-
 
 def format_code(text):
     '''Function to find [code] tags and replace with highlited code'''

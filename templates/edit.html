@@ -5,19 +5,33 @@
 {% block head-animate-textarea %} {% endblock %}
 {% block head-extra %}<STYLE type="text/css">  #cardtextcontainer TEXTAREA { height: 500px; }  </STYLE>{% endblock %}
 {% block currentplace %}<H2>Редактирование: &laquo;{{ card.topic }}&raquo;</H2>{% endblock %}
+{% load thumbnail %}
 {% block main %}
 <DIV class="span-16 card-detail">
     <H3>Предпросмотр</H3>
     <P>
         {{ card.formatted|safe }}
     </P>
+    {% if card.cardsimage_set.all %}
+    <div style="margin-top:10px;border-top:1px dashed #7c7c7c;padding-top:5px;">
+       {% for i in card.cardsimage_set.all %} 
+        <a href="{{ i.image.url }}" style="border:0">
+            <IMG style="padding:3px;border:1px solid black;" 
+                src="{% thumbnail i.image 100x100 %}" />
+        </a>
+       {% endfor %}
+    </div>
+    {% endif %}
     <HR>
     <DIV class="post-form">
     {% if form.errors %}<OL class="error">{{form.errors}}</OL>{% endif %}
-    <FORM action="{% url knowledge.cards.views.edit card.pk %}" method="POST">
-    <DIV>{{form.topic}}</DIV>
-    <DIV id="cardtextcontainer">{{form.cardtext}}</DIV>
-    <INPUT type="submit" value="Сохранить"/>&nbsp;<INPUT type="submit" name="preview" value="Предпросмотр" />
+    <FORM action="{% url cards.views.edit card.pk %}" method="POST">
+        {% csrf_token %}
+        <DIV>{{form.topic}}</DIV>
+        <DIV id="cardtextcontainer">{{form.cardtext}}</DIV>
+        <DIV id="cardtextcontainer">{{form.image}}</DIV>
+        <INPUT type="submit" value="Сохранить"/>&nbsp;
+        <INPUT type="submit" name="preview" value="Предпросмотр" />
     </FORM>
     </DIV>
 </DIV>

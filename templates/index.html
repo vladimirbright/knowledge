@@ -161,8 +161,10 @@
                 {% if card.cardsimage_set.all %}
                 <div style="margin-top:10px;border-top:1px dashed #7c7c7c;padding-top:5px;">
                    {% for i in card.cardsimage_set.all %} 
-                        <IMG style="padding:3px;border:1px solid black;" 
-                            src="{% thumbnail i.image 100x100 %}" />
+                        <a href="{{ i.image.url }}" style="border:0">
+                            <IMG style="padding:3px;border:1px solid black;" 
+                                src="{% thumbnail i.image 100x100 %}" />
+                        </a>
                    {% endfor %}
                 </div>
                 {% endif %}
