@@ -10,6 +10,7 @@ from django.template import RequestContext
 from django.conf import settings
 
 from cards.models import Cards, CardsPostForm, CardFavorites, CardsEditForm
+from cards.models import CardsModelPostForm, CardsImage
 
 
 PER_PAGE  = getattr(settings, 'PER_PAGE', 5)
@@ -52,17 +53,22 @@ def index(request, best=False):
                     card.in_favorite = True
                     break
 
-    if request.method == 'POST' and user.is_authenticated():
-        form = CardsPostForm(request.POST, request.FILES)
+    if user.is_authenticated():
+        form = CardsModelPostForm(request.POST or None, request.FILES or None)
         if form.is_valid():
-            newcard = form.save(user)
+            newcard = form.save(commit=False)
+            newcard.owner = user
+            newcard.save()
+            if form.cleaned_data['image']:
+                card_image = CardsImage()
+                card_image.owner = user
+                card_image.card = newcard
+                card_image.image = form.cleaned_data['image']
+                card_image.save()
             return HttpResponseRedirect(reverse('cards.views.details', args=[newcard.pk]))
-    else:
-        form = CardsPostForm()
     return render_to_response('index.html', {
                                         "postForm": form,
                                         "cards": cards,
-                                        #"cards_list": cards_list,
                                         "user": user,
                                         "favorites": favorites,
                                         "title" : title,

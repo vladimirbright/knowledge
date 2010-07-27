@@ -112,6 +112,7 @@ INSTALLED_APPS = (
     'feeds',
     'johnny',
     'south',
+    'easy_thumbnails',
 )
 
 try:

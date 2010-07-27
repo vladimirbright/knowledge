@@ -5,8 +5,8 @@
     <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <META name='yandex-verification' content='6aab35e08fda6c4c' />
     <META name="google-site-verification" content="r7j1ZjTXoecdjTWDEH9oiexj_8XqH97BYQehgXpZxmI" />
-    <LINK rel="shortcut icon" href="/s/i/favicon.png">
-    <LINK rel="stylesheet" href="/s/css/blueprint/screen.css" type="text/css" media="screen, projection">
+    <LINK rel="shortcut icon" href="{{MEDIA_URL}}i/favicon.png">
+    <LINK rel="stylesheet" href="{{MEDIA_URL}}css/blueprint/screen.css" type="text/css" media="screen, projection">
     <!--[if lt IE 8]><link rel="stylesheet" href="/s/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
     <LINK href="/s/css/main.css" rel="stylesheet" type="text/css">
     <SCRIPT type="text/javascript" src="/s/js/jquery.min.js"></SCRIPT>
@@ -46,6 +46,7 @@
     {% endblock %}{% block head-extra %}{% endblock %}
 </HEAD>
 <BODY class="back-cod">
+{% load thumbnail %}
 <DIV class="container">
     <!--Верхнее меню-->
     <DIV class="span-24 last header">
@@ -81,12 +82,13 @@
     <DIV class="span-22 post-form">
     {% if user.is_authenticated %}
         <FORM enctype="multipart/form-data" action="{% url cards.views.index %}" method="POST">
+        {% csrf_token %}
         {% if postForm.topic.errors %}<DIV class="error">{{ postForm.topic.errors }}</DIV>{% endif %}
         <DIV class="hidden">{{ postForm.topic }}</DIV>
         {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
         <DIV id="cardtextcontainer">{{ postForm.cardtext }}</DIV>
-        {% if postForm.images.errors %}<DIV class="error">{{ postForm.images.errors }}</DIV>{% endif %}
-        <DIV>{{ postForm.images }}</DIV>
+        {% if postForm.image.errors %}<DIV class="error">{{ postForm.image.errors }}</DIV>{% endif %}
+        <DIV>{{ postForm.image }}</DIV>
         <DIV><INPUT class="hidden" type="submit" value="Пусть знают все!"/></DIV>
         </FORM>
     {% else %}
@@ -155,14 +157,15 @@
             </DIV>{% get_comment_count for card as comment_count %} 
             <DIV class="span-16 last card"><DIV class="card-inner">
                 <H4><A title="Посмотреть внимательнее" href="{% url cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
-                {% if card.cardsimage_set.all %}
-                <OL>
-                   {% for i in card.cardsimage_set.all %} 
-                   <LI><IMG style="width:100px;padding:3px;border:1px solid black;" src="{{i.image.url}}"></LI>
-                   {% endfor %}
-                </OL>
-                {% endif %}
                 {% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}
+                {% if card.cardsimage_set.all %}
+                <div style="margin-top:10px;border-top:1px dashed #7c7c7c;padding-top:5px;">
+                   {% for i in card.cardsimage_set.all %} 
+                        <IMG style="padding:3px;border:1px solid black;" 
+                            src="{% thumbnail i.image 100x100 %}" />
+                   {% endfor %}
+                </div>
+                {% endif %}
                 <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url cards.views.details card.pk  %}#comments" class="work-link">Прочитать обсуждение{% if comment_count %} [{{comment_count}} комментар{{comment_count|rupluralize:"ий,ия,иев"}}]{% endif %}</A></DIV>
             </DIV></DIV>
         </DIV>
