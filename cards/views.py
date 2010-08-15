@@ -43,6 +43,7 @@ def index(request, best=False):
 
     user  = request.user
     favorites = False
+    form = None
 
     if user.is_authenticated() is True:
         favorites = user.cardfavorites_set.all()

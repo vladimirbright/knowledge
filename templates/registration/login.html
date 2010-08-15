@@ -26,11 +26,13 @@
   {% endif %}
 
   <FORM action="{% url django.contrib.auth.views.login %}" method="POST">
+  {% csrf_token %}
   <UL class="login_form_ul">
-    <LI><INPUT type="text" name="username" value="" id="username">&nbsp;&nbsp;&nbsp;<LABEL for="username">имя пользователя</LABEL></LI>
-    <LI><INPUT type="password" name="password" value="" id="password">&nbsp;&nbsp;&nbsp;<LABEL for="password">пароль</LABEL></LI>
-    <LI><INPUT type="submit" value="login" /><INPUT type="hidden" name="next" value="/" /></LI>
+    <LI>{{ form.username }}&nbsp;&nbsp;&nbsp;{{ form.username.label_tag }}</LI>
+    <LI>{{ form.password }}&nbsp;&nbsp;&nbsp;{{ form.password.label_tag }}</LI>
+    <LI><INPUT type="submit" value="login" /></LI>
   </UL>
+  <INPUT type="hidden" name="next" value="/" />
   </FORM>
 </DIV>
 {% endblock %}
