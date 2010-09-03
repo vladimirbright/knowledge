@@ -12,7 +12,7 @@
     {% if cards %}
     <OL>
     {% for card in cards %}
-    <LI><A href="{% url knowledge.cards.views.details card.pk %}">{{ card.topic }}</A></LI>
+    <LI><A href="{% url cards.views.details card.pk %}">{{ card.topic }}</A></LI>
     {% endfor %}
     </OL>
     {% else %}
