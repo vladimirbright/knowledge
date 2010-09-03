@@ -87,8 +87,6 @@
         <DIV class="hidden">{{ postForm.topic }}</DIV>
         {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
         <DIV id="cardtextcontainer">{{ postForm.cardtext }}</DIV>
-        {% if postForm.image.errors %}<DIV class="error">{{ postForm.image.errors }}</DIV>{% endif %}
-        <DIV>{{ postForm.image }}</DIV>
         <DIV><INPUT class="hidden" type="submit" value="Пусть знают все!"/></DIV>
         </FORM>
     {% else %}

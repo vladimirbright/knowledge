@@ -60,12 +60,6 @@ def index(request, best=False):
             newcard = form.save(commit=False)
             newcard.owner = user
             newcard.save()
-            if form.cleaned_data['image']:
-                card_image = CardsImage()
-                card_image.owner = user
-                card_image.card = newcard
-                card_image.image = form.cleaned_data['image']
-                card_image.save()
             return HttpResponseRedirect(reverse('cards.views.details', args=[newcard.pk]))
     return render_to_response('index.html', {
                                         "postForm": form,

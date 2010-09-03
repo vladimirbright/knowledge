@@ -70,6 +70,7 @@
     {% if user.is_authenticated %}
         {% get_comment_form for card as form %}
         <FORM action="{% comment_form_target %}" method="post">
+            {% csrf_token %}
             {{ form.comment }} {{ form.honeypot }} {{ form.content_type }} {{ form.object_pk }} {{ form.timestamp }} {{ form.security_hash }}
             <INPUT type="submit" name="submit-post" class="submit-post" value="Запостить" />
             <INPUT type="hidden" name="next" value="{% url cards.views.details card.pk %}" />

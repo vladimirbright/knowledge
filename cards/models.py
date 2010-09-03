@@ -62,8 +62,6 @@ class CardsImage(models.Model):
 
 class CardsModelPostForm(forms.ModelForm):
 
-    image = forms.ImageField(label=u"Скрин", required=False)
-
     def clean_topic(self):
         text = self.cleaned_data['topic'].strip()
         if text == '':

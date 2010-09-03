@@ -8,13 +8,12 @@ def SELF_DIR(filename=''):
 # fuck lighttpd
 FORCE_SCRIPT_NAME = ''
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
-INTERNAL_IPS = ( '127.0.0.1', '127.0.1.1')
+INTERNAL_IPS = ( '127.0.0.1', '127.0.1.1' )
 
 ADMINS = (
-     ('vladimir', 'vladimirbright@gmail.com'),
-    # ('Your Name', 'your_email@domain.com'),
+     ( 'vladimir', 'vladimirbright@gmail.com' ),
 )
 
 MANAGERS = ADMINS

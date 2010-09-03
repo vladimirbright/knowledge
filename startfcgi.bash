@@ -11,6 +11,7 @@ if [ -f $PIDFILE ]; then
     rm -f  "$PIDFILE"
 fi
 
+. ../knve/bin/activate
 
 python manage.py runfcgi    \
 host=$HOST                  \
