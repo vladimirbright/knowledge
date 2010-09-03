@@ -147,7 +147,7 @@ def favorites(request):
     except (EmptyPage, InvalidPage):
         cards = paginator.page(paginator.num_pages)
 
-    form = CardsPostForm()
+    form = CardsModelPostForm()
     return render_to_response('index.html', {
                                         "postForm": form,
                                         "cards": cards,
