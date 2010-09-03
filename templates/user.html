@@ -30,7 +30,7 @@
     {% endif %}
     <UL class="user-topics">
       {% for card in cards.object_list %}
-        <LI><A href="{% url knowledge.cards.views.details card.pk %}">{{ card.topic }}</A></LI>
+        <LI><A href="{% url cards.views.details card.pk %}">{{ card.topic }}</A></LI>
       {% endfor %}
     </UL>
     {% block pagination-bottom %}
