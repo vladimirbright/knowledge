@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 from django.conf import settings
 from django.conf.urls.defaults import *
@@ -50,8 +50,8 @@ urlpatterns = patterns('',
     (r'^sitemap.xml$', djsitemap, {'sitemaps': sitemaps}),
 
     # админка
-    (r'^admin/(.*)', admin.site.root),
-    #(r'^admin/doc/', include(admindocs.site.urls)),
+    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    (r'^admin/', include(admin.site.urls)),
 )
 
 if getattr(settings, 'DJANGO_SERVE_STATIC', False):

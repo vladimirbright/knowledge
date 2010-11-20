@@ -15,13 +15,9 @@
                        href="{% url users.views.details card.owner.username %}">{{ card.owner.username }}</A></H5>
                 {% if user.is_authenticated %}
                     <UL class="card-actions">
-                        {% if card.in_favorite %}
-                            <LI>
-                                <A href="{% url cards.views.fav_del card.pk %}" class="work-link">Убрать из избранного</A>
-                            </LI>
-                        {% else %}
-                            <LI><A href="{% url cards.views.fav_add card.pk %}" class="work-link">В избранное</A></LI>
-                        {% endif %}
+                        <LI>
+                            <A href="{% url cards.views.fav_del card.pk %}" class="work-link">Убрать из избранного</A>
+                        </LI>
                         {% if perms.cards.change_cards %}
                             <LI>
                                 <A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url cards.views.edit card.pk %}" class="work-link">Редактировать</A>

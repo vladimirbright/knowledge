@@ -1,8 +1,8 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 import os.path
 
-def SELF_DIR(filename=''):
+def self_dir(filename=''):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)
 
 # fuck lighttpd
@@ -48,7 +48,7 @@ SITE_ID = 1
 
 USE_I18N = True
 
-MEDIA_ROOT = SELF_DIR('s')
+MEDIA_ROOT = self_dir('s')
 
 MEDIA_URL = '/s/'
 
@@ -83,11 +83,14 @@ MIDDLEWARE_CLASSES = (
     "pagination.middleware.PaginationMiddleware",
 )
 
+LOCALE_PATHS = (
+    self_dir('locale'),
+)
 
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
-    SELF_DIR('templates'),
+    self_dir('templates'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = [

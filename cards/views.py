@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -22,37 +22,27 @@ def index(request, best=False):
     '''Главная страница'''
     order = '-pk'
     title = None
-    currentplace = 'Последние записи'
+    currentplace = u'Последние записи'
     if best is True:
         order = '-rating'
-        title = ':: Самые популярные'
-        currentplace = 'Популярные записи'
+        title = u':: Самые популярные'
+        currentplace = u'Популярные записи'
 
-    cards_list = Cards.objects.select_related().all().order_by(order)
-    paginator = Paginator(cards_list, PER_PAGE)
-
-    try:
-        page = int(request.GET.get(PAGE_GET, '1'))
-    except ValueError:
-        page = 1
-
-    try:
-        cards = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        cards = paginator.page(paginator.num_pages)
+    cards = Cards.objects.select_related('owner').order_by(order)
 
     user  = request.user
     favorites = False
     form = None
 
-    if user.is_authenticated() is True:
-        favorites = user.cardfavorites_set.all()
-        for card in cards.object_list:
-            card.in_favorite = False
-            for f in favorites:
-                if f.card_id == card.pk:
-                    card.in_favorite = True
-                    break
+    # Проверку вынесу в тэг
+    #if user.is_authenticated() is True:
+        #favorites = user.cardfavorites_set.all()
+        #for card in cards.object_list:
+            #card.in_favorite = False
+            #for f in favorites:
+                #if f.card_id == card.pk:
+                    #card.in_favorite = True
+                    #break
 
     if user.is_authenticated():
         form = CardsModelPostForm(request.POST or None, request.FILES or None)
@@ -126,33 +116,11 @@ def edit(request, card_id):
 @login_required
 def favorites(request):
     '''Страница с избранным'''
-    user  = request.user
-    favorites = user.cardfavorites_set.select_related().all().order_by('-added')
-    cards_list = []
-
-    for f in favorites:
-        card = f.card
-        card.in_favorite = True
-        cards_list.append(card)
-
-    paginator = Paginator(cards_list, PER_PAGE)
-
-    try:
-        page = int(request.GET.get(PAGE_GET, '1'))
-    except ValueError:
-        page = 1
-
-    try:
-        cards = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        cards = paginator.page(paginator.num_pages)
-
+    cards = request.user.cardfavorites_set.select_related('owner').order_by('-pk')
     form = CardsModelPostForm()
-    return render_to_response('index.html', {
+    return render_to_response('cards/favorites.html', {
                                         "postForm": form,
                                         "cards": cards,
-                                        "user": user,
-                                        "favorites": favorites,
                                         "currentplace": u"Избранные заметки",
                                         "title": u":: Избранные заметки",
                                         }, context_instance=RequestContext(request))

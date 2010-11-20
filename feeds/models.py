@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 from django.contrib.syndication.feeds import Feed
 from django.core.urlresolvers import reverse
