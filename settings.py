@@ -73,12 +73,16 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'johnny.middleware.LocalStoreClearMiddleware',
     'johnny.middleware.QueryCacheMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
+    "pagination.middleware.PaginationMiddleware",
 )
+
 
 ROOT_URLCONF = 'urls'
 
@@ -112,6 +116,7 @@ INSTALLED_APPS = (
     'johnny',
     'south',
     'easy_thumbnails',
+    'pagination',
 )
 
 try:

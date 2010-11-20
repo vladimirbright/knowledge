@@ -1,5 +1,5 @@
 flup
-Django>=1.2.1
+Django>=1.2.3
 PIL>=1.1.7
 Pygments>=1.3.1
 South>=0.7.1
@@ -8,3 +8,4 @@ git+http://github.com/SmileyChris/easy-thumbnails.git
 johnny-cache>=0.2
 psycopg2>=2.2.2
 python-memcached>=1.45
+django-pagination
