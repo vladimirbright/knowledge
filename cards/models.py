@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.db import models
-from datetime  import datetime
 from django.contrib.auth.models import User
-from django import forms
 from django.contrib.comments.signals import comment_was_posted, comment_was_flagged
+from django.db import models
+from django import forms
+from django.utils.translation import ugettext_lazy as _
 
 from djangosphinx.models import SphinxSearch
 

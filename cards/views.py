@@ -31,18 +31,7 @@ def index(request, best=False):
     cards = Cards.objects.select_related('owner').order_by(order)
 
     user  = request.user
-    favorites = False
     form = None
-
-    # Проверку вынесу в тэг
-    #if user.is_authenticated() is True:
-        #favorites = user.cardfavorites_set.all()
-        #for card in cards.object_list:
-            #card.in_favorite = False
-            #for f in favorites:
-                #if f.card_id == card.pk:
-                    #card.in_favorite = True
-                    #break
 
     if user.is_authenticated():
         form = CardsModelPostForm(request.POST or None, request.FILES or None)
@@ -55,7 +44,6 @@ def index(request, best=False):
                                         "postForm": form,
                                         "cards": cards,
                                         "user": user,
-                                        "favorites": favorites,
                                         "title" : title,
                                         "currentplace": currentplace,
                                         }, context_instance=RequestContext(request))
@@ -87,10 +75,12 @@ def details(request, card_id):
     card = get_object_or_404(Cards, pk=card_id)
     card.in_favorite = False
     if user.is_authenticated() is True:
-        fav = CardFavorites.objects.filter(card=card.pk,owner=user.pk)
-        if len(fav) > 0:
-            card.in_favorite = True
-    return render_to_response('details.html', locals(), context_instance=RequestContext(request))
+        card.in_favorite = CardFavorites.objects\
+                                        .filter(card=card, owner=user)\
+                                        .exists()
+    c = { "card": card }
+    return render_to_response('cards/details.html', c,
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -116,7 +106,8 @@ def edit(request, card_id):
 @login_required
 def favorites(request):
     '''Страница с избранным'''
-    cards = request.user.cardfavorites_set.select_related('owner').order_by('-pk')
+    cards = request.user.cardfavorites_set.select_related('card', 'owner')\
+                                          .order_by('-pk')
     form = CardsModelPostForm()
     return render_to_response('cards/favorites.html', {
                                         "postForm": form,
@@ -127,29 +118,22 @@ def favorites(request):
 
 
 def action_with_favorites(request, card_id, delete=False):
-    try:
-        card = Cards.objects.get(pk=card_id)
-        if delete is False:
-            favorite = CardFavorites()
-            favorite.owner = request.user
-            favorite.card  = card
-            favorite.save()
-            card.rating += 1
-            card.save()
-        else:
-            favorite = CardFavorites.objects.filter(card=card_id,owner=request.user)
-            favorite.delete()
-            if card.rating > 0:
-                card.rating -= 1
-                card.save()
-    except ObjectDoesNotExist:
-        pass
-    try:
-        from_details = request.GET['from_details']
-    except:
-        return HttpResponseRedirect(reverse('cards.views.favorites'))
+    card = get_object_or_404(Cards, pk=card_id)
+    if delete is False:
+        favorite = CardFavorites(owner=request.user, card=card)
+        favorite.save()
+        card.rating += 1
+        card.save()
     else:
-        return HttpResponseRedirect(reverse('cards.views.details', args=[card.pk]))
+        favorite = get_object_or_404(CardFavorites,
+                                     card=card,
+                                     owner=request.user)
+        favorite.delete()
+        if card.rating > 0:
+            card.rating -= 1
+            card.save()
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER",
+                                             reverse('cards.views.favorites')))
 
 
 @login_required

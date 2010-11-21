@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+
+{% load pagination_tags %}
+
+{% block title %}:: Пользователь: {{ viewed_user.username }}{% endblock %}
+
+{% block head-extra %}<LINK href="/s/css/user.css" rel="stylesheet" type="text/css">{% endblock %}
+
+{% block form-navigation %} {% endblock %}
+
+{% block currentplace %}<H2>Профиль пользователя: {{ viewed_user.username }}</H2>{% endblock %}
+
+{% block main %}
+<DIV class="span-16 last">
+    {% if viewed_user.self_request %}
+        <H4 class="user-title">Кеп, этож ваш профиль!</H4>
+    {% else %}
+        <H4 class="user-title">Данные профиля</H4>
+    {% endif %}
+
+    <UL class="user-props">
+        <LI>{{ viewed_user.username }}</LI>
+        {% if perms.users.change_user or viewed_user.self_request %}
+            <LI><A href="mailto:{{viewed_user.username}} <{{viewed_user.email}}>">{{ viewed_user.email }}</A></LI>
+        {% endif %}
+        <LI>Зарегистрирован: {{ viewed_user.date_joined|date:'d.m.Y' }}</LI>
+    </UL>
+
+    {% autopaginate cards 50 %}
+
+    <h4 class="user-title">{{ viewed_user.self_request|yesno:"Ваши,Пользователь написал" }} топики</h4>
+
+    <UL class="user-topics">
+        {% for card in cards %}
+            <LI><A href="{% url cards.views.details card.pk %}">{{ card.topic }}</A></LI>
+        {% empty %}
+            {% if not viewed_user.self_request %}
+                <li>Пользователь ничего не написал ;(</li>
+            {% else %}
+                <li>Вы ничего не написали ;(</li>
+            {% endif %}
+        {% endfor %}
+    </UL>
+    {% paginate %}
+
+</DIV>
+{% endblock %}

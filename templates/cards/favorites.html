@@ -7,7 +7,8 @@
     <A name="main"></A>
     <DIV class="span-22 last">
         {% autopaginate cards 5 %}
-        {% for card in cards %}
+        {% for f in cards %}
+        {% with f.card as card %}
         <DIV class="card-container">
             <DIV class='span-6 card-left'><A name="card{{card.pk}}"></A>
                 <H5>{{ card.added|date:'d.m.Y' }} posted by</H5>
@@ -37,12 +38,24 @@
                     </UL>
                 {% endif %}
             </DIV>{% get_comment_count for card as comment_count %} 
-            <DIV class="span-16 last card"><DIV class="card-inner">
-                <H4><A title="Посмотреть внимательнее" href="{% url cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
-                {% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}
-                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url cards.views.details card.pk  %}#comments" class="work-link">Прочитать обсуждение{% if comment_count %} [{{comment_count}} комментар{{comment_count|rupluralize:"ий,ия,иев"}}]{% endif %}</A></DIV>
-            </DIV></DIV>
+            <DIV class="span-16 last card">
+                <DIV class="card-inner">
+                    <H4>
+                        <A title="Посмотреть внимательнее" href="{% url cards.views.details card.pk  %}">{{ card.topic }}</A>
+                    </H4>
+                    {% if card.formatted %}
+                        {{ card.formatted|safe }}
+                    {% else %}
+                        {{ card.cardtext }}
+                    {% endif %}
+                    <DIV class="card-comments">
+                        <A title="Прочитать комментарии" href="{% url cards.views.details card.pk  %}#comments"
+                           class="work-link">Прочитать обсуждение [{{comment_count}} комментар{{comment_count|rupluralize:"ий,ия,иев"}}]</A>
+                   </DIV>
+                </DIV>
+            </DIV>
         </DIV>
+        {% endwith %}
         {% empty %}
             <h2>Нет заметок</h2>
         {% endfor %}

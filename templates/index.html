@@ -15,7 +15,7 @@
                        href="{% url users.views.details card.owner.username %}">{{ card.owner.username }}</A></H5>
                 {% if user.is_authenticated %}
                     <UL class="card-actions">
-                        {% if card.in_favorite %}
+                        {% if card.pk in cards_favorites %}
                             <LI>
                                 <A href="{% url cards.views.fav_del card.pk %}" class="work-link">Убрать из избранного</A>
                             </LI>

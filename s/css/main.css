@@ -211,3 +211,7 @@ TEXTAREA[name="comment"] {
   overflow: auto;
   margin: 0;
 }
+/* Пганиация */
+.pagination {
+  font-size: 20px;
+}
