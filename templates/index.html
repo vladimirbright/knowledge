@@ -3,7 +3,8 @@
 {% load thumbnail pluralize %}
 
 {% block main %}
-    {% load comments pagination_tags %}
+    {% load comments pagination_tags disqus_tags %}
+    {% disqus_dev %}
     <A name="main"></A>
     <DIV class="span-22 last">
         {% autopaginate cards 5 %}
@@ -44,7 +45,7 @@
             <DIV class="span-16 last card"><DIV class="card-inner">
                 <H4><A title="Посмотреть внимательнее" href="{% url cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
                 {% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}
-                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url cards.views.details card.pk  %}#comments" class="work-link">Прочитать обсуждение{% if comment_count %} [{{comment_count}} комментар{{comment_count|rupluralize:"ий,ия,иев"}}]{% endif %}</A></DIV>
+                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url cards.views.details card.pk  %}#disqus_thread" class="work-link">Прочитать обсуждение</A>{% disqus_num_replies %} </DIV>
             </DIV></DIV>
         </DIV>
         {% empty %}

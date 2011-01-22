@@ -122,7 +122,12 @@ INSTALLED_APPS = (
     'south',
     'easy_thumbnails',
     'pagination',
+    'disqus',
 )
+
+DISQUS_API_KEY = 'FOOBARFOOBARFOOBARFOOBARFOOBARF'
+DISQUS_WEBSITE_SHORTNAME = 'knbase'
+
 
 try:
     from local_settings import *

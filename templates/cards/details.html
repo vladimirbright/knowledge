@@ -1,9 +1,13 @@
 {% extends 'index.html' %}
-{% load comments thumbnail  %}
+
+{% load comments thumbnail disqus_tags  %}
+
 {% block title %}:: {{ card.topic }}{% endblock %}
+
 {% block form-navigation %} {% endblock %}
 {% block head-hide-code %} {% endblock %}
 {% block currentplace %}<H2>{{ card.topic }}</H2>{% endblock %}
+
 {% block main %}
 <DIV class="span-16 card-detail">
     <P>{% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}</P>
@@ -36,9 +40,8 @@
     </UL>
     {% endif %}
 </DIV>
-{% get_comment_count for card as comment_count %}
 <DIV class="span-22 last card-comments">
-    <H4 style="float: left"><A href="#comments" class="work-link">Комментарии [{{ comment_count }}]:</A></H4>
+    <H4 style="float: left">&nbsp;</H4>
     <!-- AddThis Button BEGIN -->
     <DIV class="addthis_toolbox addthis_default_style" style="float: right">
     <A href="http://www.addthis.com/bookmark.php?v=250&amp;username=xa-4bc2e4802b6ab544" class="addthis_button_compact work-link">Share</a>
@@ -51,26 +54,7 @@
     <SCRIPT type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4bc2e4802b6ab544"></SCRIPT>
     <!-- AddThis Button END -->
     <HR />
-    <A name="comments"></A>
-    {% get_comment_list for card as comment_list %}
-    <DIV class="comments">
-        {% for comment in comment_list %}
-        <A name="{{ comment.pk }}"></A>
-        <H5>
-            <A class="work-link" href="{% url users.views.details comment.user.username %}" title="Посмотреть профиль: {{ comment.user.username }}">{{ comment.user.username }}</A>
-            <A class="comments-link work-link" href="#{{ comment.pk }}" title="Ссылка на комментарий">[#]</A>
-        </H5>
-        <DIV>{{ comment.comment }}</DIV>
-        {% endfor %}
-    </DIV>
-    {% if user.is_authenticated %}
-        {% get_comment_form for card as form %}
-        <FORM action="{% comment_form_target %}" method="post">
-            {% csrf_token %}
-            {{ form.comment }} {{ form.honeypot }} {{ form.content_type }} {{ form.object_pk }} {{ form.timestamp }} {{ form.security_hash }}
-            <INPUT type="submit" name="submit-post" class="submit-post" value="Запостить" />
-            <INPUT type="hidden" name="next" value="{% url cards.views.details card.pk %}" />
-        </FORM>
-    {% endif %}
+    {% disqus_dev %}
+    {% disqus_show_comments %}
 </DIV>
 {% endblock %}
