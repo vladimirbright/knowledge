@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from fabric.api import *
-from fabric.contrib.console import confirm
+
+from fabric.api import cd, run, hosts
 
 
-@hosts('knbase@knbase.org')
-def deploy():
-    with cd('/home/knbase/knowledge'):
+@hosts('knbase.org@knbase.org')
+def gp():
+    with cd('/home/knbase.org/www'):
         run('git pull', pty=True)
 
