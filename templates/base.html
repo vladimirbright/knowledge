@@ -143,30 +143,31 @@
             </DIV>
             <DIV class="span-6 last search">
                 {% block search %}
-                    <FORM id="st-search-input" class="st-search-input">
-                        <INPUT type="text" placeholder="Что ищем?"  class="st-search-input" />
+                    <FORM>
+                        <INPUT id="st-search-input" type="text" placeholder="Что ищем?" />
                     </FORM>
                 {% endblock %}
             </DIV>
 
-            <div id="st-results-container"></div>
-            <script type="text/javascript">
-                  var Swiftype = window.Swiftype || {};
-                  (function() {
-                    Swiftype.key = 'Qsm28as5DjTRe6pkpqdo';
-                    Swiftype.inputElement = '#st-search-input';
-                    Swiftype.resultContainingElement = '#st-results-container';
-                    Swiftype.attachElement = '#st-search-input';
-                    Swiftype.renderStyle = "overlay";
+            <DIV id="st-results-container"></DIV>
+            <SCRIPT type="text/javascript">
+              var Swiftype = window.Swiftype || {};
+              (function() {
+                Swiftype.key = 'Qsm28as5DjTRe6pkpqdo';
+                Swiftype.inputElement = '#st-search-input';
+                Swiftype.resultContainingElement = '#st-results-container';
+                Swiftype.attachElement = '#st-search-input';
+                Swiftype.renderStyle = "overlay";
 
-                    var script = document.createElement('script');
-                    script.type = 'text/javascript';
-                    script.async = true;
-                    script.src = "//swiftype.com/embed.js";
-                    var entry = document.getElementsByTagName('script')[0];
-                    entry.parentNode.insertBefore(script, entry);
-                  }());
-            </script>
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.async = true;
+                script.src = "//swiftype.com/embed.js";
+                var entry = document.getElementsByTagName('script')[0];
+                entry.parentNode.insertBefore(script, entry);
+              }());
+            </SCRIPT>
+
             {% block main %}
                 <h2>Ой. Нет никто!</h2>
             {% endblock %}
