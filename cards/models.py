@@ -1,16 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth.models import User
-from django.contrib.comments.signals import comment_was_posted, comment_was_flagged
 from django.db import models
 from django import forms
-from django.utils.translation import ugettext_lazy as _
-
-from djangosphinx.models import SphinxSearch
 
 
 class Cards(models.Model):
-    ''' Main Card model'''
     topic = models.CharField(u"Название", max_length=140)
     # Исходный текст заметки
     cardtext = models.TextField(u"Заметка")
@@ -21,8 +16,6 @@ class Cards(models.Model):
     comments = models.IntegerField(u'Комментариев', default=0, editable=False)
     rating = models.IntegerField(u'Рейтинг заметки', editable=False, default=0)
 
-    search = SphinxSearch(index="cards")
-
     def __unicode__(self):
         return u"<Заметка: %s>" %self.topic[:60]
 
@@ -31,6 +24,8 @@ class Cards(models.Model):
         return ('cards.views.details', [ self.pk, ])
 
     def save(self, *args, **kwargs):
+        if 'owner' in kwargs:
+            self.owner = kwargs.pop('owner')
         self.formatted = format_code(self.cardtext)
         return super(Cards, self).save(*args, **kwargs)
 
@@ -73,8 +68,16 @@ class CardsModelPostForm(forms.ModelForm):
         if text == '':
             raise forms.ValidationError(u'Ваши мысли пусты!')
         if len(text.split()) < 2:
-            raise forms.ValidationError(u'Ваши мысли очень скудны! Оставьте хотя бы пару слов.')
+            raise forms.ValidationError(
+                    u'Ваши мысли очень скудны! '\
+                    u'Оставьте хотя бы пару слов.'
+                )
         return text
+
+    def save(self, *args, **kwargs):
+        if 'owner' in kwargs:
+            self.instance.owner = kwargs.pop('owner')
+        return super(CardsModelPostForm, self).save(*args, **kwargs)
 
     class Meta:
         model = Cards

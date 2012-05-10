@@ -30,21 +30,17 @@ urlpatterns = patterns('',
     url(r'^favorites/add/(?P<card_id>\d+)$', card_view.fav_add),
     url(r'^favorites/del/(?P<card_id>\d+)$', card_view.fav_del),
     url(r'^usefull/$', card_view.rating ),
-    # поиск
-    url(r'^search/$', card_view.search),
     # логин и регистариция.
     url(r'^login/', login),
     url(r'^logout/', logout, {'next_page': '/' }),
-    url(r'^register/', users_view.register),
     # url связанные с пользователями.
-    url(r'^user/(?P<username>[\d\w_]+)/?$', users_view.details),
+    url(r'^user/(?P<username>[\d\w_]+)/?$', users_view.details, name="user_details"),
     url(r'^settings/$', users_view.edit),
     # RSS
     url(r'^feeds/latest/$', LastCardsFeed(), name='feeds_latest'),
     # the sitemap
     (r'^sitemap.xml$', djsitemap, {'sitemaps': sitemaps}),
     # админка
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
 )
 

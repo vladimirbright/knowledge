@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
-{% load thumbnail pluralize %}
+{% load thumbnail pluralize comments pagination_tags %}
 
 {% block main %}
-    {% load comments pagination_tags %}
+
+    {% autopaginate cards 5 %}
+
     <A name="main"></A>
-    <DIV class="span-22 last">
-        {% autopaginate cards 5 %}
+    <DIV class="span-24 last">
         {% for f in cards %}
         {% with f.card as card %}
         <DIV class="card-container">

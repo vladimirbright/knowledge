@@ -60,41 +60,27 @@
 
     {% block head-extra %}{% endblock %}
 </HEAD>
-<BODY class="back-cod">
-    <DIV class="container">
-        <!--Верхнее меню-->
-        <DIV class="span-24 last header">
-        {% block header %}
-            <DIV class="span-1">&nbsp;</DIV>
-            <DIV class="span-6 logo">
-                <H2><A href="/">База&nbsp;знаний&nbsp;и&nbsp;заметок</A></H2>
-            </DIV>
-            <DIV class="span-10">
-                <H1>Узнал что-нибудь? Поделись!</H1>
-            </DIV>
-            <DIV class="span-6 login-block">
-            {% block loginblock %}
-                {% if user.is_authenticated %}
-                    <H3>Hi, <A href="{% url users.views.details user.username %}" class="work-link work-link-underline">{{ user.username }}!</A></H3>
-                    <H3><A class="work-link" href="{% url django.contrib.auth.views.logout %}">выйти</A></H3>
-                {% else %}
-                  <H3><A href="{% url django.contrib.auth.views.login %}" class="work-link work-link-underline">Войдите</A> 
-                    или <A class="work-link work-link-underline" href="{% url users.views.register %}">Зарегистрируйтесь</A></H3>
-                {% endif %}
-            {% endblock %}
-            </DIV>
-            <DIV class="span-1 last">&nbsp;</DIV>
+<BODY>
+<DIV class="container">
+    {# Верхнее меню #}
+    {% block header %}
+        <DIV class="span-16 header">
+            <H1><A href="/">База&nbsp;знаний&nbsp;и&nbsp;заметок</A></H1>
+        </DIV>
+        <DIV class="span-8 login-block header last">
+        {% block loginblock %}
+            {% if user.is_authenticated %}
+                <H3>Hi, <A href="{% url users.views.details user.username %}" class="work-link work-link-underline">{{ user.username }}!</A></H3>
+                <H3><A class="work-link" href="{% url django.contrib.auth.views.logout %}">выйти</A></H3>
+            {% else %}
+              <H3><A href="{% url django.contrib.auth.views.login %}" class="work-link work-link-underline">Сим-сим</A> 
+            {% endif %}
         {% endblock %}
         </DIV>
-    {% comment %} 
-        Конец хедера.
-        Начало блок с формой и сортировками. 
-    {% endcomment %}
+    {% endblock %}
 
     {% block form-navigation %}
-    <DIV class="span-24 last form-navigation">
-        <DIV class="span-1">&nbsp;</DIV>
-        <DIV class="span-22 post-form">
+        <DIV class="span-24 last post-form">
         {% if user.is_authenticated %}
             <FORM enctype="multipart/form-data" action="{% url cards.views.index %}" method="POST">
                 {% csrf_token %}
@@ -102,52 +88,39 @@
                 <DIV class="hidden">{{ postForm.topic }}</DIV>
                 {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
                 <DIV id="cardtextcontainer">{{ postForm.cardtext }}</DIV>
-                <DIV><INPUT class="hidden" type="submit" value="Пусть знают все!"/></DIV>
+                <DIV><INPUT class="hidden" type="submit" value="Сохранить"/></DIV>
             </FORM>
-        {% else %}
-            <H2>Войдите на сайт, чтобы оставить заметку!</H2>
         {% endif %}
         </DIV>
-        <DIV class="span-1 last">&nbsp;</DIV>
-    </DIV>
     {% endblock %}
 
-    {% comment %}
-        Блок сортировок.
-    {% endcomment %}
     {% block navigation %}
-    <DIV class="span-1">&nbsp;</DIV>
-        <DIV class="span-22 navigation">
+        <DIV class="span-24 last navigation">
             <UL>
-                <LI><A class="work-link work-link-underline" href="{% url cards.views.index  %}">По дате публикации</A></LI>
-                <LI><A class="work-link work-link-underline" href="{% url cards.views.rating  %}">По рейтингу</A></LI>
+                <LI class="{{ nav.last|yesno:"current," }}">
+                    <A class="work-link work-link-underline" href="{% url cards.views.index  %}">По дате публикации</A></LI>
+                <LI class="{{ nav.usefull|yesno:"current," }}">
+                    <A class="work-link work-link-underline" href="{% url cards.views.rating  %}">По рейтингу</A></LI>
                 {% if user.is_authenticated %}
-                    <LI><A class="work-link work-link-underline" href="{% url cards.views.favorites  %}">Избранное</A></LI>
-                    <LI><A title="Редакитровать личные настройки" class="work-link work-link-underline" href="{% url users.views.edit %}">Настройки</A></LI>
+                    <LI class="{{ nav.favorites|yesno:"current," }}">
+                        <A class="work-link work-link-underline" href="{% url cards.views.favorites  %}">Избранное</A></LI>
+                    <LI class="{{ nav.settings|yesno:"current," }}">
+                        <A title="Редактировать личные настройки" class="work-link work-link-underline" href="{% url users.views.edit %}">Настройки</A></LI>
                 {% endif %}
-            </UL>
-        </DIV>
-        <DIV class="span-1 last">&nbsp;</DIV>
-        {% endblock %}
-
-        {% comment %} 
-            Начало вывода топиков.
-        {% endcomment %}
-        {% load comments pluralize %}
-
-        <DIV class="span-22 last topics">
-            <DIV class="span-16">
-            {% block currentplace %}
-                <H2>{{ currentplace|default:"Последние записи" }}</H2>
-            {% endblock %}
-            </DIV>
-            <DIV class="span-6 last search">
+                <LI class="right last">
                 {% block search %}
                     <FORM>
                         <INPUT id="st-search-input" type="text" placeholder="Что ищем?" />
                     </FORM>
                 {% endblock %}
-            </DIV>
+                </LI>
+            </UL>
+        </DIV>
+        {% endblock %}
+
+        {% load comments pluralize %}
+
+        <DIV class="span-24 last topics">
 
             <DIV id="st-results-container"></DIV>
             <SCRIPT type="text/javascript">
@@ -169,10 +142,11 @@
             </SCRIPT>
 
             {% block main %}
-                <h2>Ой. Нет никто!</h2>
+                <h2>Нет постов.</h2>
             {% endblock %}
         </DIV>
-    </DIV>
+
+</DIV>
     <!-- Yandex.Metrika -->
     <script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript"></script>
     <div style="display:none;"><script type="text/javascript">

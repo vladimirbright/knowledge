@@ -28,37 +28,26 @@
 
 BODY {
   font-size: 62.5%;
+  font-family: "Ubuntu","Droid sans",Tahoma,sans-serif;
+  background-color: #FFFFFF;
 }
 
 /*Header*/
 .header {
-  font-family: 'Droid sans',Tahoma,sans-serif;
-  margin-bottom: 30px;
+  margin-top: 10px;
 }
-.header H1 {
-  font-size: 26px;
+.header H1 A {
+  font-size: 1.8em;
   text-align: right;
   margin: 66px 0 0 0;
-  color: #573B09;
-}
-.logo {
-  height: 95px;
-  border: 1px solid #573B09;
-  border-top-width: 0;
-  background-color: #EFB654;
-}
-.logo, .logo A, .logo A:visited {
-  color: #573B09;
+  color: #000;
   text-decoration: none;
 }
-.logo H2 {
-  margin: 65px auto 0 5px;
-  font-size: 20px;
+.header H1 A:HOVER {
+  text-decoration: underline;
 }
-
 .login-block {
   text-align: right;
-  padding-top: 10px;
 }
 .login-block H3 {
   font-size: 12px;
@@ -68,7 +57,6 @@ BODY {
   margin-bottom: 20px;
 }
 .post-form INPUT[type="text"], INPUT[type="submit"], TEXTAREA {
-  border: 1px solid #285C82;
   margin: 0 0 10px 0;
 }
 .post-form INPUT[type="text"], .post-form TEXTAREA {
@@ -80,59 +68,81 @@ BODY {
 }
 .post-form LABEL {
   font-size: 17px;
-  font-family: "Droid sans",Tahoma,sans-serif;
 }
-
 /*Ошибки формы.*/
 .errorlist {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-
 /*Навигационные ссылки*/
+.navigation {
+  margin-top: 30px;
+}
 .navigation UL {
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 17px;
-  font-family: "Droid sans",Tahoma,sans-serif;
 }
 .navigation LI {
-  margin-right: 20px;
   float: left;
+  font-size: 1.8em;
+  margin-right: 20px;
+}
+.navigation LI.right {
+  float: right;
+}
+.navigation LI.last {
+  margin-right: 0;
+}
+.navigation LI.current A {
+  color: #000;
+  text-decoration: none;
 }
 
 /*Поиск*/
-.search INPUT {
-  width: 100%;
-}
 
 /*Список топиков*/
 .topics {
-  /*border: 1px solid #285C82;*/
-  background-color: #FFFFFF;
-  /*margin: 0 20px 20px 20px;*/
-  padding: 20px;
+  margin-top: 20px;
 }
-.card-container {
+.card_container {
+  font-size: 1.4em;
   margin-bottom: 40px;
   overflow: auto;
 }
+.card_container .card_topic {
+  font-size: 2.4em;
+  margin-bottom: 5px;
+}
+.card_container .card_owned_and_data {
+  text-decoration: none;
+}
+.card_container .card_owned_and_data:hover {
+  text-decoration: underline;
+}
+
 .card-left H5, .card-list H5, .card-userlink {
   margin: 0;
   color: #777777;
   font-size: 20px;
-  font-family: "Droid sans",Tahoma,sans-serif;
 }
 .card-left H5 {
   text-align: right;
 }
 .card-actions {
-  margin: 0;
+  margin: 0 0 5px 0;
   padding: 0;
   list-style: none;
-  text-align: right;
+  font-size: 0.8em;
+  overflow: auto;
+}
+.card-actions LI {
+  float: left;
+  margin-right: 20px;
+}
+.card-actions LI A {
+  color: red;
 }
 .card {
   margin-bottom: 30px;
@@ -141,7 +151,6 @@ BODY {
 .card H4 {
   margin: 0 0 10px 0;
   font-size: 24px;
-  font-family: "Droid sans",Tahoma,sans-serif;
 }
 .card H4 A {
   color: black;

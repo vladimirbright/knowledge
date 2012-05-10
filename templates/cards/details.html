@@ -9,38 +9,41 @@
 {% block currentplace %}<H2>{{ card.topic }}</H2>{% endblock %}
 
 {% block main %}
-<DIV class="span-16 card-detail">
-    <P>{% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}</P>
-    {% if card.cardsimage_set.all %}
-    <div style="margin-top:10px;border-top:1px dashed #7c7c7c;padding-top:5px;">
-       {% for i in card.cardsimage_set.all %} 
-        <a href="{{ i.image.url }}" style="border:0">
-            <IMG style="padding:3px;border:1px solid black;" 
-                src="{% thumbnail i.image 100x100 %}" />
-                </a>
-       {% endfor %}
-    </div>
-    {% endif %}
-</DIV>
-<DIV class="span-6 last">
-    {% if user.is_authenticated %}
-    <UL class="card-actions" style="text-align: left">
-        {% if card.in_favorite %}
-        <LI><A href="{% url cards.views.fav_del card.pk %}?from_details" class="work-link">Убрать из избранного</A></LI>
+<DIV class="span-24 last card_container">
+
+    <P>
+        {% if card.formatted %}
+            {{ card.formatted|safe }}
         {% else %}
-        <LI><A href="{% url cards.views.fav_add card.pk %}?from_details" class="work-link">В избранное</A></LI>
+            {{ card.cardtext }}
         {% endif %}
-        {% if perms.cards.change_cards %}
-            <LI><A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url cards.views.edit card.pk %}" class="work-link">Редактировать</A></LI>
-        {% else %}{% ifequal user.pk card.owner_id %}
-            <LI><A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url cards.views.edit card.pk %}" class="work-link">Редактировать</A></LI>
-        {% endifequal %}{% endif %}
-        {% if perms.cards.delete_cards %}
-            <LI><A title="Удалить &laquo;{{card.topic}}&raquo;" href="/admin/cards/cards/{{card.pk}}/delete/" class="work-link">Удалить</A></LI>{% endif %}
-    </UL>
+    </P>
+
+    {% if user.is_authenticated %}
+        <UL class="card-actions">
+            {% if card.pk in cards_favorites %}
+                <LI>
+                    <A href="{% url cards.views.fav_del card.pk %}" class="work-link">Убрать из избранного</A>
+                </LI>
+            {% else %}
+                <LI><A href="{% url cards.views.fav_add card.pk %}" class="work-link">В избранное</A></LI>
+            {% endif %}
+            {% if perms.cards.change_cards or user.pk == card.owner_id %}
+                <LI>
+                    <A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url cards.views.edit card.pk %}" class="work-link">Редактировать</A>
+                </LI>
+            {% endif %}
+            {% if perms.cards.delete_cards %}
+                <LI>
+                    <A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url admin:cards_cards_delete card.pk %}" class="work-link">Удалить</A>
+                </LI>
+            {% endif %}
+        </UL>
     {% endif %}
+
+
 </DIV>
-<DIV class="span-22 last card-comments">
+<DIV class="span-24 last card-comments">
     <H4 style="float: left">&nbsp;</H4>
     <!-- AddThis Button BEGIN -->
     <DIV class="addthis_toolbox addthis_default_style" style="float: right">

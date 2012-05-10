@@ -1,56 +1,62 @@
 {% extends "base.html" %}
 
-{% load thumbnail pluralize %}
+{% load thumbnail pluralize comments pagination_tags disqus_tags %}
 
 {% block main %}
-    {% load comments pagination_tags disqus_tags %}
     {% disqus_dev %}
+    {% autopaginate cards 5 %}
+
     <A name="main"></A>
-    <DIV class="span-22 last">
-        {% autopaginate cards 5 %}
-        {% for card in cards %}
-        <DIV class="card-container">
-            <DIV class='span-6 card-left'><A name="card{{card.pk}}"></A>
-                <H5>{{ card.added|date:'d.m.Y' }} posted by</H5>
-                <H5><A class="card-userlink" title="Посмотреть профиль &laquo;{{card.owner.username}}&raquo;"
-                       href="{% url users.views.details card.owner.username %}">{{ card.owner.username }}</A></H5>
-                {% if user.is_authenticated %}
-                    <UL class="card-actions">
-                        {% if card.pk in cards_favorites %}
-                            <LI>
-                                <A href="{% url cards.views.fav_del card.pk %}" class="work-link">Убрать из избранного</A>
-                            </LI>
-                        {% else %}
-                            <LI><A href="{% url cards.views.fav_add card.pk %}" class="work-link">В избранное</A></LI>
-                        {% endif %}
-                        {% if perms.cards.change_cards %}
-                            <LI>
-                                <A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url cards.views.edit card.pk %}" class="work-link">Редактировать</A>
-                            </LI>
-                        {% else %}
-                            {% if user.pk == card.owner.pk %}
-                                <LI>
-                                    <A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url cards.views.edit card.pk %}" class="work-link">Редактировать</A>
-                                </LI>
-                            {% endif %}
-                        {% endif %}
-                        {% if perms.cards.delete_cards %}
-                            <LI>
-                                <A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url admin:cards_cards_delete card.pk %}" class="work-link">Удалить</A>
-                            </LI>
-                        {% endif %}
-                    </UL>
+
+    {% for card in cards %}
+    <A name="card{{card.pk}}"></A>
+
+    <DIV class="card_container span-24 last">
+        <H3 class="card_topic">
+            <A title="{{ card.topic }}" href="{{ card.get_absolute_url  }}">{{ card.topic }}</A>
+        </H3>
+            <A class="work-link card_owned_and_data" href="{% url user_details card.owner.username %}">
+                Опубликовал {{ card.owner.username }} в {{ card.added|date:'H:i d.m.Y' }}
+            </a>
+
+        {% if user.is_authenticated %}
+            <UL class="card-actions">
+                {% if card.pk in cards_favorites %}
+                    <LI>
+                        <A href="{% url cards.views.fav_del card.pk %}" class="work-link">Убрать из избранного</A>
+                    </LI>
+                {% else %}
+                    <LI><A href="{% url cards.views.fav_add card.pk %}" class="work-link">В избранное</A></LI>
                 {% endif %}
-            </DIV>{% get_comment_count for card as comment_count %} 
-            <DIV class="span-16 last card"><DIV class="card-inner">
-                <H4><A title="Посмотреть внимательнее" href="{% url cards.views.details card.pk  %}">{{ card.topic }}</A></H4>
-                {% if card.formatted %}{{ card.formatted|safe }}{% else %}{{ card.cardtext }}{% endif %}
-                <DIV class="card-comments"><A title="Прочитать комментарии" href="{% url cards.views.details card.pk  %}#disqus_thread" class="work-link">Прочитать обсуждение</A>{% disqus_num_replies %} </DIV>
-            </DIV></DIV>
-        </DIV>
-        {% empty %}
-            <h2>Нет заметок</h2>
-        {% endfor %}
-        {% paginate %}
+                {% if perms.cards.change_cards or user.pk == card.owner_id %}
+                    <LI>
+                        <A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url cards.views.edit card.pk %}" class="work-link">Редактировать</A>
+                    </LI>
+                {% endif %}
+                {% if perms.cards.delete_cards %}
+                    <LI>
+                        <A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url admin:cards_cards_delete card.pk %}" class="work-link">Удалить</A>
+                    </LI>
+                {% endif %}
+            </UL>
+        {% endif %}
+
+
+        {% if card.formatted %}
+            {{ card.formatted|safe }}
+        {% else %}
+            {{ card.cardtext }}
+        {% endif %}
+
+                <DIV class="card-comments">
+                    <A title="Прочитать комментарии" href="{{ card.get_absolute_url }}#disqus_thread" class="work-link">Нет комментариев</A>{% disqus_num_replies %}
+                </DIV>
+
     </DIV>
+        {% if forloop.last %}
+            {% paginate %}
+        {% endif %}
+    {% empty %}
+        <h2>Нет заметок</h2>
+    {% endfor %}
 {% endblock %}

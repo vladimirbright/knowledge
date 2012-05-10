@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from django.conf  import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.db import connection
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
-from django.conf  import settings
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404, render
 
 from users.models import UserRegisterForm, UserSettingsForm
 from cards.models import Cards
@@ -25,11 +22,12 @@ def details(request, username):
     if user == request.user:
         user.self_request = True
     cards = Cards.objects.filter(owner=user).order_by('-pk')
-    return render_to_response('users/user.html', {
-                                            'viewed_user': user,
-                                            'user': request.user ,
-                                            'cards': cards,
-                                            }, context_instance=RequestContext(request))
+    c = dict(
+        viewed_user=user,
+        user=request.user ,
+        cards=cards,
+    )
+    return render(request, 'users/user.html', c)
 
 
 @login_required
@@ -46,23 +44,10 @@ def edit(request):
             return HttpResponseRedirect("/settings/")
     else:
         form = UserSettingsForm(initial=defaults)
-    return render_to_response('users/usersettings.html', {
+    return render(request, 'users/usersettings.html', {
                                             'user': request.user ,
                                             'form': form,
-                                            }, context_instance=RequestContext(request))
+                                            'nav': dict(settings=True),
+                                            })
 
-
-def register(request):
-    '''Страница регистрации'''
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("/")
-    else:
-        form = UserRegisterForm()
-    return render_to_response('registration/register.html', {
-        "title": u"Регистрация",
-        "form": form,
-    }, context_instance=RequestContext(request))
 
