@@ -5,18 +5,14 @@ from django.conf.urls.defaults import patterns, url, include
 from django.contrib.auth.views import login, logout
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap as djsitemap
-from django.contrib.syndication.views import feed as sfeed
 
 
 from cards import views as card_view
-from feeds.models import LastCards
+from feeds.models import LastCardsFeed
 from sitemap.models import CardsSitemap
 from users import views as users_view
 
 
-feeds = {
-    'latest': LastCards,
-}
 sitemaps = {
     'topic' : CardsSitemap
 }
@@ -44,7 +40,7 @@ urlpatterns = patterns('',
     url(r'^user/(?P<username>[\d\w_]+)/?$', users_view.details),
     url(r'^settings/$', users_view.edit),
     # RSS
-    (r'^feeds/(?P<url>.*)/$', sfeed, {'feed_dict': feeds}),
+    url(r'^feeds/latest/$', LastCardsFeed(), name='feeds_latest'),
     # the sitemap
     (r'^sitemap.xml$', djsitemap, {'sitemaps': sitemaps}),
     # админка

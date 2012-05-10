@@ -3,4 +3,5 @@
 *pyc
 *db
 local_settings.py
-*s/uploads/*
+s/*
+*media/uploads/*

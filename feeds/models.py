@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from cards.models import Cards
 
 
-class LastCards(Feed):
+class LastCardsFeed(Feed):
     ''' Main page RSS'''
     title = u'Последние заметки с knbase.org'
     link = '/last/'

@@ -41,8 +41,13 @@ SITE_ID = 1
 
 USE_I18N = True
 
-MEDIA_ROOT = self_dir('s')
-MEDIA_URL = '/s/'
+STATICFILES_DIRS = (
+    self_dir('assets'),
+)
+STATIC_ROOT = self_dir('s')
+STATIC_URL = '/s/'
+MEDIA_ROOT = self_dir('media')
+MEDIA_URL = '/media/'
 
 
 ADMIN_MEDIA_PREFIX = '/media/'
@@ -57,9 +62,8 @@ SECRET_KEY = '^l=_o)jzhczkcw=9#vpwiq22496^as$rip8&h*323)wn-p0-zs'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
-#     'django.template.loaders.eggs.load_template_source',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -69,7 +73,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 
-    "pagination.middleware.PaginationMiddleware",
+    'pagination.middleware.PaginationMiddleware',
 )
 
 LOCALE_PATHS = (
@@ -82,35 +86,37 @@ TEMPLATE_DIRS = (
     self_dir('templates'),
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = [
-        "django.core.context_processors.auth",
+TEMPLATE_CONTEXT_PROCESSORS = (
+        "django.contrib.auth.context_processors.auth",
+        "django.contrib.messages.context_processors.messages",
         "django.core.context_processors.i18n",
-        "django.core.context_processors.request",
         "django.core.context_processors.media",
+        "django.core.context_processors.request",
+        "django.core.context_processors.static",
+        "django.core.context_processors.tz",
 
         "cards.context_processors.get_favorites",
-]
+)
 
-if DEBUG:
-    TEMPLATE_CONTEXT_PROCESSORS.append("django.core.context_processors.debug")
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
+    'cards',
+    'disqus',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'django.contrib.auth',
     'django.contrib.comments',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.sitemaps',
-    'users',
-    'sitemap',
-    'cards',
-    'feeds',
-    'south',
+    'django.contrib.sites',
+    'django.contrib.staticfiles',
     'easy_thumbnails',
+    'feeds',
     'pagination',
-    'disqus',
+    'sitemap',
+    'south',
+    'users',
 )
 
 DISQUS_API_KEY = 'FOOBARFOOBARFOOBARFOOBARFOOBARF'

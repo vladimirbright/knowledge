@@ -7,19 +7,19 @@
     <META name='yandex-verification' content='6aab35e08fda6c4c' />
     <META name="google-site-verification" content="r7j1ZjTXoecdjTWDEH9oiexj_8XqH97BYQehgXpZxmI" />
 
-    <LINK rel="shortcut icon" href="{{ MEDIA_URL }}i/favicon.png">
+    <LINK rel="shortcut icon" href="{{ STATIC_URL }}i/favicon.png">
 
     {% block head-blueprint %}
-        <LINK rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection">
-        <!--[if lt IE 8]><link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+        <LINK rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection">
+        <!--[if lt IE 8]><link rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
     {% endblock %}
 
     {% block head-css %}
-        <LINK href="{{ MEDIA_URL }}css/main.css?v1" rel="stylesheet" type="text/css">
+        <LINK href="{{ STATIC_URL }}css/main.css?v1" rel="stylesheet" type="text/css">
     {% endblock %}
 
     {% block head-jquery %}
-        <SCRIPT type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></SCRIPT>
+        <SCRIPT type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></SCRIPT>
     {% endblock %}
 
     {% block head-rss %}
@@ -32,7 +32,8 @@
         <LINK rel="stylesheet" href="/s/css/skins/simple/style.css" type="text/css" media="screen, projection">
         <LINK rel="stylesheet" href="/s/css/bbcodeset.css" type="text/css" media="screen, projection">
         <SCRIPT type="text/javascript">
-        $(document).ready(function () {
+        $(function () {
+
         $('#cardtextcontainer TEXTAREA').click(function () {
             $(this).markItUp(mySettings);
             $('.post-form .hidden INPUT, .post-form .hidden').show(500);
@@ -52,9 +53,24 @@
             }
             return false;
         });
-        $('input[name="q"]').click( function () { $(this).val('').unbind(); })
+
+          var Swiftype = window.Swiftype || {};
+          (function() {
+            Swiftype.key = 'Qsm28as5DjTRe6pkpqdo';
+            Swiftype.inputElement = '#st-search-input';
+            Swiftype.resultContainingElement = '#st-results-container';
+            Swiftype.attachElement = '#st-search-input';
+            Swiftype.renderStyle = "overlay";
+
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.async = true;
+            script.src = "//swiftype.com/embed.js";
+            var entry = document.getElementsByTagName('script')[0];
+            entry.parentNode.insertBefore(script, entry);
+          }());
         });
-        </SCRIPT>
+    </SCRIPT>
     {% endblock %}
 
     {% block head-extra %}{% endblock %}
@@ -142,11 +158,13 @@
             </DIV>
             <DIV class="span-6 last search">
                 {% block search %}
-                    <FORM action="{% url cards.views.search %}" method="GET">
-                        <INPUT name="q" type="text" value="{{ search_term|default:'Что ищем?' }}">
+                    <FORM id="st-search-input" class="st-search-input">
+                        <INPUT name="q" type="text" placeholder="Что ищем?" />
                     </FORM>
                 {% endblock %}
             </DIV>
+
+            <div id="st-results-container"></div>
 
             {% block main %}
                 <h2>Ой. Нет никто!</h2>
