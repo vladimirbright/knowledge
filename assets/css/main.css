@@ -216,7 +216,7 @@ TEXTAREA[name="comment"] {
   margin: 0;
 }
 .highlight PRE {
-  width: 590px;
+  width: 100%;
   overflow: auto;
   margin: 0;
 }
