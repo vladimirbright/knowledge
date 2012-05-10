@@ -1,21 +1,22 @@
 # -*- coding: utf-8 -*-
 
 from django.conf import settings
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url, include
 from django.contrib.auth.views import login, logout
-from django.contrib import admin#, admindocs
+from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap as djsitemap
 from django.contrib.syndication.views import feed as sfeed
+
 
 from cards import views as card_view
 from feeds.models import LastCards
 from sitemap.models import CardsSitemap
 from users import views as users_view
 
+
 feeds = {
     'latest': LastCards,
 }
-
 sitemaps = {
     'topic' : CardsSitemap
 }
@@ -35,8 +36,6 @@ urlpatterns = patterns('',
     url(r'^usefull/$', card_view.rating ),
     # поиск
     url(r'^search/$', card_view.search),
-    # комментарии стандартные джанговские.
-    (r'^comments/', include('django.contrib.comments.urls')),
     # логин и регистариция.
     url(r'^login/', login),
     url(r'^logout/', logout, {'next_page': '/' }),
@@ -48,7 +47,6 @@ urlpatterns = patterns('',
     (r'^feeds/(?P<url>.*)/$', sfeed, {'feed_dict': feeds}),
     # the sitemap
     (r'^sitemap.xml$', djsitemap, {'sitemaps': sitemaps}),
-
     # админка
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),

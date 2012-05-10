@@ -29,18 +29,11 @@ DATABASES = {
     }
 }
 
-# Настройки сфинкс 
-SPHINX_SERVER = '127.0.0.1'
-SPHINX_PORT = 9312
-# Настройки кеша.
-CACHE_BACKEND = 'johnny.backends.memcached://127.0.0.1:11211/'
-JOHNNY_MIDDLEWARE_KEY_PREFIX='johnny'
-
 # Настройки email
 DEFAULT_FROM_EMAIL = 'site@knbase.org'
 EMAIL_SUBJECT_PREFIX = '[knbase.org]'
 
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = None
 
 LANGUAGE_CODE = 'ru-RU'
 
@@ -49,11 +42,10 @@ SITE_ID = 1
 USE_I18N = True
 
 MEDIA_ROOT = self_dir('s')
-
 MEDIA_URL = '/s/'
 
-ADMIN_MEDIA_PREFIX = '/media/'
 
+ADMIN_MEDIA_PREFIX = '/media/'
 LOGIN_URL='/login/'
 
 # Настройки для по страничного вывода
@@ -71,9 +63,6 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'johnny.middleware.LocalStoreClearMiddleware',
-    'johnny.middleware.QueryCacheMiddleware',
-
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -118,7 +107,6 @@ INSTALLED_APPS = (
     'sitemap',
     'cards',
     'feeds',
-    'johnny',
     'south',
     'easy_thumbnails',
     'pagination',

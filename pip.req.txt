@@ -1,11 +1,10 @@
-flup
+#flup
 Django
 PIL
 Pygments
 South
 django-sphinx
 git+http://github.com/SmileyChris/easy-thumbnails.git
-johnny-cache
 psycopg2
 python-memcached
 django-pagination
