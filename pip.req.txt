@@ -3,7 +3,7 @@ Django
 PIL
 Pygments
 South
-django-sphinx
+#django-sphinx
 git+http://github.com/SmileyChris/easy-thumbnails.git
 psycopg2
 python-memcached
