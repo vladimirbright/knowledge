@@ -96,6 +96,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         "django.core.context_processors.tz",
 
         "cards.context_processors.get_favorites",
+        "cards.context_processors.get_categories",
 )
 
 

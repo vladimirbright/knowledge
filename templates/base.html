@@ -70,7 +70,9 @@
         <DIV class="span-8 login-block header last">
         {% block loginblock %}
             {% if user.is_authenticated %}
-                <H3>Hi, <A href="{% url users.views.details user.username %}" class="work-link work-link-underline">{{ user.username }}!</A></H3>
+                <H3>Hi, <A href="{% url users.views.details user.username %}" class="work-link work-link-underline">{{ user.username }}!</A>
+                    &nbsp;<A class="work-link" href="{% url users.views.edit %}">настройки</A>
+                </H3>
                 <H3><A class="work-link" href="{% url django.contrib.auth.views.logout %}">выйти</A></H3>
             {% else %}
               <H3><A href="{% url django.contrib.auth.views.login %}" class="work-link work-link-underline">Сим-сим</A> 
@@ -84,6 +86,8 @@
         {% if user.is_authenticated %}
             <FORM enctype="multipart/form-data" action="{% url cards.views.index %}" method="POST">
                 {% csrf_token %}
+                {% if postForm.tag.errors %}<DIV class="error">{{ postForm.tag.errors }}</DIV>{% endif %}
+                <DIV class="hidden">{{ postForm.tag }}</DIV>
                 {% if postForm.topic.errors %}<DIV class="error">{{ postForm.topic.errors }}</DIV>{% endif %}
                 <DIV class="hidden">{{ postForm.topic }}</DIV>
                 {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
@@ -98,16 +102,12 @@
         <DIV class="span-24 last navigation">
             <UL>
                 <LI class="{{ nav.last|yesno:"current," }}">
-                    <A class="work-link work-link-underline" href="{% url cards.views.index  %}">По дате публикации</A></LI>
-                <LI class="{{ nav.usefull|yesno:"current," }}">
-                    <A class="work-link work-link-underline" href="{% url cards.views.rating  %}">По рейтингу</A></LI>
-                {% if user.is_authenticated %}
-                    <LI class="{{ nav.favorites|yesno:"current," }}">
-                        <A class="work-link work-link-underline" href="{% url cards.views.favorites  %}">Избранное</A></LI>
-                    <LI class="{{ nav.settings|yesno:"current," }}">
-                        <A title="Редактировать личные настройки" class="work-link work-link-underline" href="{% url users.views.edit %}">Настройки</A></LI>
-                {% endif %}
-                <LI class="right last">
+                    <A class="work-link work-link-underline" href="{% url cards.views.index  %}">Все</A></LI>
+                {% for category in site_categories %}
+                    <LI class="{% if nav.current_category_id == category.pk %}current{% endif %}">
+                        <A class="work-link work-link-underline" href="#">{{ category }}</A></LI>
+                {% endfor %}
+                <LI class="right">
                 {% block search %}
                     <FORM>
                         <INPUT id="st-search-input" type="text" placeholder="Что ищем?" />
