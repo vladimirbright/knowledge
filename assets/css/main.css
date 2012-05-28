@@ -126,10 +126,8 @@ BODY {
   margin-bottom: 5px;
 }
 .card_container .card_owned_and_data {
-  text-decoration: none;
-}
-.card_container .card_owned_and_data:hover {
-  text-decoration: underline;
+  font-style: italic;
+  margin-left: 20px;
 }
 
 .card-left H5, .card-list H5, .card-userlink {

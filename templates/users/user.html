@@ -32,7 +32,7 @@
 
     <UL class="user-topics">
         {% for card in cards %}
-            <LI><A href="{% url cards.views.details card.pk %}">{{ card.topic }}</A></LI>
+            <LI><A href="{{ card.get_absolute_url }}">{{ card.topic }}</A></LI>
         {% empty %}
             {% if not viewed_user.self_request %}
                 <li>Пользователь ничего не написал ;(</li>

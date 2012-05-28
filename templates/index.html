@@ -15,25 +15,15 @@
         <H3 class="card_topic">
             <A title="{{ card.topic }}" href="{{ card.get_absolute_url  }}">{{ card.topic }}</A>
         </H3>
-            <A class="work-link card_owned_and_data" href="{% url user_details card.owner.username %}">
-                Опубликовал {{ card.owner.username }} в {{ card.added|date:'H:i d.m.Y' }}
-            </a>
-
-        {% if user.is_authenticated %}
-            <UL class="card-actions">
-                {% if perms.cards.change_cards or user.pk == card.owner_id %}
-                    <LI>
-                        <A href="{% url admin:cards_cards_change  card.pk %}" class="work-link">Редактировать</A>
-                    </LI>
-                {% endif %}
-                {% if perms.cards.delete_cards %}
-                    <LI>
-                        <A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url admin:cards_cards_delete card.pk %}" class="work-link">Удалить</A>
-                    </LI>
-                {% endif %}
-            </UL>
-        {% endif %}
-
+        <span class="card_owned_and_data" >
+            Опубликовал {{ card.owner.username }} в {{ card.added|date:'H:i d.m.Y' }}
+            {% if perms.cards.change_cards or user.pk == card.owner_id %}
+                <A href="{% url admin:cards_cards_change  card.pk %}" class="work-link">Редактировать</A>
+            {% endif %}
+            {% if perms.cards.delete_cards %}
+                <A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url admin:cards_cards_delete card.pk %}" class="work-link">Удалить</A>
+            {% endif %}
+        </span>
 
         {% if card.formatted %}
             {{ card.formatted|safe }}
