@@ -15,3 +15,30 @@ def git_pull():
     with cd(CODE_DIR):
         run('git pull', pty=True)
 
+
+@hosts('knbase.org@knbase.org')
+def collect_static():
+    with cd(CODE_DIR):
+        run('{0} collectstatic --noinput'.format(PYTHON), pty=True)
+
+
+@hosts('knbase.org@knbase.org')
+def migrate():
+    with cd(CODE_DIR):
+        run('{0} migrate --all'.format(PYTHON), pty=True)
+
+
+@hosts('knbase.org@knbase.org')
+def restart():
+    with cd(HOME_DIR):
+        run('./start_project.sh', pty=True)
+
+
+@hosts('knbase.org@knbase.org')
+def deploy():
+    git_pull()
+    collect_static()
+    migrate()
+    restart()
+
+
