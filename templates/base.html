@@ -65,7 +65,10 @@
     {# Верхнее меню #}
     {% block header %}
         <DIV class="span-16 header">
-            <H1><A href="/">База&nbsp;знаний&nbsp;и&nbsp;заметок</A></H1>
+            <H1><A href="/">Заметки под рукой</A></H1>
+            <p class="site_description">
+                Этот сайт содержит небольшие заметки и рецепты, которые вечно забываешь и их приходится гуглить. Поэтому создатель сайта решил их сохранить в какое-то одно место, чтобы иметь быстрый доступ к ним.
+            </p>
         </DIV>
         <DIV class="span-8 login-block header last">
         {% block loginblock %}
@@ -82,20 +85,6 @@
     {% endblock %}
 
     {% block form-navigation %}
-        <DIV class="span-24 last post-form">
-        {% if user.is_authenticated %}
-            <FORM enctype="multipart/form-data" action="{% url cards.views.index %}" method="POST">
-                {% csrf_token %}
-                {% if postForm.tag.errors %}<DIV class="error">{{ postForm.tag.errors }}</DIV>{% endif %}
-                <DIV class="hidden">{{ postForm.tag }}</DIV>
-                {% if postForm.topic.errors %}<DIV class="error">{{ postForm.topic.errors }}</DIV>{% endif %}
-                <DIV class="hidden">{{ postForm.topic }}</DIV>
-                {% if postForm.cardtext.errors %}<DIV class="error">{{ postForm.cardtext.errors }}</DIV>{% endif %}
-                <DIV id="cardtextcontainer">{{ postForm.cardtext }}</DIV>
-                <DIV><INPUT class="hidden" type="submit" value="Сохранить"/></DIV>
-            </FORM>
-        {% endif %}
-        </DIV>
     {% endblock %}
 
     {% block navigation %}
@@ -105,7 +94,7 @@
                     <A class="work-link work-link-underline" href="{% url cards.views.index  %}">Все</A></LI>
                 {% for category in site_categories %}
                     <LI class="{% if nav.current_category_id == category.pk %}current{% endif %}">
-                        <A class="work-link work-link-underline" href="#">{{ category }}</A></LI>
+                        <A class="work-link work-link-underline" href="{{ category.get_absolute_url }}">{{ category.title }}</A></LI>
                 {% endfor %}
                 <LI class="right">
                 {% block search %}
@@ -115,7 +104,18 @@
                 {% endblock %}
                 </LI>
             </UL>
+        <DIV>
+        {% if current_category %}
+        <DIV class="span-24 last tags">
+            <UL class="tags">
+                {% for tag in current_category.tag_has_cards %}
+                    <LI class="{% if nav.current_tag_id == tag.pk|default:'' %}current{% endif %}">
+                        <A class="work-link work-link-underline" href="{{ tag.get_absolute_url }}">{{ tag.title }}</A></LI>
+                {% endfor %}
+                </LI>
+            </UL>
         </DIV>
+        {% endif %}
         {% endblock %}
 
         {% load comments pluralize %}

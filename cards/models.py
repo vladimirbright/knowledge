@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from random import shuffle
+
+
 from django.contrib.auth.models import User
 from django.db import models, transaction
 from django import forms
@@ -13,6 +16,13 @@ class Category(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    def tag_has_cards(self):
+        return Tag.objects.filter(category=self, has_cards=True)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('category', [self.slug])
 
     class Meta:
         verbose_name = u'Раздел'
@@ -30,6 +40,10 @@ class Tag(models.Model):
     def __unicode__(self):
         return u'{0} : {1}'.format(self.category.title, self.title)
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('tag', [self.category.slug, self.slug])
+
     class Meta:
         verbose_name = u'Тег'
         verbose_name_plural = u'Теги'
@@ -43,7 +57,7 @@ class Cards(models.Model):
     cardtext = models.TextField(u"Заметка")
     # Подсвеченный текст заметки
     formatted = models.TextField(blank=True, editable=False)
-    owner = models.ForeignKey(User, verbose_name=u'Добавил', editable=False)
+    owner = models.ForeignKey(User, verbose_name=u'Добавил')
     added = models.DateTimeField(u'Добавлена', auto_now_add=True)
     comments = models.IntegerField(u'Комментариев', default=0, editable=False)
     rating = models.IntegerField(u'Рейтинг заметки', editable=False, default=0)
@@ -54,7 +68,18 @@ class Cards(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('cards.views.details', [ self.pk, ])
+        return ('details', [], { 'pk': self.pk })
+
+    def another_by_tag(self):
+        if self.tag_id:
+            cards = list(Cards.objects.filter(tag=self.tag)\
+                                .exclude(pk=self.pk)\
+                                .order_by('-pk')[:50])
+            if cards:
+                shuffle(cards)
+            return cards
+        return Cards.objects.none()
+
 
     def save(self, *args, **kwargs):
         if 'owner' in kwargs:

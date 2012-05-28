@@ -99,8 +99,18 @@ BODY {
   color: #000;
   text-decoration: none;
 }
+.tags {
+  font-size: 0.9em;
+}
 
 /*Поиск*/
+
+/* */
+.site_description {
+  margin-left: 20px;
+  font-style: italic;
+  font-size: 1.3em;
+}
 
 /*Список топиков*/
 .topics {
@@ -134,11 +144,10 @@ BODY {
   margin: 0 0 5px 0;
   padding: 0;
   list-style: none;
-  font-size: 0.8em;
+  font-size: 7px;
   overflow: auto;
 }
 .card-actions LI {
-  float: left;
   margin-right: 20px;
 }
 .card-actions LI A {
@@ -223,4 +232,16 @@ TEXTAREA[name="comment"] {
 /* Пганиация */
 .pagination {
   font-size: 20px;
+}
+
+
+h5.another {
+  margin: 0;
+}
+ul.another_ul {
+  font-size: 0.5em;
+  margin-left: 20px;
+}
+ul.another_ul li {
+  float: none;
 }

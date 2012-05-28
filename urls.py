@@ -8,13 +8,16 @@ from django.contrib.sitemaps.views import sitemap as djsitemap
 
 
 from cards import views as card_view
+from cards.views import CardDetailView
 from feeds.models import LastCardsFeed
-from sitemap.models import CardsSitemap
+from sitemap.models import CardsSitemap, CategorySitemap, TagSitemap
 from users import views as users_view
 
 
 sitemaps = {
-    'topic' : CardsSitemap
+    'topic' : CardsSitemap,
+    'categories' : CategorySitemap,
+    'tags' : TagSitemap,
 }
 
 
@@ -23,13 +26,18 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Главная страница
     url(r'^$', card_view.index),
+    url(r'^category/(?P<category_slug>[\w-]+)/$',
+        card_view.index,
+        name='category'),
+    url(r'^category/(?P<category_slug>[\w-]+)/(?P<tag_slug>[\w-]+)/$',
+        card_view.index,
+        name='tag'),
     # Подробная страница
-    url(r'^(\d+)/?$', card_view.details, name='details'),
-    url(r'^edit/(\d+)/?$', card_view.edit),
-    url(r'^favorites/$', card_view.favorites),
-    url(r'^favorites/add/(?P<card_id>\d+)$', card_view.fav_add),
-    url(r'^favorites/del/(?P<card_id>\d+)$', card_view.fav_del),
-    url(r'^usefull/$', card_view.rating ),
+    url(r'^(?P<pk>\d+)/?$', CardDetailView.as_view(), name='details'),
+    url(r'^details/(?P<slug>[\w-]+)?$',
+         CardDetailView.as_view(),
+         name='details_slug'),
+
     # логин и регистариция.
     url(r'^login/', login),
     url(r'^logout/', logout, {'next_page': '/' }),

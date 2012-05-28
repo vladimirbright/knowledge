@@ -21,16 +21,9 @@
 
         {% if user.is_authenticated %}
             <UL class="card-actions">
-                {% if card.pk in cards_favorites %}
-                    <LI>
-                        <A href="{% url cards.views.fav_del card.pk %}" class="work-link">Убрать из избранного</A>
-                    </LI>
-                {% else %}
-                    <LI><A href="{% url cards.views.fav_add card.pk %}" class="work-link">В избранное</A></LI>
-                {% endif %}
                 {% if perms.cards.change_cards or user.pk == card.owner_id %}
                     <LI>
-                        <A title="Редактировать &laquo;{{card.topic}}&raquo;" href="{% url cards.views.edit card.pk %}" class="work-link">Редактировать</A>
+                        <A href="{% url admin:cards_cards_change  card.pk %}" class="work-link">Редактировать</A>
                     </LI>
                 {% endif %}
                 {% if perms.cards.delete_cards %}

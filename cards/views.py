@@ -6,29 +6,61 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.views.generic import DetailView
 
 
-from cards.models import Cards, CardFavorites, CardsModelPostForm, format_code
+from cards.models import (
+    CardFavorites,
+    Cards,
+    CardsModelPostForm,
+    Category,
+    format_code,
+    Tag,
+)
 
 
 PER_PAGE = getattr(settings, 'PER_PAGE', 5)
 PAGE_GET = getattr(settings, 'PAGE_GET', 'page')
 
 
-# Главная страница.
-def index(request, best=False):
-    '''Главная страница'''
-    order = '-pk'
-    title = None
-    if best is True:
-        order = '-rating'
-        title = u':: Самые популярные'
+class CardDetailView(DetailView):
+    queryset = Cards.objects.all()
+    context_object_name='card'
 
-    cards = Cards.objects.select_related('owner').order_by(order)
+    def get_context_data(self, **kwargs):
+        context = super(CardDetailView, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        card = context['card']
+        if card.tag_id:
+            context['current_category'] = card.tag.category
+            context['current_tag'] = card.tag
+            context['nav'] = dict(
+                            current_category_id=card.tag.category_id,
+                            current_tag_id=card.tag_id
+                        )
+        return context
+
+
+# Главная страница.
+def index(request, category_slug=None, tag_slug=None):
+    '''Главная страница'''
+    cards = Cards.objects.select_related(
+                              'owner',
+                              'tag',
+                              'tag__category'
+                          ).order_by('-pk')
+    current_category = None
+    current_tag = None
+    if category_slug:
+        current_category = get_object_or_404(Category, slug=category_slug)
+        if not tag_slug:
+            cards = cards.filter(tag__category=current_category)
+        else:
+            current_tag = get_object_or_404(Tag, slug=tag_slug)
+            cards = cards.filter(tag=current_tag)
 
     user  = request.user
     form = None
-
     if user.is_authenticated():
         form = CardsModelPostForm(
                     request.POST or None,
@@ -38,32 +70,21 @@ def index(request, best=False):
             with transaction.commit_on_success():
                 newcard = form.save(commit=True, owner=user)
             return HttpResponseRedirect(newcard.get_absolute_url())
-    nav = dict(usefull=True) if best else dict(last=True)
+    nav = {}
+    if not any((current_category, current_tag)):
+        nav['last'] = True
+    if current_category:
+        nav['current_category_id'] = current_category.pk
+    if current_tag:
+        nav['current_tag_id'] = current_tag.pk
     return render(request, 'index.html', {
-                                        "postForm": form,
-                                        "cards": cards,
-                                        "user": user,
-                                        "title" : title,
-                                        "nav": nav,
-                                        })
-
-
-# Страница по рейтингу.
-def rating(request):
-    return index(request, best=True)
-
-
-# Страница подробностей.
-def details(request, card_id):
-    user = request.user
-    card = get_object_or_404(Cards, pk=card_id)
-    card.in_favorite = False
-    if user.is_authenticated() is True:
-        card.in_favorite = CardFavorites.objects\
-                                        .filter(card=card, owner=user)\
-                                        .exists()
-    return render(request, 'cards/details.html', dict(card=card))
-
+                                    "postForm": form,
+                                    "cards": cards,
+                                    "user": user,
+                                    "nav": nav,
+                                    "current_tag": current_tag,
+                                    "current_category": current_category,
+                                })
 
 @login_required
 def edit(request, card_id):
