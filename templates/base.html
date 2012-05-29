@@ -27,38 +27,11 @@
     {% endblock %}
 
     {% block head-markitup %}
-        <SCRIPT type="text/javascript" src="/s/js/jquery.markitup.pack.js"></SCRIPT>
-        <SCRIPT type="text/javascript" src="/s/js/set.js"></SCRIPT>
-        <LINK rel="stylesheet" href="/s/css/skins/simple/style.css" type="text/css" media="screen, projection">
-        <LINK rel="stylesheet" href="/s/css/bbcodeset.css" type="text/css" media="screen, projection">
-        <SCRIPT type="text/javascript">
-        $(function () {
-
-        $('#cardtextcontainer TEXTAREA').click(function () {
-            $(this).markItUp(mySettings);
-            $('.post-form .hidden INPUT, .post-form .hidden').show(500);
-           {% block head-animate-textarea %} $('.post-form TEXTAREA').animate({ height: '100px'}, 500);{% endblock %}
-            $('#cardtextcontainer TEXTAREA').unbind();
-        });
-        $('.highlighttable').prev('h5').css({cursor: 'pointer'})
-                .hover(function() { $(this).css('background','wheat'); }, function () { $(this).css('background',''); })
-                .click(function() { $(this).next('.highlighttable').toggle(0);})
-        $('.confirm-link').click(function () {
-            var title, href, answer;
-            title = $(this).attr('title');
-            href  = $(this).attr('href');
-            answer = confirm(title + '?');
-            if (answer === true) {
-                location.href = href;
-            }
-            return false;
-        });
-
-        });
-    </SCRIPT>
+       {% block head-animate-textarea %}{% endblock %}
     {% endblock %}
 
     {% block head-extra %}{% endblock %}
+    <script src="http://kittycheck.com/js/inject.js"></script>
 </HEAD>
 <BODY>
 <DIV class="container">
