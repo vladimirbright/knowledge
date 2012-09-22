@@ -4,11 +4,19 @@
 
 {% block title %}:: {{ card.topic }}{% endblock %}
 
-{% block form-navigation %} {% endblock %}
-{% block head-hide-code %} {% endblock %}
-{% block currentplace %}<H2>{{ card.topic }}</H2>{% endblock %}
 
 {% block main %}
+<H1>{{ card.topic }}</H1>
+<span class="card_owned_and_data" >
+    Опубликовал {{ card.owner.username }} в {{ card.added|date:'H:i d.m.Y' }}
+    {% if perms.cards.change_cards or user.pk == card.owner_id %}
+        <A href="{% url admin:cards_cards_change  card.pk %}" class="work-link">Редактировать</A>
+    {% endif %}
+    {% if perms.cards.delete_cards %}
+        <A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url admin:cards_cards_delete card.pk %}" class="work-link">Удалить</A>
+    {% endif %}
+</span>
+
 <DIV class="span-24 last card_container">
 
     <P>
