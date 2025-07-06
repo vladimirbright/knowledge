@@ -160,5 +160,5 @@ class CardsModelPostForm(forms.ModelForm):
 def format_code(text):
     '''Function to find [code] tags and replace with highlited code'''
     import bbcode
-    return bbcode.to_html(text)
+    return bbcode.render_html(text)
 

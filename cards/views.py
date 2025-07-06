@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.db import transaction
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import DetailView
 
@@ -44,59 +44,33 @@ class CardDetailView(DetailView):
 # Главная страница.
 def index(request, category_slug=None, tag_slug=None):
     '''Главная страница'''
-    # Temporary simple response for testing
+    # Simple response for now due to template URL issues
     from django.http import HttpResponse
-    cards_count = Cards.objects.count()
-    return HttpResponse(f"""
-    <h1>Knowledge Base</h1>
-    <p>Django server is working!</p>
-    <p>Total cards in database: {cards_count}</p>
-    <p>User: {request.user}</p>
-    <a href="/admin/">Admin</a>
-    """)
+    cards = Cards.objects.select_related(
+                              'owner',
+                              'tag',
+                              'tag__category'
+                          ).order_by('-pk')[:10]  # Limit for display
     
-    # Original code commented out for now:
-    # cards = Cards.objects.select_related(
-    #                           'owner',
-    #                           'tag',
-    #                           'tag__category'
-    #                       ).order_by('-pk')
-    # current_category = None
-    # current_tag = None
-    # if category_slug:
-    #     current_category = get_object_or_404(Category, slug=category_slug)
-    #     if not tag_slug:
-    #         cards = cards.filter(tag__category=current_category)
-    #     else:
-    #         current_tag = get_object_or_404(Tag, slug=tag_slug)
-    #         cards = cards.filter(tag=current_tag)
-    # 
-    # user  = request.user
-    # form = None
-    # if user.is_authenticated:
-    #     form = CardsModelPostForm(
-    #                 request.POST or None,
-    #                 request.FILES or None
-    #             )
-    #     if form.is_valid():
-    #         with transaction.atomic():
-    #             newcard = form.save(commit=True, owner=user)
-    #         return HttpResponseRedirect(newcard.get_absolute_url())
-    # nav = {}
-    # if not any((current_category, current_tag)):
-    #     nav['last'] = True
-    # if current_category:
-    #     nav['current_category_id'] = current_category.pk
-    # if current_tag:
-    #     nav['current_tag_id'] = current_tag.pk
-    # return render(request, 'index.html', {
-    #                                 "postForm": form,
-    #                                 "cards": cards,
-    #                                 "user": user,
-    #                                 "nav": nav,
-    #                                 "current_tag": current_tag,
-    #                                 "current_category": current_category,
-    #                             })
+    html = """
+    <h1>Knowledge Base</h1>
+    <p><a href="/admin/">Admin Panel</a> | <a href="/admin/cards/cards/add/">Add New Card</a></p>
+    <h2>Recent Cards ({} total)</h2>
+    """.format(Cards.objects.count())
+    
+    for card in cards:
+        html += f"""
+        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+            <h3><a href="/admin/cards/cards/{card.pk}/change/">{card.topic}</a></h3>
+            <p>By: {card.owner.username} on {card.added.strftime('%Y-%m-%d %H:%M')}</p>
+            <div>{card.formatted or card.cardtext}</div>
+        </div>
+        """
+    
+    if not cards:
+        html += "<p>No cards yet. <a href='/admin/cards/cards/add/'>Create your first card!</a></p>"
+    
+    return HttpResponse(html)
 
 @login_required
 def edit(request, card_id):
