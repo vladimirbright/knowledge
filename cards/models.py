@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db import transaction
 from django import forms
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -21,9 +22,8 @@ class Category(models.Model):
     def tag_has_cards(self):
         return Tag.objects.filter(category=self, has_cards=True)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('category', [self.slug])
+        return reverse('category', args=[self.slug])
 
     class Meta:
         verbose_name = u'Раздел'
@@ -41,15 +41,14 @@ class Tag(models.Model):
     def __str__(self):
         return '{0} : {1}'.format(self.category.title, self.title)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('tag', [self.category.slug, self.slug])
+        return reverse('tag', args=[self.category.slug, self.slug])
 
     class Meta:
         verbose_name = u'Тег'
         verbose_name_plural = u'Теги'
         ordering = ['sort']
-        order_with_respect_to = 'category'
+        # order_with_respect_to = 'category'  # Conflicts with ordering
 
 
 class Cards(models.Model):
@@ -58,7 +57,7 @@ class Cards(models.Model):
     cardtext = models.TextField(u"Заметка")
     # Подсвеченный текст заметки
     formatted = models.TextField(blank=True, editable=False)
-    owner = models.ForeignKey(User, verbose_name=u'Добавил')
+    owner = models.ForeignKey(User, verbose_name=u'Добавил', on_delete=models.CASCADE)
     added = models.DateTimeField(u'Добавлена', auto_now_add=True)
     comments = models.IntegerField(u'Комментариев', default=0, editable=False)
     rating = models.IntegerField(u'Рейтинг заметки', editable=False, default=0)
@@ -67,9 +66,8 @@ class Cards(models.Model):
     def __str__(self):
         return "<Заметка: %s>" %self.topic[:60]
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('details', [], { 'pk': self.pk })
+        return reverse('details', kwargs={'pk': self.pk})
 
     def another_by_tag(self):
         if self.tag_id:
@@ -111,8 +109,8 @@ models.signals.post_save.connect(category_has_cards_update, sender=Cards, dispat
 
 class CardFavorites(models.Model):
     '''user - favorite  topic relationship'''
-    card  = models.ForeignKey(Cards, verbose_name=u'Заметка')
-    owner = models.ForeignKey(User, verbose_name=u'Добавил')
+    card  = models.ForeignKey(Cards, verbose_name=u'Заметка', on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, verbose_name=u'Добавил', on_delete=models.CASCADE)
     added = models.DateTimeField(u'Добавлена в избранное', auto_now_add=True)
 
     def __str__(self):
@@ -121,8 +119,8 @@ class CardFavorites(models.Model):
 
 class CardsImage(models.Model):
     '''Screenshots img & etc'''
-    card = models.ForeignKey(Cards, verbose_name=u'Заметка')
-    owner = models.ForeignKey(User, verbose_name=u'Заливший')
+    card = models.ForeignKey(Cards, verbose_name=u'Заметка', on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, verbose_name=u'Заливший', on_delete=models.CASCADE)
     image = models.ImageField(u'Изображение', upload_to='uploads/images')
     added = models.DateTimeField(u'Добавленo', auto_now_add=True)
 

@@ -2,8 +2,7 @@
 
 from django.conf import settings
 from django.urls import path, include
-from django.conf.urls import url
-from django.contrib.auth.views import login, logout
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap as djsitemap
 
@@ -40,8 +39,8 @@ urlpatterns = [
          name='details_slug'),
 
     # логин и регистариция.
-    path('login/', login, name='login'),
-    path('logout/', logout, {'next_page': '/' }, name='logout'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     # url связанные с пользователями.
     path('user/<str:username>/', users_view.details, name="user_details"),
     path('settings/', users_view.edit, name='settings'),
@@ -50,15 +49,15 @@ urlpatterns = [
     # the sitemap
     path('sitemap.xml', djsitemap, {'sitemaps': sitemaps}, name='sitemap'),
     # админка
-    path('admin/', include(admin.site.urls)),
+    path('admin/', admin.site.urls),
 ]
 
 if getattr(settings, 'DJANGO_SERVE_STATIC', False):
-    urlpatterns += patterns('',
-        (r'^'+settings.MEDIA_URL.strip('/')+'/(?P<path>.*)$',
-                                                   'django.views.static.serve',
-                                       {'document_root': settings.MEDIA_ROOT}),
-
-    )
+    from django.views.static import serve
+    urlpatterns += [
+        path(settings.MEDIA_URL.strip('/') + '/<path:path>',
+             serve,
+             {'document_root': settings.MEDIA_ROOT}),
+    ]
 
 

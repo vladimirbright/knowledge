@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from django.contrib.comments.moderation import CommentModerator, moderator
+# from django.contrib.comments.moderation import CommentModerator, moderator  # Removed in Django 1.8+
 
 
 from cards.models import Cards, Tag, Category
@@ -17,9 +17,9 @@ class CardsAdmin(admin.ModelAdmin):
 admin.site.register(Cards, CardsAdmin)
 
 
-class CardsModerator(CommentModerator):
-    email_notification = True
-moderator.register(Cards, CardsModerator)
+# class CardsModerator(CommentModerator):
+#     email_notification = True
+# moderator.register(Cards, CardsModerator)  # Comments framework removed in Django 1.8+
 
 class TagInline(admin.TabularInline):
     model = Tag

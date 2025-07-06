@@ -8,28 +8,61 @@ This is a Django-based knowledge management system (Russian: "база знан�
 
 ## Development Commands
 
+### Environment Setup
+```bash
+# Install dependencies using uv
+uv sync
+
+# Install development dependencies
+uv sync --group dev
+
+# Activate virtual environment
+source .venv/bin/activate
+
+# Or run commands directly with uv
+uv run python manage.py runserver
+```
+
 ### Running the Application
 ```bash
 # Start Django development server
-python3 manage.py runserver
+uv run python manage.py runserver
 
 # Collect static files
-python3 manage.py collectstatic
+uv run python manage.py collectstatic
 
 # Run database migrations
-python3 manage.py migrate
+uv run python manage.py migrate
 ```
 
 ### Database Management
 ```bash
 # Create new migrations
-python3 manage.py makemigrations
+uv run python manage.py makemigrations
 
 # Apply migrations
-python3 manage.py migrate
+uv run python manage.py migrate
 
 # Access Django shell
-python3 manage.py shell
+uv run python manage.py shell
+```
+
+### Package Management
+```bash
+# Add a new dependency
+uv add package-name
+
+# Add a development dependency
+uv add --group dev package-name
+
+# Remove a dependency
+uv remove package-name
+
+# Update dependencies
+uv sync
+
+# Show installed packages
+uv tree
 ```
 
 ### Production Deployment
@@ -96,22 +129,45 @@ fab restart
 - Main listing: `templates/index.html`
 - User authentication: `templates/registration/`
 
-### Third-party Dependencies
+### Dependencies
 
-Key packages from `pip.req.txt`:
-- Django (older version, likely 1.x)
-- PIL (Python Imaging Library)
+Key packages managed by uv in `pyproject.toml`:
+- Django 4.2+ (modern Django version)
+- Pillow (Python Imaging Library)
 - Pygments (syntax highlighting)
-- South (database migrations)
-- psycopg2 (PostgreSQL adapter)
+- psycopg2-binary (PostgreSQL adapter)
 - django-pagination
 - django-disqus (comments)
+- bbcode (BBCode parsing)
+- easy-thumbnails (image processing)
+- fabric (deployment automation)
+
+Development dependencies:
+- black (code formatting)
+- flake8 (linting)
+- isort (import sorting)
+- pre-commit (git hooks)
+- django-debug-toolbar (debugging)
+- django-extensions (additional commands)
+- ipython (enhanced shell)
 
 ## Development Notes
 
-- This is a legacy Django project using older conventions (Django 1.x era)
-- Uses South for migrations instead of Django's built-in system
-- Python 2.6 shebang in manage.py indicates older Python version
-- Russian interface and content
-- Production deployment uses Fabric for automation
-- Database contains sensitive information (password in settings.py)
+- **Modernized Django project**: Upgraded from Django 1.x to Django 4.2+
+- **Python 3**: Updated from Python 2.6 to Python 3.8+
+- **Modern package management**: Uses uv instead of pip for dependency management
+- **Built-in migrations**: Uses Django's built-in migration system (South removed)
+- **Modern URL routing**: Updated to use `path()` instead of `url()` patterns
+- **Russian interface and content**: Maintains original Russian localization
+- **Production deployment**: Uses Fabric for automation
+- **Database**: Contains sensitive information (password in settings.py) - consider using environment variables
+
+## Package Management with uv
+
+This project uses [uv](https://github.com/astral-sh/uv) for fast, reliable Python package management:
+
+- **pyproject.toml**: Modern Python project configuration
+- **uv.lock**: Deterministic dependency resolution
+- **Virtual environment**: Automatically managed in `.venv/`
+- **Fast installs**: Significantly faster than pip
+- **Dependency groups**: Separate dev dependencies from production

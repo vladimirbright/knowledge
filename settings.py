@@ -11,6 +11,7 @@ FORCE_SCRIPT_NAME = ''
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 INTERNAL_IPS = ( '127.0.0.1', '127.0.1.1' )
+ALLOWED_HOSTS = ("*",)
 
 ADMINS = (
      ( 'vladimir', 'vladimirbright@gmail.com' ),
@@ -60,21 +61,39 @@ PAGE_GET='page'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '^l=_o)jzhczkcw=9#vpwiq22496^as$rip8&h*323)wn-p0-zs'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
+# Modern Django templates configuration
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [self_dir('templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'cards.context_processors.get_favorites',
+                'cards.context_processors.get_categories',
+            ],
+        },
+    },
+]
 
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-
-    'pagination.middleware.PaginationMiddleware',
-)
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'pagination.middleware.PaginationMiddleware',  # Disabled
+]
 
 LOCALE_PATHS = (
     self_dir('locale'),
@@ -82,41 +101,31 @@ LOCALE_PATHS = (
 
 ROOT_URLCONF = 'urls'
 
-TEMPLATE_DIRS = (
-    self_dir('templates'),
-)
+# Template dirs now handled by TEMPLATES setting
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-        "django.contrib.auth.context_processors.auth",
-        "django.contrib.messages.context_processors.messages",
-        "django.core.context_processors.i18n",
-        "django.core.context_processors.media",
-        "django.core.context_processors.request",
-        "django.core.context_processors.static",
-        "django.core.context_processors.tz",
+# Context processors now handled by TEMPLATES setting
 
-        "cards.context_processors.get_favorites",
-        "cards.context_processors.get_categories",
-)
-
+# Auto-generated primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INSTALLED_APPS = (
     'cards',
-    'disqus',
+    # 'disqus',  # Temporarily disabled due to Django compatibility
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
-    'django.contrib.comments',
+    # 'django.contrib.comments',  # Removed in Django 1.8+
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.messages',  # Required for admin
     'django.contrib.sitemaps',
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'easy_thumbnails',
     'feeds',
-    'pagination',
+    # 'pagination',  # Temporarily disabled due to Python 2 syntax
     'sitemap',
-    'south',
+    # 'south',  # Replaced by Django built-in migrations
     'users',
 )
 
