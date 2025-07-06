@@ -5,3 +5,4 @@
 local_settings.py
 s/*
 *media/uploads/*
+db.sqlite3
