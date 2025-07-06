@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 
-{% load pagination_tags %}
+{# {% load pagination_tags %} - Temporarily disabled #}
 
 {% block title %}:: Пользователь: {{ viewed_user.username }}{% endblock %}
 
@@ -26,7 +26,7 @@
         <LI>Зарегистрирован: {{ viewed_user.date_joined|date:'d.m.Y' }}</LI>
     </UL>
 
-    {% autopaginate cards 50 %}
+    {# {% autopaginate cards 50 %} #}
 
     <h4 class="user-title">{{ viewed_user.self_request|yesno:"Ваши,Пользователь написал" }} топики</h4>
 
@@ -41,7 +41,7 @@
             {% endif %}
         {% endfor %}
     </UL>
-    {% paginate %}
+    {# {% paginate %} #}
 
 </DIV>
 {% endblock %}
