@@ -44,33 +44,47 @@ class CardDetailView(DetailView):
 # Главная страница.
 def index(request, category_slug=None, tag_slug=None):
     '''Главная страница'''
-    # Simple response for now due to template URL issues
-    from django.http import HttpResponse
     cards = Cards.objects.select_related(
                               'owner',
                               'tag',
                               'tag__category'
-                          ).order_by('-pk')[:10]  # Limit for display
-    
-    html = """
-    <h1>Knowledge Base</h1>
-    <p><a href="/admin/">Admin Panel</a> | <a href="/admin/cards/cards/add/">Add New Card</a></p>
-    <h2>Recent Cards ({} total)</h2>
-    """.format(Cards.objects.count())
-    
-    for card in cards:
-        html += f"""
-        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
-            <h3><a href="/admin/cards/cards/{card.pk}/change/">{card.topic}</a></h3>
-            <p>By: {card.owner.username} on {card.added.strftime('%Y-%m-%d %H:%M')}</p>
-            <div>{card.formatted or card.cardtext}</div>
-        </div>
-        """
-    
-    if not cards:
-        html += "<p>No cards yet. <a href='/admin/cards/cards/add/'>Create your first card!</a></p>"
-    
-    return HttpResponse(html)
+                          ).order_by('-pk')
+    current_category = None
+    current_tag = None
+    if category_slug:
+        current_category = get_object_or_404(Category, slug=category_slug)
+        if not tag_slug:
+            cards = cards.filter(tag__category=current_category)
+        else:
+            current_tag = get_object_or_404(Tag, slug=tag_slug)
+            cards = cards.filter(tag=current_tag)
+
+    user  = request.user
+    form = None
+    if user.is_authenticated:
+        form = CardsModelPostForm(
+                    request.POST or None,
+                    request.FILES or None
+                )
+        if form.is_valid():
+            with transaction.atomic():
+                newcard = form.save(commit=True, owner=user)
+            return HttpResponseRedirect(newcard.get_absolute_url())
+    nav = {}
+    if not any((current_category, current_tag)):
+        nav['last'] = True
+    if current_category:
+        nav['current_category_id'] = current_category.pk
+    if current_tag:
+        nav['current_tag_id'] = current_tag.pk
+    return render(request, 'index.html', {
+                                    "postForm": form,
+                                    "cards": cards,
+                                    "user": user,
+                                    "nav": nav,
+                                    "current_tag": current_tag,
+                                    "current_category": current_category,
+                                })
 
 @login_required
 def edit(request, card_id):

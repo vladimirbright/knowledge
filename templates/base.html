@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE HTML PUBLIC  "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
 <HEAD>
@@ -7,19 +8,19 @@
     <META name='yandex-verification' content='6aab35e08fda6c4c' />
     <META name="google-site-verification" content="r7j1ZjTXoecdjTWDEH9oiexj_8XqH97BYQehgXpZxmI" />
 
-    <LINK rel="shortcut icon" href="{{ STATIC_URL }}i/favicon.png">
+    <LINK rel="shortcut icon" href="{% static 'i/favicon.png' %}">
 
     {% block head-blueprint %}
-        <LINK rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection">
-        <!--[if lt IE 8]><link rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+        <LINK rel="stylesheet" href="{% static 'css/blueprint/screen.css' %}" type="text/css" media="screen, projection">
+        <!--[if lt IE 8]><link rel="stylesheet" href="{% static 'css/blueprint/ie.css' %}" type="text/css" media="screen, projection"><![endif]-->
     {% endblock %}
 
     {% block head-css %}
-        <LINK href="{{ STATIC_URL }}css/main.css?v1" rel="stylesheet" type="text/css">
+        <LINK href="{% static 'css/main.css' %}?v1" rel="stylesheet" type="text/css">
     {% endblock %}
 
     {% block head-jquery %}
-        <SCRIPT type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></SCRIPT>
+        <SCRIPT type="text/javascript" src="{% static 'js/jquery.min.js' %}"></SCRIPT>
     {% endblock %}
 
     {% block head-rss %}

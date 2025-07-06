@@ -52,12 +52,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
-if getattr(settings, 'DJANGO_SERVE_STATIC', False):
+# Serve static and media files during development
+if settings.DEBUG:
+    from django.conf.urls.static import static
     from django.views.static import serve
-    urlpatterns += [
-        path(settings.MEDIA_URL.strip('/') + '/<path:path>',
-             serve,
-             {'document_root': settings.MEDIA_ROOT}),
-    ]
+    
+    # Serve static files
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+    
+    # Serve media files
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

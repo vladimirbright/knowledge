@@ -25,10 +25,10 @@ uv run python manage.py runserver
 
 ### Running the Application
 ```bash
-# Start Django development server
+# Start Django development server (serves static files automatically in DEBUG mode)
 uv run python manage.py runserver
 
-# Collect static files
+# Collect static files (for production deployment)
 uv run python manage.py collectstatic
 
 # Run database migrations
@@ -106,10 +106,15 @@ fab restart
 
 ### Static Files
 
-- **Development**: Assets stored in `/assets/` directory
+- **Development**: 
+  - Assets stored in `/assets/` directory
+  - Served automatically at `/s/` URL when DEBUG=True
+  - No need to run collectstatic during development
 - **Production**: Static files collected to `/s/` directory
-- Blueprint CSS framework for styling
-- jQuery and MarkItUp editor for rich text editing
+- **Frameworks**: 
+  - Blueprint CSS framework for styling
+  - jQuery and MarkItUp editor for rich text editing
+- **Static URLs**: CSS at `/s/css/`, images at `/s/i/`, JS at `/s/js/`
 
 ### Key Features
 
