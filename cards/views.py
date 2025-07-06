@@ -67,7 +67,7 @@ def index(request, category_slug=None, tag_slug=None):
                     request.FILES or None
                 )
         if form.is_valid():
-            with transaction.commit_on_success():
+            with transaction.atomic():
                 newcard = form.save(commit=True, owner=user)
             return HttpResponseRedirect(newcard.get_absolute_url())
     nav = {}

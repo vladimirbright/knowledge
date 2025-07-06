@@ -4,7 +4,8 @@ from random import shuffle
 
 
 from django.contrib.auth.models import User
-from django.db import models, transaction
+from django.db import models
+from django.db import transaction
 from django import forms
 
 
@@ -14,7 +15,7 @@ class Category(models.Model):
     has_cards = models.BooleanField(u"Есть статьи", default=False, db_index=True, editable=False)
     sort = models.PositiveIntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def tag_has_cards(self):
@@ -37,8 +38,8 @@ class Tag(models.Model):
     has_cards = models.BooleanField(u"Есть статьи", default=False, db_index=True, editable=False)
     sort = models.PositiveIntegerField()
 
-    def __unicode__(self):
-        return u'{0} : {1}'.format(self.category.title, self.title)
+    def __str__(self):
+        return '{0} : {1}'.format(self.category.title, self.title)
 
     @models.permalink
     def get_absolute_url(self):
@@ -63,8 +64,8 @@ class Cards(models.Model):
     rating = models.IntegerField(u'Рейтинг заметки', editable=False, default=0)
     tag = models.ForeignKey(Tag, blank=True, null=True, verbose_name=u'Тег', on_delete=models.PROTECT)
 
-    def __unicode__(self):
-        return u"<Заметка: %s>" %self.topic[:60]
+    def __str__(self):
+        return "<Заметка: %s>" %self.topic[:60]
 
     @models.permalink
     def get_absolute_url(self):
@@ -94,7 +95,7 @@ class Cards(models.Model):
 
 def category_has_cards_update(sender, instance, **kw):
     """ Определяем категории в которых есть статьи """
-    with transaction.commit_on_success():
+    with transaction.atomic():
         Category.objects.all().update(has_cards=False)
         Tag.objects.all().update(has_cards=False)
         tags = set()
@@ -114,8 +115,8 @@ class CardFavorites(models.Model):
     owner = models.ForeignKey(User, verbose_name=u'Добавил')
     added = models.DateTimeField(u'Добавлена в избранное', auto_now_add=True)
 
-    def __unicode__(self):
-        return u"Избранная заметка: %s, пользователя: %s" %(self.card.topic[:20], self.owner.username)
+    def __str__(self):
+        return "Избранная заметка: %s, пользователя: %s" %(self.card.topic[:20], self.owner.username)
 
 
 class CardsImage(models.Model):
@@ -125,8 +126,8 @@ class CardsImage(models.Model):
     image = models.ImageField(u'Изображение', upload_to='uploads/images')
     added = models.DateTimeField(u'Добавленo', auto_now_add=True)
 
-    def __unicode__(self):
-        return u"Изображение для: %s" %(self.card.topic[:20])
+    def __str__(self):
+        return "Изображение для: %s" %(self.card.topic[:20])
 
 
 class CardsModelPostForm(forms.ModelForm):
@@ -134,17 +135,17 @@ class CardsModelPostForm(forms.ModelForm):
     def clean_topic(self):
         text = self.cleaned_data['topic'].strip()
         if text == '':
-            raise forms.ValidationError(u'Ваши мысли пусты!')
+            raise forms.ValidationError('Ваши мысли пусты!')
         return text
 
     def clean_cardtext(self):
         text = self.cleaned_data['cardtext'].strip()
         if text == '':
-            raise forms.ValidationError(u'Ваши мысли пусты!')
+            raise forms.ValidationError('Ваши мысли пусты!')
         if len(text.split()) < 2:
             raise forms.ValidationError(
-                    u'Ваши мысли очень скудны! '\
-                    u'Оставьте хотя бы пару слов.'
+                    'Ваши мысли очень скудны! '\
+                    'Оставьте хотя бы пару слов.'
                 )
         return text
 

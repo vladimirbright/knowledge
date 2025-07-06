@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.conf import settings
-from django.conf.urls.defaults import patterns, url, include
+from django.urls import path, include
+from django.conf.urls import url
 from django.contrib.auth.views import login, logout
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap as djsitemap
@@ -23,34 +24,34 @@ sitemaps = {
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Главная страница
-    url(r'^$', card_view.index),
-    url(r'^category/(?P<category_slug>[\w-]+)/$',
+    path('', card_view.index, name='index'),
+    path('category/<slug:category_slug>/',
         card_view.index,
         name='category'),
-    url(r'^category/(?P<category_slug>[\w-]+)/(?P<tag_slug>[\w-]+)/$',
+    path('category/<slug:category_slug>/<slug:tag_slug>/',
         card_view.index,
         name='tag'),
     # Подробная страница
-    url(r'^(?P<pk>\d+)/?$', CardDetailView.as_view(), name='details'),
-    url(r'^details/(?P<slug>[\w-]+)?$',
+    path('<int:pk>/', CardDetailView.as_view(), name='details'),
+    path('details/<slug:slug>/',
          CardDetailView.as_view(),
          name='details_slug'),
 
     # логин и регистариция.
-    url(r'^login/', login),
-    url(r'^logout/', logout, {'next_page': '/' }),
+    path('login/', login, name='login'),
+    path('logout/', logout, {'next_page': '/' }, name='logout'),
     # url связанные с пользователями.
-    url(r'^user/(?P<username>[\d\w_]+)/?$', users_view.details, name="user_details"),
-    url(r'^settings/$', users_view.edit),
+    path('user/<str:username>/', users_view.details, name="user_details"),
+    path('settings/', users_view.edit, name='settings'),
     # RSS
-    url(r'^feeds/latest/$', LastCardsFeed(), name='feeds_latest'),
+    path('feeds/latest/', LastCardsFeed(), name='feeds_latest'),
     # the sitemap
-    (r'^sitemap.xml$', djsitemap, {'sitemaps': sitemaps}),
+    path('sitemap.xml', djsitemap, {'sitemaps': sitemaps}, name='sitemap'),
     # админка
-    (r'^admin/', include(admin.site.urls)),
-)
+    path('admin/', include(admin.site.urls)),
+]
 
 if getattr(settings, 'DJANGO_SERVE_STATIC', False):
     urlpatterns += patterns('',

@@ -1,11 +1,12 @@
 #flup
-Django
-PIL
+Django>=3.2,<4.0
+Pillow
 Pygments
-South
+#South - replaced by Django built-in migrations
 #django-sphinx
-git+http://github.com/SmileyChris/easy-thumbnails.git
-psycopg2
+git+https://github.com/SmileyChris/easy-thumbnails.git
+psycopg2-binary
 python-memcached
 django-pagination
 django-disqus
+python-bbcode

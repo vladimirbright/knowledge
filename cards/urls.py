@@ -2,9 +2,9 @@
 # Файло с урл для cards
 
 
-from django.conf.urls.defaults import *
+from django.urls import path
 
-urlpatterns = patterns('',
-)
+urlpatterns = [
+]
 
 
