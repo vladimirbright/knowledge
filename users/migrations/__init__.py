@@ -1,0 +1,1 @@
+# Django migrations for users app

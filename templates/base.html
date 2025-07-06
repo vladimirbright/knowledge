@@ -45,12 +45,12 @@
         <DIV class="span-8 login-block header last">
         {% block loginblock %}
             {% if user.is_authenticated %}
-                <H3>Hi, <A href="{% url users.views.details user.username %}" class="work-link work-link-underline">{{ user.username }}!</A>
-                    &nbsp;<A class="work-link" href="{% url users.views.edit %}">настройки</A>
+                <H3>Hi, <A href="{% url 'user_details' user.username %}" class="work-link work-link-underline">{{ user.username }}!</A>
+                    &nbsp;<A class="work-link" href="{% url 'settings' %}">настройки</A>
                 </H3>
-                <H3><A class="work-link" href="{% url django.contrib.auth.views.logout %}">выйти</A></H3>
+                <H3><A class="work-link" href="{% url 'logout' %}">выйти</A></H3>
             {% else %}
-              <H3><A href="{% url django.contrib.auth.views.login %}" class="work-link work-link-underline">Сим-сим</A> 
+              <H3><A href="{% url 'login' %}" class="work-link work-link-underline">Сим-сим</A> 
             {% endif %}
         {% endblock %}
         </DIV>
@@ -63,7 +63,7 @@
         <DIV class="span-24 last navigation">
             <UL>
                 <LI class="{{ nav.last|yesno:"current," }}">
-                    <A class="work-link work-link-underline" href="{% url cards.views.index  %}">Все</A></LI>
+                    <A class="work-link work-link-underline" href="{% url 'index' %}">Все</A></LI>
                 {% for category in site_categories %}
                     <LI class="{% if nav.current_category_id == category.pk %}current{% endif %}">
                         <A class="work-link work-link-underline" href="{{ category.get_absolute_url }}">{{ category.title }}</A></LI>
@@ -90,7 +90,8 @@
         {% endif %}
         {% endblock %}
 
-        {% load comments pluralize %}
+        {% load pluralize %}
+        {# {% load comments %} - Disabled #}
 
         <DIV class="span-24 last topics">
 

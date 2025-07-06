@@ -4,7 +4,7 @@ from cards.models import Category
 
 
 def get_favorites(request):
-    if request.user.is_authenticated() is False:
+    if not request.user.is_authenticated:
         return {}
     favorites = request.user.cardfavorites_set\
                                         .select_related('card', 'owner')\

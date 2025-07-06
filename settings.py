@@ -8,7 +8,7 @@ def self_dir(filename=''):
 # fuck lighttpd
 FORCE_SCRIPT_NAME = ''
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 INTERNAL_IPS = ( '127.0.0.1', '127.0.1.1' )
 ALLOWED_HOSTS = ("*",)
@@ -21,20 +21,28 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'knowledgedb',
-        'USER': 'knowledge',
-        'PASSWORD': 'supersuperkn',
-        'HOST': '127.0.0.1',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': self_dir('db.sqlite3'),
     }
 }
+
+# PostgreSQL configuration (commented out for development)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'knowledgedb',
+#         'USER': 'knowledge',
+#         'PASSWORD': 'supersuperkn',
+#         'HOST': '127.0.0.1',
+#         'PORT': '',
+#     }
+# }
 
 # Настройки email
 DEFAULT_FROM_EMAIL = 'site@knbase.org'
 EMAIL_SUBJECT_PREFIX = '[knbase.org]'
 
-TIME_ZONE = None
+TIME_ZONE = 'UTC'
 
 LANGUAGE_CODE = 'ru-RU'
 
