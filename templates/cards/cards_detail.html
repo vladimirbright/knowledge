@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 
-{% load comments thumbnail disqus_tags  %}
+{% load thumbnail %}
+{# {% load comments disqus_tags %} - Temporarily disabled #}
 
 {% block title %}:: {{ card.topic }}{% endblock %}
 
@@ -10,10 +11,10 @@
 <span class="card_owned_and_data" >
     Опубликовал {{ card.owner.username }} в {{ card.added|date:'H:i d.m.Y' }}
     {% if perms.cards.change_cards or user.pk == card.owner_id %}
-        <A href="{% url admin:cards_cards_change  card.pk %}" class="work-link">Редактировать</A>
+        <A href="{% url 'admin:cards_cards_change' card.pk %}" class="work-link">Редактировать</A>
     {% endif %}
     {% if perms.cards.delete_cards %}
-        <A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url admin:cards_cards_delete card.pk %}" class="work-link">Удалить</A>
+        <A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url 'admin:cards_cards_delete' card.pk %}" class="work-link">Удалить</A>
     {% endif %}
 </span>
 
@@ -41,12 +42,12 @@
         <UL class="card-actions">
             {% if perms.cards.change_cards %}
                 <LI>
-                    <A href="{% url admin:cards_cards_change  card.pk %}" class="work-link">Редактировать</A>
+                    <A href="{% url 'admin:cards_cards_change' card.pk %}" class="work-link">Редактировать</A>
                 </LI>
             {% endif %}
             {% if perms.cards.delete_cards %}
                 <LI>
-                    <A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url admin:cards_cards_delete card.pk %}" class="work-link">Удалить</A>
+                    <A title="Удалить &laquo;{{card.topic}}&raquo;" href="{% url 'admin:cards_cards_delete' card.pk %}" class="work-link">Удалить</A>
                 </LI>
             {% endif %}
         </UL>
@@ -68,7 +69,7 @@
     <SCRIPT type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4bc2e4802b6ab544"></SCRIPT>
     <!-- AddThis Button END -->
     <HR />
-    {% disqus_dev %}
-    {% disqus_show_comments %}
+    {# {% disqus_dev %} #}
+    {# {% disqus_show_comments %} #}
 </DIV>
 {% endblock %}

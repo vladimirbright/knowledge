@@ -13,7 +13,7 @@
 
 {% block main %}
 <DIV class="span-22 last">
-<FORM action="{% url users.views.edit %}" method="POST">
+<FORM action="{% url 'settings' %}" method="POST">
   {% csrf_token %}
   <OL class="user-settings-ol">
     <LI>{{ form.email }}&nbsp;{{ form.email.label }}{% if form.email.errors %}<DIV class='error'>{{ form.email.errors }}</DIV>{% endif %}</LI>

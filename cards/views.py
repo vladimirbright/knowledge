@@ -2,9 +2,9 @@
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import transaction
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import DetailView
 
@@ -61,13 +61,13 @@ def index(request, category_slug=None, tag_slug=None):
 
     user  = request.user
     form = None
-    if user.is_authenticated():
+    if user.is_authenticated:
         form = CardsModelPostForm(
                     request.POST or None,
                     request.FILES or None
                 )
         if form.is_valid():
-            with transaction.commit_on_success():
+            with transaction.atomic():
                 newcard = form.save(commit=True, owner=user)
             return HttpResponseRedirect(newcard.get_absolute_url())
     nav = {}
